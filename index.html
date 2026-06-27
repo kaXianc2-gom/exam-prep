@@ -3,6 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="description" content="行测刷题+面试模拟工具 — 130道行测题+50道面试题，录音回放，浏览器本地运行">
+<meta name="theme-color" content="#dc2626">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📝</text></svg>">
 <title>ExamPrep — 行测刷题+面试模拟</title>
 <style>
 :root {
@@ -147,7 +150,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Micr
   </div>
   <div class="header-right">
     <span class="badge" id="statusBadge">📚 就绪</span>
-    <button class="theme-toggle" id="themeToggle" title="切换主题">🌙</button>
+    <button class="theme-toggle" id="themeToggle" title="切换主题" aria-label="切换暗色/亮色主题">🌙</button>
   </div>
 </header>
 
@@ -266,10 +269,11 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Micr
 </div>
 
 <script>
+"use strict";
 // ═══════════════════════════════════════════════
 //  QUESTION BANK — 行测题库 (60题)
 // ═══════════════════════════════════════════════
-var EXAM_QUESTIONS = [
+let EXAM_QUESTIONS = [
   // ── 言语理解与表达 (12题) ──
   {id:1,cat:'言语理解',diff:1,year:2024,q:'"不积跬步，无以至千里"强调的是：',opts:['A. 量变引起质变','B. 矛盾的对立统一','C. 事物是普遍联系的','D. 实践是检验真理的标准'],ans:0,exp:'荀子《劝学篇》。积累半步一步，才能到达千里之外——强调量的积累（量变）最终引起质的飞跃（质变）。'},
   {id:2,cat:'言语理解',diff:1,year:2024,q:'下列句子中，没有语病的是：',opts:['A. 通过这次学习，使我提高了认识','B. 他的写作水平有了明显的提高','C. 我们一定要减少不必要的浪费','D. 这个问题的回答是肯定的'],ans:1,exp:'A 缺主语（"通过…使"），C"减少不必要的浪费"语义重复（浪费本身就是不必要的），D"肯定的"指代不明。B 表达正确。'},
@@ -344,7 +348,7 @@ var EXAM_QUESTIONS = [
 // ═══════════════════════════════════════════════
 //  INTERVIEW QUESTION BANK (30题)
 // ═══════════════════════════════════════════════
-var INTERVIEW_QUESTIONS = [
+let INTERVIEW_QUESTIONS = [
   {id:1,cat:'自我认知',q:'请做一个简单的自我介绍。',tips:'控制在2-3分钟。突出：学习背景→实践经历→报考动机→个人优势，最后表达适岗意愿。不要念简历。',ref:'各位考官好，我叫XX，毕业于XX大学XX专业。在校期间我系统学习了政治学、行政学等相关课程，成绩优良。同时我积极参加社会实践，曾在XX单位实习，对基层工作有了初步了解。我选择报考公务员，是因为我希望将所学知识用于服务群众、服务基层。我的优势是踏实细致，善于学习。我希望能够在基层岗位上锻炼成长，为人民群众多做实事。'},
   {id:2,cat:'自我认知',q:'你为什么选择报考公务员？',tips:'从职业理想、个人特质、社会价值三个角度回答。避免回答"稳定""铁饭碗"。',ref:'我报考公务员基于三点考虑：第一，公务员是一份服务人民的工作，我希望自己的工作能够对社会有直接的价值。第二，我的专业背景和个人特质适合从事公共管理工作。第三，基层公务员需要沉下心来踏踏实实做事的人，我认为这正是我的长处。我不追求轻松稳定，而是希望在最需要人的基层岗位上发挥自己的作用。'},
   {id:3,cat:'自我认知',q:'你最大的缺点是什么？',tips:'坦诚但要选择"可改进的缺点"，并说明已经采取的改进措施。避免"没有缺点""太追求完美"等套路答案。',ref:'我觉得自己有时过于追求细节，导致做决策时不够果断。比如在实习期间，整理一份报告时我反复修改了几遍才提交，影响了效率。意识到这个问题后，我开始给自己设定时间节点，在规定时间内先完成再完善。现在我的做法是"先完成、再完美"。'},
@@ -384,7 +388,7 @@ var INTERVIEW_QUESTIONS = [
 // ═══════════════════════════════════════════════
 //  STATE
 // ═══════════════════════════════════════════════
-var STATE = {
+let STATE = {
   currentTab: 'quiz',
   // Quiz
   quizMode: '',       // 'random' | 'all' | 'weak'
@@ -406,34 +410,34 @@ var STATE = {
 
 // Statistics
 function loadStats() {
-  try { var d = localStorage.getItem('examprep_stats'); return d ? JSON.parse(d) : getDefaultStats(); }
+  try { let d = localStorage.getItem('gwy_examprep_stats') || localStorage.getItem('examprep_stats'); return d ? JSON.parse(d) : getDefaultStats(); }
   catch(e) { return getDefaultStats(); }
 }
 function getDefaultStats() {
   return { total: 0, correct: 0, streak: 0, maxStreak: 0, categoryStats: {}, wrongBook: {} };
 }
 function saveStats(s) {
-  try { localStorage.setItem('examprep_stats', JSON.stringify(s)); } catch(e) {}
+  try { localStorage.setItem('gwy_examprep_stats', JSON.stringify(s)); } catch(e) {}
 }
-var STATS = loadStats();
+const STATS = loadStats();
 
 // ═══════════════════════════════════════════════
 //  UTILITIES
 // ═══════════════════════════════════════════════
 function toast(msg, type) {
-  var el = document.createElement('div');
-  el.className = 'toast' + (type ? ' ' + type : '');
+  let el = document.createElement('div');
+  el.setAttribute('role','status');el.className = 'toast' + (type ? ' ' + type : '');
   el.textContent = msg;
   document.body.appendChild(el);
   setTimeout(function() { el.classList.add('out'); setTimeout(function() { if(el.parentNode)el.parentNode.removeChild(el); }, 300); }, 2000);
 }
 
 function toggleTheme() {
-  var cur = document.documentElement.getAttribute('data-theme');
-  var next = cur === 'dark' ? '' : 'dark';
+  let cur = document.documentElement.getAttribute('data-theme');
+  let next = cur === 'dark' ? '' : 'dark';
   document.documentElement.setAttribute('data-theme', next);
   document.getElementById('themeToggle').textContent = next ? '☀️' : '🌙';
-  try { localStorage.setItem('examprep_theme', next || 'light'); } catch(e) {}
+  try { localStorage.setItem('gwy_examprep_theme', next || 'light'); } catch(e) {}
 }
 
 function switchTab(name) {
@@ -458,18 +462,18 @@ function startQuiz(mode, filter) {
   STATE.quizIndex = 0;
   STATE.quizAnswered = false;
 
-  var pool = getFilteredQuestions(filter);
+  let pool = getFilteredQuestions(filter);
   if (mode === 'random') {
     // Shuffle and take 10
     pool = pool.slice().sort(function() { return Math.random() - 0.5; }).slice(0, 10);
   } else if (mode === 'weak') {
     // Prioritize wrong book
-    var weakIds = Object.keys(STATS.wrongBook);
+    let weakIds = Object.keys(STATS.wrongBook);
     if (!weakIds.length) { toast('错题本为空，改为随机10题', 'warn'); pool = pool.slice().sort(function() { return Math.random() - 0.5; }).slice(0, 10); }
     else {
-      var weakPool = pool.filter(function(q) { return weakIds.indexOf(String(q.id)) !== -1; });
+      let weakPool = pool.filter(function(q) { return weakIds.indexOf(String(q.id)) !== -1; });
       if (weakPool.length < 5) {
-        var remaining = pool.filter(function(q) { return weakIds.indexOf(String(q.id)) === -1; }).sort(function() { return Math.random() - 0.5; }).slice(0, 10 - weakPool.length);
+        let remaining = pool.filter(function(q) { return weakIds.indexOf(String(q.id)) === -1; }).sort(function() { return Math.random() - 0.5; }).slice(0, 10 - weakPool.length);
         pool = weakPool.concat(remaining);
       } else {
         pool = weakPool.sort(function() { return Math.random() - 0.5; }).slice(0, 10);
@@ -489,7 +493,7 @@ function startQuiz(mode, filter) {
 }
 
 function renderQuestion() {
-  var q = STATE.quizQuestions[STATE.quizIndex];
+  let q = STATE.quizQuestions[STATE.quizIndex];
   if (!q) return endQuiz();
 
   STATE.quizAnswered = false;
@@ -497,7 +501,7 @@ function renderQuestion() {
     '<div class="question-number">第 ' + (STATE.quizIndex + 1) + '/' + STATE.quizQuestions.length + ' 题 · ' + q.cat + ' · ' + (q.diff === 1 ? '★' : q.diff === 2 ? '★★' : '★★★') + '</div>' +
     '<div class="question-text">' + escHtml(q.q) + '</div>';
 
-  var optsHtml = '';
+  let optsHtml = '';
   q.opts.forEach(function(opt, i) {
     optsHtml += '<div class="option-item" data-idx="' + i + '" onclick="selectOption(' + i + ')">';
     optsHtml += '<div class="option-letter">' + String.fromCharCode(65 + i) + '</div>';
@@ -516,9 +520,9 @@ function selectOption(idx) {
   if (STATE.quizAnswered) return;
   STATE.quizAnswered = true;
 
-  var q = STATE.quizQuestions[STATE.quizIndex];
-  var correct = q.ans === idx;
-  var optionEls = document.querySelectorAll('.option-item');
+  let q = STATE.quizQuestions[STATE.quizIndex];
+  let correct = q.ans === idx;
+  let optionEls = document.querySelectorAll('.option-item');
 
   optionEls.forEach(function(el, i) {
     el.style.pointerEvents = 'none';
@@ -567,9 +571,9 @@ function nextQuestion() {
 }
 
 function renderProgress() {
-  var html = '';
+  let html = '';
   STATE.quizQuestions.forEach(function(q, i) {
-    var cls = '';
+    let cls = '';
     if (i < STATE.quizIndex) cls = 'correct'; // answered (we dont track individual results without deep state... simplify)
     if (i === STATE.quizIndex && !STATE.quizAnswered) cls = 'current';
     html += '<div class="quiz-dot ' + cls + '" title="第' + (i+1) + '题"></div>';
@@ -583,8 +587,8 @@ function startQuizTimer() {
   STATE.quizTimerInterval = setInterval(updateQuizTimer, 1000);
 }
 function updateQuizTimer() {
-  var elapsed = Math.floor((Date.now() - STATE.quizStartTime) / 1000);
-  var m = Math.floor(elapsed / 60), s = elapsed % 60;
+  let elapsed = Math.floor((Date.now() - STATE.quizStartTime) / 1000);
+  let m = Math.floor(elapsed / 60), s = elapsed % 60;
   document.getElementById('quizTimer').textContent = String(m).padStart(2,'0') + ':' + String(s).padStart(2,'0');
 }
 function stopQuizTimer() { if (STATE.quizTimerInterval) { clearInterval(STATE.quizTimerInterval); STATE.quizTimerInterval = null; } }
@@ -593,7 +597,7 @@ function endQuiz() {
   stopQuizTimer();
   document.getElementById('quizArea').style.display = 'none';
   document.getElementById('statusBadge').textContent = '📚 就绪';
-  var rate = STATS.total > 0 ? Math.round(STATS.correct / STATS.total * 100) : 0;
+  let rate = STATS.total > 0 ? Math.round(STATS.correct / STATS.total * 100) : 0;
   toast('📊 本次正确率 ' + rate + '%（' + STATS.correct + '/' + STATS.total + '）', 'success');
   document.getElementById('quizDesc').textContent = '累计 ' + STATS.total + ' 题，正确率 ' + rate + '%';
 }
@@ -609,13 +613,13 @@ function renderStats() {
   document.getElementById('sRate').textContent = STATS.total > 0 ? Math.round(STATS.correct / STATS.total * 100) + '%' : '—';
   document.getElementById('sStreak').textContent = STATS.maxStreak || 0;
 
-  var catHtml = '';
-  var cats = ['言语理解','数量关系','判断推理','资料分析','常识判断'];
+  let catHtml = '';
+  let cats = ['言语理解','数量关系','判断推理','资料分析','常识判断'];
   cats.forEach(function(c) {
-    var cs = STATS.categoryStats[c];
-    var rate = cs && cs.total > 0 ? Math.round(cs.correct / cs.total * 100) + '%' : '—';
-    var count = cs ? cs.total : 0;
-    catHtml += '<div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--border)"><span>' + c + '</span><span>' + count + '题 · <strong>' + rate + '</strong></span></div>';
+    let cs = STATS.categoryStats[c];
+    let rate = cs && cs.total > 0 ? Math.round(cs.correct / cs.total * 100) + '%' : '—';
+    let count = cs ? cs.total : 0;
+    catHtml += '<div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid let(--border)"><span>' + c + '</span><span>' + count + '题 · <strong>' + rate + '</strong></span></div>';
   });
   if (!catHtml) catHtml = '暂无数据';
   document.getElementById('categoryStats').innerHTML = catHtml;
@@ -625,20 +629,20 @@ function renderStats() {
 //  WRONG BOOK
 // ═══════════════════════════════════════════════
 function renderWrongBook() {
-  var ids = Object.keys(STATS.wrongBook);
+  let ids = Object.keys(STATS.wrongBook);
   if (!ids.length) {
     document.getElementById('wrongBookContent').innerHTML = '<div class="empty-state"><div class="empty-icon">📕</div><div class="empty-title">错题本为空</div><div class="empty-desc">做错的题目会自动收集到这里</div></div>';
     return;
   }
-  var html = '<div style="font-size:13px;color:var(--muted);margin-bottom:12px">共 ' + ids.length + ' 道错题</div>';
+  let html = '<div style="font-size:13px;color:let(--muted);margin-bottom:12px">共 ' + ids.length + ' 道错题</div>';
   ids.forEach(function(id) {
-    var wb = STATS.wrongBook[id];
-    var q = EXAM_QUESTIONS.find(function(q2) { return String(q2.id) === id; });
+    let wb = STATS.wrongBook[id];
+    let q = EXAM_QUESTIONS.find(function(q2) { return String(q2.id) === id; });
     if (!q) return;
-    html += '<div style="padding:12px;margin-bottom:8px;border:1px solid var(--border);border-radius:var(--radius-sm);cursor:pointer" onclick="reviewWrong(\'' + id + '\')">';
-    html += '<span style="font-size:12px;color:var(--muted)">' + q.cat + '</span><br>';
+    html += '<div style="padding:12px;margin-bottom:8px;border:1px solid let(--border);border-radius:let(--radius-sm);cursor:pointer" onclick="reviewWrong(\'' + id + '\')">';
+    html += '<span style="font-size:12px;color:let(--muted)">' + q.cat + '</span><br>';
     html += escHtml(q.q.substring(0, 80)) + '…<br>';
-    html += '<span style="font-size:12px;color:var(--muted)">答案：' + String.fromCharCode(65 + q.ans) + '</span>';
+    html += '<span style="font-size:12px;color:let(--muted)">答案：' + String.fromCharCode(65 + q.ans) + '</span>';
     html += '</div>';
   });
   html += '<button class="btn btn-outline btn-sm" onclick="clearWrongBook()">🗑 清空错题本</button>';
@@ -646,7 +650,7 @@ function renderWrongBook() {
 }
 
 function reviewWrong(id) {
-  var q = EXAM_QUESTIONS.find(function(q2) { return String(q2.id) === id; });
+  let q = EXAM_QUESTIONS.find(function(q2) { return String(q2.id) === id; });
   if (!q) return;
   STATE.quizQuestions = [q];
   STATE.quizIndex = 0;
@@ -671,14 +675,14 @@ function clearWrongBook() {
 //  INTERVIEW
 // ═══════════════════════════════════════════════
 function randomInterview(filter) {
-  var pool = filter ? INTERVIEW_QUESTIONS.filter(function(q) { return q.cat === filter; }) : INTERVIEW_QUESTIONS;
+  let pool = filter ? INTERVIEW_QUESTIONS.filter(function(q) { return q.cat === filter; }) : INTERVIEW_QUESTIONS;
   if (!pool.length) { toast('⚠️ 没有匹配题目', 'warn'); return; }
-  var q = pool[Math.floor(Math.random() * pool.length)];
+  let q = pool[Math.floor(Math.random() * pool.length)];
 
   stopInterviewTimer();
   STATE.interviewPhase = 'idle';
   STATE.interviewTimer = 180;
-  var audioEl = document.getElementById('audioPlayer');
+  let audioEl = document.getElementById('audioPlayer');
   audioEl.style.display = 'none';
   if (audioEl.src) URL.revokeObjectURL(audioEl.src);
   audioEl.src = '';
@@ -730,10 +734,10 @@ function startAnswer() {
 }
 
 function updateInterviewTimerDisplay() {
-  var m = Math.floor(STATE.interviewTimer / 60), s = STATE.interviewTimer % 60;
-  var el = document.getElementById('interviewTimer');
+  let m = Math.floor(STATE.interviewTimer / 60), s = STATE.interviewTimer % 60;
+  let el = document.getElementById('interviewTimer');
   el.textContent = String(m).padStart(2,'0') + ':' + String(s).padStart(2,'0');
-  if (STATE.interviewTimer <= 30 && STATE.interviewPhase === 'answering') el.style.color = 'var(--danger)';
+  if (STATE.interviewTimer <= 30 && STATE.interviewPhase === 'answering') el.style.color = 'let(--danger)';
   else el.style.color = '';
 }
 
@@ -743,20 +747,20 @@ function stopInterviewTimer() {
 
 function startRecording() {
   if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-    document.getElementById('recordingStatus').innerHTML = '<span style="color:var(--muted)">⚠ 浏览器不支持录音功能</span>';
+    document.getElementById('recordingStatus').innerHTML = '<span style="color:let(--muted)">⚠ 浏览器不支持录音功能</span>';
     return;
   }
   navigator.mediaDevices.getUserMedia({ audio: true }).then(function(stream) {
     STATE.recordedChunks = [];
-    var mr = new MediaRecorder(stream);
+    let mr = new MediaRecorder(stream);
     mr.ondataavailable = function(e) { if (e.data.size > 0) STATE.recordedChunks.push(e.data); };
     mr.onstop = function() {
       STATE.recordedBlob = new Blob(STATE.recordedChunks, { type: 'audio/webm' });
-      var url = URL.createObjectURL(STATE.recordedBlob);
-      var audioEl = document.getElementById('audioPlayer');
+      let url = URL.createObjectURL(STATE.recordedBlob);
+      let audioEl = document.getElementById('audioPlayer');
       audioEl.src = url;
       audioEl.style.display = '';
-      document.getElementById('recordingStatus').innerHTML = '<span style="color:var(--success)">✅ 录音完成，可在下方回放</span>';
+      document.getElementById('recordingStatus').innerHTML = '<span style="color:let(--success)">✅ 录音完成，可在下方回放</span>';
       // Stop all tracks
       stream.getTracks().forEach(function(t) { t.stop(); });
     };
@@ -764,7 +768,7 @@ function startRecording() {
     STATE.mediaRecorder = mr;
     document.getElementById('recordingStatus').innerHTML = '<div class="recording-indicator">🔴 录音中</div>';
   }).catch(function() {
-    document.getElementById('recordingStatus').innerHTML = '<span style="color:var(--danger)">⚠ 无法访问麦克风</span>';
+    document.getElementById('recordingStatus').innerHTML = '<span style="color:let(--danger)">⚠ 无法访问麦克风</span>';
   });
 }
 
@@ -785,7 +789,7 @@ function showReference() {
 function init() {
   // Theme
   try {
-    var tm = localStorage.getItem('examprep_theme');
+    let tm = localStorage.getItem('gwy_examprep_theme') || localStorage.getItem('examprep_theme');
     if (tm === 'dark') document.documentElement.setAttribute('data-theme', 'dark');
   } catch(e) {}
   document.getElementById('themeToggle').textContent = document.documentElement.getAttribute('data-theme') === 'dark' ? '☀️' : '🌙';
@@ -797,8 +801,8 @@ function init() {
   });
 
   // Category filter tags (quiz)
-  var cats = ['全部','言语理解','数量关系','判断推理','资料分析','常识判断'];
-  var catHtml = '';
+  let cats = ['全部','言语理解','数量关系','判断推理','资料分析','常识判断'];
+  let catHtml = '';
   cats.forEach(function(c) {
     catHtml += '<span class="filter-tag' + (c === '全部' ? ' active' : '') + '" data-filter="' + (c === '全部' ? '' : c) + '">' + c + '</span>';
   });
@@ -812,11 +816,11 @@ function init() {
 
   // Quiz buttons
   document.getElementById('btnRandomQuiz').addEventListener('click', function() {
-    var filter = document.querySelector('#categoryTags .filter-tag.active').getAttribute('data-filter') || null;
+    let filter = document.querySelector('#categoryTags .filter-tag.active').getAttribute('data-filter') || null;
     startQuiz('random', filter);
   });
   document.getElementById('btnAllQuiz').addEventListener('click', function() {
-    var filter = document.querySelector('#categoryTags .filter-tag.active').getAttribute('data-filter') || null;
+    let filter = document.querySelector('#categoryTags .filter-tag.active').getAttribute('data-filter') || null;
     startQuiz('all', filter);
   });
   document.getElementById('btnWeakQuiz').addEventListener('click', function() { startQuiz('weak', null); });
@@ -831,8 +835,8 @@ function init() {
   });
 
   // Interview category tags
-  var icats = ['全部','自我认知','综合分析','组织管理','应急应变','人际关系'];
-  var icatHtml = '';
+  let icats = ['全部','自我认知','综合分析','组织管理','应急应变','人际关系'];
+  let icatHtml = '';
   icats.forEach(function(c) {
     icatHtml += '<span class="filter-tag' + (c === '全部' ? ' active' : '') + '" data-filter="' + (c === '全部' ? '' : c) + '">' + c + '</span>';
   });
@@ -846,7 +850,7 @@ function init() {
 
   // Interview buttons
   document.getElementById('btnRandomInterview').addEventListener('click', function() {
-    var filter = document.querySelector('#interviewCategoryTags .filter-tag.active').getAttribute('data-filter') || null;
+    let filter = document.querySelector('#interviewCategoryTags .filter-tag.active').getAttribute('data-filter') || null;
     randomInterview(filter);
   });
   document.getElementById('btnThinking').addEventListener('click', startThinking);
@@ -861,7 +865,7 @@ function init() {
 //  TESTS
 // ═══════════════════════════════════════════════
 function runTests() {
-  var results = [];
+  let results = [];
   function t(name, fn) {
     try { results.push({ name: name, pass: !!fn() }); }
     catch(e) { results.push({ name: name, pass: false, error: e.message }); }
@@ -873,11 +877,11 @@ function runTests() {
   t('INTERVIEW_QUESTIONS has 30 questions', function() { return INTERVIEW_QUESTIONS.length === 30; });
   t('All interview questions have tips and ref', function() { return INTERVIEW_QUESTIONS.every(function(q) { return q.tips && q.ref; }); });
   t('Stats persistence', function() {
-    var orig = JSON.parse(JSON.stringify(STATS));
+    let orig = JSON.parse(JSON.stringify(STATS));
     STATS.total = 99;
     saveStats(STATS);
-    var loaded = loadStats();
-    var ok = loaded.total === 99;
+    let loaded = loadStats();
+    let ok = loaded.total === 99;
     STATS = orig;
     saveStats(STATS);
     return ok;
@@ -885,9 +889,9 @@ function runTests() {
   t('getFilteredQuestions works', function() { return getFilteredQuestions('常识判断').every(function(q) { return q.cat === '常识判断'; }); });
   t('getFilteredQuestions null returns all', function() { return getFilteredQuestions(null).length === 60; });
 
-  var passed = results.filter(function(r) { return r.pass; }).length;
-  var total = results.length;
-  var color = passed === total ? 'green' : 'orange';
+  let passed = results.filter(function(r) { return r.pass; }).length;
+  let total = results.length;
+  let color = passed === total ? 'green' : 'orange';
   console.log('%c📋 ExamPrep Tests: ' + passed + '/' + total + ' passed', 'font-size:16px;font-weight:bold;color:' + color);
   results.forEach(function(r) { console.log(r.pass ? '  ✅' : '  ❌', r.name, r.error ? '(' + r.error + ')' : ''); });
   if (passed < total) console.warn('⚠ ' + (total - passed) + ' tests failed');
