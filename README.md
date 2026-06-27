@@ -1,7 +1,7 @@
 # ExamPrep — 行测刷题 + 面试模拟
 
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
-[![Version](https://img.shields.io/badge/version-1.2.0-brightgreen)](https://github.com/kaXianc2-gom/exam-prep/releases)
+[![Version](https://img.shields.io/badge/version-1.3.0-brightgreen)](https://github.com/kaXianc2-gom/exam-prep/releases)
 [![Pages](https://img.shields.io/badge/demo-online-0078D4)](https://kaXianc2-gom.github.io/exam-prep/)
 
 > 130 道行测题 + 50 道面试题。浏览器本地运行，录音回放练面试。
