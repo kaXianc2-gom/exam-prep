@@ -123,7 +123,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","PingFang SC"
 
 @keyframes pageEnter{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
 @keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
-@keyframes toastIn{from{opacity:0;transform:translateX(-50%) translateY(16px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}
+@keyframes toastIn{from{opacity:0;transform:translateX(-50%) translateY(16px) scale(0.92)}to{opacity:1;transform:translateX(-50%) translateY(0) scale(1)}}
 @keyframes toastOut{from{opacity:1;transform:translateX(-50%) translateY(0)}to{opacity:0;transform:translateX(-50%) translateY(16px)}}
 
 @media (max-width:900px){
@@ -167,6 +167,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","PingFang SC"
   </div>
   <div class="header-right">
     <span class="badge" id="statusBadge">📚 就绪</span>
+    <button class="btn btn-outline btn-sm" id="btnImportQuiz" title="导入自定义题库（JSON格式）" style="font-size:11px">📥 导入题库</button>
+    <input type="file" id="quizFileInput" accept=".json" style="display:none">
     <button class="theme-toggle" id="themeToggle" title="切换主题" aria-label="切换暗色/亮色主题">🌙</button>
   </div>
 </header>
@@ -803,6 +805,41 @@ function showReference() {
 // ═══════════════════════════════════════════════
 //  INIT
 // ═══════════════════════════════════════════════
+// ── 题库导入 ──
+function handleQuizImport(file) {
+  var reader = new FileReader();
+  reader.onload = function(e) {
+    try {
+      var data = JSON.parse(e.target.result);
+      var examQ = data.exam || data.questions || data;
+      if (!Array.isArray(examQ)) { toast('JSON 格式错误：需要数组格式', 'warn'); return; }
+      var valid = examQ.filter(function(q) { return q.q && q.opts && q.opts.length >= 2 && q.ans !== undefined; });
+      if (valid.length === 0) { toast('未找到有效题目，请检查 JSON 格式', 'warn'); return; }
+      var beforeCount = EXAM_QUESTIONS.length;
+      EXAM_QUESTIONS = valid;
+      if (data.interview && Array.isArray(data.interview)) {
+        var iv = data.interview.filter(function(q) { return q.q && q.tips; });
+        if (iv.length) INTERVIEW_QUESTIONS = iv;
+      }
+      localStorage.setItem('gwy_examprep_custom', '1');
+      toast('已导入 ' + EXAM_QUESTIONS.length + ' 道行测题 · ' + INTERVIEW_QUESTIONS.length + ' 道面试题（原 ' + beforeCount + ' 题已替换）', 'success');
+    } catch(err) {
+      toast('JSON 解析失败：' + err.message, 'warn');
+    }
+  };
+  reader.readAsText(file);
+}
+document.getElementById('btnImportQuiz').addEventListener('click', function() { document.getElementById('quizFileInput').click(); });
+document.getElementById('quizFileInput').addEventListener('change', function() { if (this.files[0]) handleQuizImport(this.files[0]); });
+// 从 localStorage 恢复自定义题库
+if (localStorage.getItem('gwy_examprep_custom')) {
+  try {
+    var saved = JSON.parse(localStorage.getItem('gwy_examprep_questions'));
+    if (saved && saved.exam) EXAM_QUESTIONS = saved.exam;
+    if (saved && saved.interview) INTERVIEW_QUESTIONS = saved.interview;
+  } catch(e) {}
+}
+
 function init() {
   // Theme
   try {
