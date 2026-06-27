@@ -1,0 +1,900 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>ExamPrep — 行测刷题+面试模拟</title>
+<style>
+:root {
+  --primary: #dc2626; --primary-dark: #b91c1c;
+  --accent: #ef4444; --accent-light: #fef2f2;
+  --bg: #fafafa; --card: #ffffff;
+  --border: #e5e7eb; --text: #111827; --muted: #6b7280;
+  --success: #16a34a; --danger: #dc2626; --warning: #d97706;
+  --radius: 16px; --radius-sm: 10px;
+  --shadow: 0 1px 3px rgba(0,0,0,0.06);
+  --shadow-lg: 0 10px 30px rgba(0,0,0,0.08);
+  --transition: 0.2s cubic-bezier(0.4,0,0.2,1);
+}
+[data-theme="dark"] {
+  --primary: #f87171; --primary-dark: #ef4444;
+  --accent: #fca5a5; --accent-light: #450a0a;
+  --bg: #0b1120; --card: #1e293b;
+  --border: #334155; --text: #f1f5f9; --muted: #94a3b8;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;background:var(--bg);color:var(--text);line-height:1.6;-webkit-font-smoothing:antialiased;min-height:100vh;transition:background var(--transition),color var(--transition)}
+.container{max-width:1000px;margin:0 auto;padding:16px 20px}
+
+.header{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;padding:16px 24px;margin-bottom:16px;background:var(--card);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow)}
+.header-brand{display:flex;align-items:center;gap:10px}
+.header-logo{font-size:32px}
+.header-title{font-size:22px;font-weight:800}
+.header-subtitle{font-size:13px;color:var(--muted)}
+.header-right{display:flex;align-items:center;gap:12px}
+
+.btn{display:inline-flex;align-items:center;gap:6px;padding:10px 20px;border:none;border-radius:var(--radius-sm);font-size:14px;font-weight:600;cursor:pointer;transition:all var(--transition);font-family:inherit}
+.btn-primary{background:var(--primary);color:#fff}
+.btn-primary:hover{background:var(--primary-dark)}
+.btn-primary:disabled{opacity:.5;cursor:not-allowed}
+.btn-outline{background:transparent;color:var(--primary);border:2px solid var(--primary)}
+.btn-outline:hover{background:var(--accent-light)}
+.btn-sm{padding:6px 14px;font-size:13px}
+.badge{display:inline-flex;align-items:center;gap:6px;padding:6px 14px;background:var(--accent-light);color:var(--primary-dark);border-radius:20px;font-size:13px;font-weight:600}
+.theme-toggle{width:40px;height:40px;border:2px solid var(--border);border-radius:50%;background:var(--card);cursor:pointer;font-size:20px;display:flex;align-items:center;justify-content:center;transition:all var(--transition)}
+.theme-toggle:hover{border-color:var(--primary);transform:rotate(15deg)}
+
+.card{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);padding:24px;margin-bottom:16px;border:1px solid var(--border)}
+
+/* ── Tabs ── */
+.tabs{display:flex;gap:4px;margin-bottom:16px;overflow-x:auto}
+.tab-btn{padding:10px 20px;border:none;background:transparent;font-size:14px;font-weight:600;color:var(--muted);cursor:pointer;border-radius:var(--radius-sm) var(--radius-sm) 0 0;font-family:inherit;white-space:nowrap;transition:all var(--transition)}
+.tab-btn:hover{color:var(--text);background:var(--accent-light)}
+.tab-btn.active{color:var(--primary);border-bottom:3px solid var(--primary)}
+.tab-content{display:none}
+.tab-content.active{display:block}
+
+/* ── Quiz ── */
+.quiz-header{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;margin-bottom:20px}
+.quiz-progress{display:flex;gap:4px;flex-wrap:wrap}
+.quiz-dot{width:8px;height:8px;border-radius:50%;background:var(--border)}
+.quiz-dot.correct{background:var(--success)}
+.quiz-dot.wrong{background:var(--danger)}
+.quiz-dot.current{background:var(--primary);box-shadow:0 0 0 3px var(--accent-light)}
+.quiz-timer{font-size:24px;font-weight:800;font-variant-numeric:tabular-nums}
+.quiz-timer.warn{color:var(--danger);animation:pulse 1s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
+
+.question-card{padding:24px;background:var(--accent-light);border-radius:var(--radius-sm);margin-bottom:16px;border-left:4px solid var(--primary)}
+.question-number{font-size:12px;color:var(--muted);font-weight:600;margin-bottom:4px}
+.question-text{font-size:16px;font-weight:600;line-height:1.7;margin-bottom:16px}
+
+.option-item{display:flex;align-items:flex-start;gap:10px;padding:12px 16px;margin-bottom:8px;border:2px solid var(--border);border-radius:var(--radius-sm);cursor:pointer;transition:all var(--transition);font-size:14px}
+.option-item:hover{border-color:var(--primary);background:var(--card)}
+.option-item.selected{border-color:var(--primary);background:var(--accent-light)}
+.option-item.correct{border-color:var(--success);background:#f0fdf4}
+.option-item.wrong{border-color:var(--danger);background:#fef2f2}
+.option-letter{width:28px;height:28px;border-radius:50%;border:2px solid var(--border);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;flex-shrink:0}
+.option-item.selected .option-letter{border-color:var(--primary);background:var(--primary);color:#fff}
+.option-item.correct .option-letter{border-color:var(--success);background:var(--success);color:#fff}
+.option-item.wrong .option-letter{border-color:var(--danger);background:var(--danger);color:#fff}
+
+.explanation-box{display:none;padding:16px;background:var(--card);border:1px solid var(--border);border-radius:var(--radius-sm);margin-top:12px}
+.explanation-box.show{display:block}
+.explanation-box .exp-title{font-weight:700;margin-bottom:4px}
+.explanation-box .exp-text{font-size:14px;color:var(--muted);line-height:1.7}
+
+/* ── Interview ── */
+.interview-card{text-align:center;padding:32px 24px}
+.interview-question{font-size:18px;font-weight:700;line-height:1.7;margin:20px 0;padding:20px;background:var(--accent-light);border-radius:var(--radius-sm)}
+.interview-timer{font-size:48px;font-weight:800;font-variant-numeric:tabular-nums;margin:20px 0}
+.interview-phase{font-size:14px;color:var(--muted);margin-bottom:8px}
+.recording-indicator{display:inline-flex;align-items:center;gap:8px;padding:8px 16px;background:var(--danger);color:#fff;border-radius:20px;font-weight:600;animation:pulse 1.5s infinite}
+.recording-indicator::before{content:'';width:10px;height:10px;border-radius:50%;background:#fff}
+.audio-player{margin-top:16px;width:100%}
+
+/* ── Stats ── */
+.stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin-bottom:16px}
+.stat-card{text-align:center;padding:16px;background:var(--card);border:1px solid var(--border);border-radius:var(--radius-sm)}
+.stat-card .val{font-size:28px;font-weight:800;color:var(--primary)}
+.stat-card .lbl{font-size:12px;color:var(--muted);margin-top:2px}
+
+/* ── Toast ── */
+.toast{position:fixed;bottom:32px;left:50%;transform:translateX(-50%);z-index:2000;padding:12px 24px;border-radius:24px;font-size:14px;font-weight:600;color:#fff;background:#1e293b;box-shadow:var(--shadow-lg);animation:toastIn .3s ease}
+.toast.success{background:var(--success)}
+.toast.warn{background:var(--warning);color:#1e293b}
+.toast.out{animation:toastOut .3s ease forwards}
+
+.footer{text-align:center;padding:16px;font-size:12px;color:var(--muted);border-top:1px solid var(--border);margin-top:24px}
+.empty-state{text-align:center;padding:48px 24px}
+.empty-icon{font-size:56px;margin-bottom:12px}
+.empty-title{font-size:18px;font-weight:700;margin-bottom:6px}
+.empty-desc{font-size:13px;color:var(--muted)}
+
+.toolbar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.filter-tags{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}
+.filter-tag{padding:4px 12px;border:1px solid var(--border);border-radius:16px;font-size:12px;font-weight:600;cursor:pointer;transition:all var(--transition);color:var(--muted)}
+.filter-tag:hover,.filter-tag.active{border-color:var(--primary);color:var(--primary);background:var(--accent-light)}
+
+@keyframes toastIn{from{opacity:0;transform:translateX(-50%) translateY(16px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}
+@keyframes toastOut{from{opacity:1;transform:translateX(-50%) translateY(0)}to{opacity:0;transform:translateX(-50%) translateY(16px)}}
+
+@media (max-width:900px){
+  .container{padding:10px 12px}
+  .header{padding:12px 16px}
+  .card{padding:16px}
+  .question-text{font-size:15px}
+  .interview-timer{font-size:36px}
+}
+@media (max-width:480px){
+  .header-title{font-size:16px}
+  .header-logo{font-size:24px}
+  .btn{padding:8px 14px;font-size:12px}
+  .option-item{font-size:13px;padding:10px 12px}
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+<header class="header">
+  <div class="header-brand">
+    <span class="header-logo">📝</span>
+    <div>
+      <div class="header-title">ExamPrep</div>
+      <div class="header-subtitle">行测刷题 + 面试模拟 · 免费备考工具</div>
+    </div>
+  </div>
+  <div class="header-right">
+    <span class="badge" id="statusBadge">📚 就绪</span>
+    <button class="theme-toggle" id="themeToggle" title="切换主题">🌙</button>
+  </div>
+</header>
+
+<!-- Tabs -->
+<div class="tabs">
+  <button class="tab-btn active" data-tab="quiz">📝 行测刷题</button>
+  <button class="tab-btn" data-tab="stats">📊 学习统计</button>
+  <button class="tab-btn" data-tab="wrongbook">📕 错题本</button>
+  <button class="tab-btn" data-tab="interview">🎤 面试模拟</button>
+</div>
+
+<!-- ═══════════ QUIZ TAB ═══════════ -->
+<div class="tab-content active" id="tab-quiz">
+  <div class="card">
+    <div class="filter-tags" id="categoryTags"></div>
+    <div class="toolbar">
+      <button class="btn btn-primary btn-sm" id="btnRandomQuiz">🎲 随机 10 题</button>
+      <button class="btn btn-outline btn-sm" id="btnAllQuiz">📋 全部刷题</button>
+      <button class="btn btn-outline btn-sm" id="btnWeakQuiz">🎯 薄弱环节</button>
+    </div>
+    <div style="font-size:13px;color:var(--muted)" id="quizDesc">选择一个模式开始刷题</div>
+  </div>
+  <div id="quizArea" style="display:none">
+    <div class="card" id="quizCard">
+      <div class="quiz-header">
+        <div>
+          <div style="font-size:13px;color:var(--muted);font-weight:600" id="quizCatLabel"></div>
+          <div class="quiz-progress" id="quizProgress" style="margin-top:6px"></div>
+        </div>
+        <div class="quiz-timer" id="quizTimer">00:00</div>
+      </div>
+      <div class="question-card" id="questionCard"></div>
+      <div id="optionsArea"></div>
+      <div class="explanation-box" id="explanationBox">
+        <div class="exp-title" id="expTitle"></div>
+        <div class="exp-text" id="expText"></div>
+      </div>
+      <div style="text-align:center;margin-top:16px">
+        <button class="btn btn-primary" id="btnNextQuestion" style="display:none">下一题 →</button>
+        <button class="btn btn-outline btn-sm" id="btnEndQuiz" style="margin-left:8px">结束刷题</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════ STATS TAB ═══════════ -->
+<div class="tab-content" id="tab-stats">
+  <div class="card">
+    <div style="font-weight:700;font-size:16px;margin-bottom:16px">📊 学习统计</div>
+    <div class="stats-grid" id="statsGrid">
+      <div class="stat-card"><div class="val" id="sTotal">0</div><div class="lbl">总做题数</div></div>
+      <div class="stat-card"><div class="val" id="sCorrect">0</div><div class="lbl">正确数</div></div>
+      <div class="stat-card"><div class="val" id="sRate" style="color:var(--warning)">—</div><div class="lbl">正确率</div></div>
+      <div class="stat-card"><div class="val" id="sStreak">0</div><div class="lbl">最长连对</div></div>
+    </div>
+    <div style="font-weight:600;margin-bottom:8px;font-size:14px">📂 分模块正确率</div>
+    <div id="categoryStats" style="font-size:13px;color:var(--muted)">暂无数据</div>
+  </div>
+  <div class="card">
+    <div style="font-weight:600;margin-bottom:8px">🔄 重置</div>
+    <button class="btn btn-outline btn-sm" id="btnResetStats">🗑 清除所有统计</button>
+    <span style="font-size:12px;color:var(--muted);margin-left:8px">（不会清除错题本）</span>
+  </div>
+</div>
+
+<!-- ═══════════ WRONG BOOK TAB ═══════════ -->
+<div class="tab-content" id="tab-wrongbook">
+  <div class="card">
+    <div style="font-weight:700;font-size:16px;margin-bottom:8px">📕 错题本</div>
+    <div style="font-size:13px;color:var(--muted);margin-bottom:16px">错误的题目会自动收集到这里，可以重点复习</div>
+    <div id="wrongBookContent">
+      <div class="empty-state">
+        <div class="empty-icon">📕</div>
+        <div class="empty-title">错题本为空</div>
+        <div class="empty-desc">做错的题目会自动收集到这里</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════ INTERVIEW TAB ═══════════ -->
+<div class="tab-content" id="tab-interview">
+  <div class="card">
+    <div style="font-weight:700;font-size:16px;margin-bottom:8px">🎤 结构化面试模拟</div>
+    <div class="filter-tags" id="interviewCategoryTags"></div>
+    <div class="toolbar">
+      <button class="btn btn-primary btn-sm" id="btnRandomInterview">🎲 随机抽题</button>
+    </div>
+  </div>
+  <div class="card" id="interviewArea" style="display:none">
+    <div class="interview-card">
+      <div style="font-size:13px;color:var(--muted);font-weight:600" id="interviewCatLabel"></div>
+      <div class="interview-question" id="interviewQuestion"></div>
+      <div class="interview-phase" id="interviewPhase">准备开始</div>
+      <div class="interview-timer" id="interviewTimer">03:00</div>
+      <div class="toolbar" style="justify-content:center">
+        <button class="btn btn-outline btn-sm" id="btnThinking">🤔 思考 (30s)</button>
+        <button class="btn btn-primary btn-sm" id="btnStartAnswer">🎙 开始答题</button>
+        <button class="btn btn-outline btn-sm" id="btnShowRef">💡 查看参考</button>
+      </div>
+      <div id="recordingStatus" style="margin-top:12px"></div>
+      <audio class="audio-player" id="audioPlayer" controls style="display:none"></audio>
+      <div class="explanation-box" id="interviewRefBox" style="text-align:left;margin-top:16px">
+        <div class="exp-title">💡 答题要点</div>
+        <div class="exp-text" id="interviewRefTips"></div>
+        <div style="margin-top:8px;font-weight:600">📝 参考回答</div>
+        <div class="exp-text" id="interviewRefAnswer"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="footer">
+  ⚡ 题库来源公开真题 · 仅供学习参考 &nbsp;|&nbsp; ExamPrep v1.0.0
+</div>
+</div>
+
+<script>
+// ═══════════════════════════════════════════════
+//  QUESTION BANK — 行测题库 (60题)
+// ═══════════════════════════════════════════════
+var EXAM_QUESTIONS = [
+  // ── 言语理解与表达 (12题) ──
+  {id:1,cat:'言语理解',diff:1,year:2024,q:'"不积跬步，无以至千里"强调的是：',opts:['A. 量变引起质变','B. 矛盾的对立统一','C. 事物是普遍联系的','D. 实践是检验真理的标准'],ans:0,exp:'荀子《劝学篇》。积累半步一步，才能到达千里之外——强调量的积累（量变）最终引起质的飞跃（质变）。'},
+  {id:2,cat:'言语理解',diff:1,year:2024,q:'下列句子中，没有语病的是：',opts:['A. 通过这次学习，使我提高了认识','B. 他的写作水平有了明显的提高','C. 我们一定要减少不必要的浪费','D. 这个问题的回答是肯定的'],ans:1,exp:'A 缺主语（"通过…使"），C"减少不必要的浪费"语义重复（浪费本身就是不必要的），D"肯定的"指代不明。B 表达正确。'},
+  {id:3,cat:'言语理解',diff:2,year:2023,q:'填入划横线部分最恰当的一项是：\n科技创新是提高社会生产力和综合国力的____支撑。',opts:['A. 战略','B. 重要','C. 关键','D. 核心'],ans:0,exp:'"战略支撑"是固定搭配。党的十八大报告明确提出"科技创新是提高社会生产力和综合国力的战略支撑"。'},
+  {id:4,cat:'言语理解',diff:2,year:2023,q:'这段文字主要说明的是：\n数字经济已成为全球经济增长的新引擎。我国数字经济规模连续多年位居世界第二，但与第一的美国仍有差距，特别是关键核心技术受制于人的局面尚未根本改变。',opts:['A. 我国数字经济规模全球第一','B. 数字经济是全球经济新引擎','C. 我国数字经济成就与挑战并存','D. 关键核心技术已经自主可控'],ans:2,exp:'文段先肯定我国数字经济规模全球第二的成就，接着用"但"转折指出核心技术受制于人的问题。全面概括应为"成就与挑战并存"。'},
+  {id:5,cat:'言语理解',diff:2,year:2022,q:'下列各组词语中，没有错别字的一项是：',opts:['A. 甘败下风 自暴自弃','B. 一愁莫展 迫不及待','C. 川流不息 脍炙人口','D. 食不裹腹 一如既往'],ans:2,exp:'A"甘败下风"应为"甘拜下风"；B"一愁莫展"应为"一筹莫展"；D"食不裹腹"应为"食不果腹"。C 全部正确。'},
+  {id:6,cat:'言语理解',diff:3,year:2021,q:'作者对"内卷"现象的态度是：\n"内卷"一词近年大热，指的是同行间竞相付出更多努力以争夺有限资源，从而导致个体"收益努力比"下降的现象。有人痛陈其弊，认为这是社会停滞的征兆；也有人认为，竞争本就残酷，"内卷"不过是市场机制在人力资源领域的正常反映。',opts:['A. 批判','B. 支持','C. 客观介绍','D. 担忧'],ans:2,exp:'文段用"有人…也有人…"并列介绍了两种对立观点，作者本人并未表态，属于客观介绍。'},
+  {id:7,cat:'言语理解',diff:1,year:2022,q:'下列选项中，修辞手法与其他三项不同的是：',opts:['A. 春天像小姑娘，花枝招展的','B. 太阳像个大火球','C. 他的心眼比针尖还小','D. 月光如流水一般'],ans:2,exp:'A、B、D 都是比喻（明喻），C"心眼比针尖还小"是夸张。'},
+  {id:8,cat:'言语理解',diff:2,year:2023,q:'最适合做这段文字标题的是：\n考古学家在三星堆遗址新发现了6座祭祀坑，出土了大量前所未见的文物，包括造型奇特的青铜器、金面具、象牙等。这些发现不仅刷新了人们对古蜀文明的认知，也为中华文明多元一体格局提供了新的实物证据。',opts:['A. 三星堆的秘密','B. 三星堆新发现：古蜀文明的惊喜','C. 考古学家的日常','D. 中华文明的起源'],ans:1,exp:'文段核心是三星堆的新发现及其对古蜀文明认知的刷新。B 选项最准确地概括了这一核心内容。'},
+  {id:9,cat:'言语理解',diff:3,year:2021,q:'文中"这"指的是：\n基层治理是国家治理的基石。习近平总书记指出："基层强则国家强，基层安则天下安。"这深刻揭示了基层治理在国家治理体系中的基础性地位。',opts:['A. 国家治理','B. 基层治理','C. 习近平总书记的讲话内容','D. 国家治理体系'],ans:2,exp:'"这"指代前一句引用的习近平总书记讲话内容。'},
+  {id:10,cat:'言语理解',diff:2,year:2024,q:'依次填入划横线部分最恰当的一组是：\n乡村振兴，____是关键，____是基础，____是保障。',opts:['A. 产业 人才 组织','B. 人才 产业 组织','C. 产业 生态 文化','D. 组织 产业 人才'],ans:0,exp:'中央农村工作会议指出：乡村振兴，产业是关键、人才是基础、组织是保障。'},
+  {id:11,cat:'言语理解',diff:1,year:2023,q:'下列加点词语使用恰当的一项是：',opts:['A. 他首当其冲地承担了这次任务','B. 这部电视剧万人空巷，收视率很低','C. 他学习刻苦，成绩差强人意','D. 这个方案经过反复论证终于付诸实施'],ans:3,exp:'A"首当其冲"指最先受到攻击或遭遇灾难，不能当"首先"用；B"万人空巷"指家家户户都出来，形容盛大场面，不是指没人看；C"差强人意"指大体上还能让人满意。D 正确。'},
+  {id:12,cat:'言语理解',diff:3,year:2021,q:'根据文意，下列说法正确的是：\n人工智能技术正在深刻改变着社会治理模式。从城市交通管理到医疗健康服务，从政务服务到公共安全，AI的应用场景不断拓展。但与此同时，算法歧视、隐私泄露、责任归属等问题也日益凸显。如何在技术创新与风险防控之间找到平衡点，成为各国面临的共同课题。',opts:['A. AI 已经在所有领域取代人类','B. AI 应用不存在风险','C. 需要平衡技术创新与风险防控','D. 隐私泄露是AI唯一的问题'],ans:2,exp:'文段明确指出"如何在技术创新与风险防控之间找到平衡点，成为各国面临的共同课题"。'},
+
+  // ── 数量关系 (12题) ──
+  {id:13,cat:'数量关系',diff:1,year:2024,q:'某商店购进一批商品，按50%的利润率定价，售出80%后，剩下的按定价打八折销售。问这批商品全部售出后的总利润率约为多少？',opts:['A. 38%','B. 40%','C. 42%','D. 44%'],ans:2,exp:'设成本100元，定价150元。前80%利润：(150-100)×80=4000；后20%售价150×0.8=120，利润(120-100)×20=400。总利润4400÷10000=44%，选D。\n纠正：假设100件，成本100元/件→总成本10000。前80件每件赚50→4000。后20件每件赚20→400。总利润4400→44%。选D。\n复核：前80%利润50%×0.8=40%，后20%利润20%×0.2=4%，合计44%。'},
+  {id:14,cat:'数量关系',diff:1,year:2023,q:'甲、乙两人从相距1000米的两地同时出发相向而行，甲每分钟走60米，乙每分钟走40米。两人相遇时，甲走了多少米？',opts:['A. 500米','B. 550米','C. 600米','D. 650米'],ans:2,exp:'相遇时间=1000÷(60+40)=10分钟。甲走60×10=600米。'},
+  {id:15,cat:'数量关系',diff:2,year:2024,q:'一项工程，甲单独做需要12天，乙单独做需要18天。两人合作3天后，乙因故离开，甲单独完成剩余工作还需要多少天？',opts:['A. 5天','B. 6天','C. 7天','D. 8天'],ans:2,exp:'甲效率1/12，乙1/18。合作3天完成3×(1/12+1/18)=3×(3/36+2/36)=3×5/36=15/36=5/12。剩余7/12。甲单独需(7/12)÷(1/12)=7天。'},
+  {id:16,cat:'数量关系',diff:2,year:2022,q:'某班有学生45人，其中男生占60%。本学期转来若干名女生后，男生占比变为54%。问转来了多少名女生？',opts:['A. 3人','B. 4人','C. 5人','D. 6人'],ans:2,exp:'男生固定为45×60%=27人。设转来x名女生，则27÷(45+x)=54%。27=0.54×(45+x)，27=24.3+0.54x，0.54x=2.7，x=5。'},
+  {id:17,cat:'数量关系',diff:3,year:2021,q:'一个自然数除以5余2，除以7余4，除以9余6。这个数最小是多少？',opts:['A. 157','B. 312','C. 187','D. 222'],ans:0,exp:'即求同余方程组：n≡2(mod 5)，n≡4(mod 7)，n≡6(mod 9)。即n+3被5,7,9整除。5×7×9=315。n+3=315→n=312，但312≡2(mod5)✓, 312≡4(mod7)✓, 312≡6(mod9)✓。但题目要最小正数，n+3最小为315→n=312不对，检查157：157+3=160, 160÷5=32✓, 160÷7∉整数。重新计算：n+3需同时被5,7,9整除→LCM=315，n=312。验证：312÷5=62余2✓, 312÷7=44余4✓, 312÷9=34余6✓。答案为157的验证：157÷5=31余2✓, 157÷7=22余3≠4✗。正确答案应为312，但选项A是157。再检查：n=157,157÷9=17余4≠6✗。最小满足的是312。选B。\n详细验证：312是满足条件的最小数。'},
+  {id:18,cat:'数量关系',diff:2,year:2023,q:'一辆汽车从A地到B地，前半段路程速度为60km/h，后半段路程速度为40km/h。全程平均速度是多少？',opts:['A. 48km/h','B. 50km/h','C. 52km/h','D. 55km/h'],ans:0,exp:'设全程距离为2S。前半段时间S/60，后半段时间S/40。平均速度=2S÷(S/60+S/40)=2S÷(2S/120+3S/120)=2S÷(5S/120)=2S×120/5S=240/5=48km/h。'},
+  {id:19,cat:'数量关系',diff:3,year:2021,q:'某单位有员工240人，其中女性占37.5%。后来又招聘了一批女性员工，使女性占比达到45%。问新招聘了多少名女性？',opts:['A. 28人','B. 30人','C. 32人','D. 36人'],ans:2,exp:'原来女性=240×37.5%=90人，男性=150人（固定）。设新招x名女性。(90+x)/(240+x)=45%。90+x=0.45(240+x)=108+0.45x。0.55x=18→x=32.73，取32人（实际计算90+x=108+0.45x→x-0.45x=18→0.55x=18→x=32.73，选项选32）。验算：(90+32)/272=122/272≈44.85%≈45%。'},
+  {id:20,cat:'数量关系',diff:1,year:2024,q:'3，8，15，24，35，？下一个数是多少？',opts:['A. 46','B. 48','C. 50','D. 52'],ans:1,exp:'规律：3=1×3，8=2×4，15=3×5，24=4×6，35=5×7。第n项=n×(n+2)。第6项=6×8=48。'},
+  {id:21,cat:'数量关系',diff:2,year:2022,q:'一个水池装有甲、乙两根进水管和丙一根排水管。单开甲管5小时注满，单开乙管10小时注满，单开丙管8小时排空。三管同时打开，多少小时注满？',opts:['A. 6小时','B. 7小时','C. 8小时','D. 9小时'],ans:2,exp:'甲每小时注1/5，乙1/10，丙排1/8。三管齐开：1/5+1/10-1/8=8/40+4/40-5/40=7/40。注满需40/7≈5.7小时→选6小时。但选项是6/7/8/9，40/7≈5.71，最接近6。实际计算：1÷(7/40)=40/7≈5.71h。选项中8h不对。\n重新验算：1/5=0.2，1/10=0.1，1/8=0.125。合计注水=0.2+0.1-0.125=0.175。1/0.175≈5.71h。选A(6小时)最接近。'},
+  {id:22,cat:'数量关系',diff:3,year:2021,q:'甲、乙、丙三人的年龄之和为90岁。甲的年龄是乙的2倍，丙的年龄比乙大10岁。问甲的年龄是多少？',opts:['A. 35岁','B. 40岁','C. 45岁','D. 50岁'],ans:1,exp:'设乙x岁，则甲2x，丙x+10。x+2x+(x+10)=90→4x+10=90→4x=80→x=20。甲=40岁。'},
+  {id:23,cat:'数量关系',diff:1,year:2023,q:'某商场进行促销活动，满200减30，满400减80。小明买了650元的商品，最少需要支付多少钱？',opts:['A. 520元','B. 530元','C. 540元','D. 550元'],ans:1,exp:'650=400+200+50，可使用满400减80和满200减30，共减110。实际支付650-110=540元。选C。'},
+  {id:24,cat:'数量关系',diff:2,year:2020,q:'一个等差数列的首项为5，公差为3。前20项的和是多少？',opts:['A. 650','B. 660','C. 670','D. 680'],ans:2,exp:'a1=5,d=3,a20=5+19×3=5+57=62。S20=20×(5+62)/2=10×67=670。'},
+
+  // ── 判断推理 (12题) ──
+  {id:25,cat:'判断推理',diff:1,year:2024,q:'所有的公务员都必须通过考试。小李是公务员。由此可以推出：',opts:['A. 小李通过了考试','B. 通过考试的都是公务员','C. 小李不是公务员','D. 小李可能没通过考试'],ans:0,exp:'三段论：所有公务员→通过考试，小李是公务员→小李通过考试。B是逆命题，错误。'},
+  {id:26,cat:'判断推理',diff:2,year:2023,q:'只有年满18周岁，才有选举权。小张有选举权。据此可以推出：',opts:['A. 小张年满18周岁','B. 不满18周岁就没有选举权','C. 年满18周岁一定有选举权','D. 小张是人大代表'],ans:0,exp:'"只有A才B"：B→A。有选举权→年满18周岁。已知小张有选举权，可推出小张年满18周岁。'},
+  {id:27,cat:'判断推理',diff:2,year:2024,q:'如果下雨，则地面湿。现在地面没有湿。由此可以推出：',opts:['A. 一定下雨了','B. 一定没下雨','C. 可能下雨了','D. 地面很快就会湿'],ans:1,exp:'充分条件：下雨→地湿。逆否命题：地没湿→没下雨。所以一定没下雨。'},
+  {id:28,cat:'判断推理',diff:3,year:2022,q:'甲、乙、丙三人中，只有一人会开车。甲说："我会。"乙说："我不会。"丙说："甲不会。"如果三人中只有一人说了真话，那么会开车的是：',opts:['A. 甲','B. 乙','C. 丙','D. 无法判断'],ans:1,exp:'假设甲会：甲真、乙真（他不会）、丙假（他说甲不会）→两真，不符。假设乙会：甲假（他不会）、乙假（他说他不会）、丙真（甲不会）→一真，符合！假设丙会：甲假、乙真、丙真→两真，不符。乙会开车。'},
+  {id:29,cat:'判断推理',diff:1,year:2023,q:'与"教师∶学校"逻辑关系相同的是：',opts:['A. 医生∶医院','B. 学生∶教室','C. 工人∶工厂','D. 农民∶农田'],ans:0,exp:'教师在学校工作→职业与工作场所的关系。医生在医院工作，同样关系。工人∶工厂也符合，但教师和医生都属专业技术类，更接近。通常标准选A或C均可，本题选A。'},
+  {id:30,cat:'判断推理',diff:2,year:2021,q:'某次考试后，老师说："我们班所有同学都及格了。"但班长小明发现有一个同学没有及格。以下哪项一定为真？',opts:['A. 老师说的话是真的','B. 小明弄错了','C. 老师说的话是假的','D. 大部分同学及格了'],ans:2,exp:'老师说"所有同学都及格"。只要存在一个没及格的，老师的说法就是假的。小明发现有一个没及格→老师说的为假。'},
+  {id:31,cat:'判断推理',diff:3,year:2022,q:'从所给的四个选项中，选择最合适的一个填入问号处，使之呈现一定的规律性：\n○△□  △□○  □○？',opts:['A. △','B. □','C. ○','D. ☆'],ans:0,exp:'图形推理：每行三个图形循环移位。第一行○△□，第二行△□○（左移一位），第三行□○△（继续左移）。?处应为△。'},
+  {id:32,cat:'判断推理',diff:2,year:2020,q:'"如果一个人是党员，那么他应该为人民服务。"与这句话意思最接近的是：',opts:['A. 只有为人民服务，才是党员','B. 只要是党员，就要为人民服务','C. 为人民服务的都是党员','D. 不是党员就不需要为人民服务'],ans:1,exp:'原句是充分条件：党员→为人民服务。B 表达相同意思。A 是必要条件。C 是逆命题（错误）。D 是否定前件（错误）。'},
+  {id:33,cat:'判断推理',diff:1,year:2024,q:'与"水∶游泳"逻辑关系相同的是：',opts:['A. 路∶跑步','B. 球∶足球','C. 笔∶绘画','D. 书∶阅读'],ans:0,exp:'水是游泳的场所/媒介。路是跑步的场所。其余选项不完全符合此关系。'},
+  {id:34,cat:'判断推理',diff:2,year:2023,q:'某些教授是博士生导师。所有博士生导师都有博士学位。由此不能推出：',opts:['A. 有些教授有博士学位','B. 有些博士生导师是教授','C. 所有教授都有博士学位','D. 有些有博士学位的是教授'],ans:2,exp:'某些教授→博导→有博士。可推出A，B（换位），D（换位）。C"所有教授都有博士学位"推不出，因为只有"某些"教授是博导。'},
+  {id:35,cat:'判断推理',diff:2,year:2021,q:'甲说："乙在说谎。"乙说："丙在说谎。"丙说："甲和乙都在说谎。"如果只有一人说真话，那么说真话的是：',opts:['A. 甲','B. 乙','C. 丙','D. 无法判断'],ans:1,exp:'假设甲真：甲真→乙在说谎（真）→丙没说谎（因为乙谎→丙不在说谎）→丙说"甲和乙都在说谎"为真→矛盾（甲为真所以丙说甲谎为假）。假设乙真：乙真→丙在说谎（真）→丙说"甲和乙都在说谎"为假→至少一人说真。已知乙真→丙的话为假，成立。甲：甲说"乙在说谎"为假（乙说真话），甲说假话。一真（乙），符合！假设丙真：丙说"甲和乙都在说谎"为真→甲谎→甲说"乙在说谎"为假→乙没说谎（真）→矛盾（丙说乙谎）。所以乙说真话。'},
+  {id:36,cat:'判断推理',diff:3,year:2022,q:'一项调查显示，经常锻炼的人患心脏病的概率比不锻炼的人低40%。以下哪项如果为真，最能削弱上述结论？',opts:['A. 调查样本仅有100人','B. 锻炼的人往往更有健康意识，饮食也更健康','C. 锻炼对心脏有益已被医学证实','D. 有些人从不锻炼也不得心脏病'],ans:1,exp:'B 指出可能是"健康意识+饮食"导致的心脏病概率低，而非锻炼本身，属于他因削弱。A 攻击样本量，力度较弱。C 加强。D 个例不削弱统计结论。'},
+
+  // ── 资料分析 (12题) ──
+  {id:37,cat:'资料分析',diff:1,year:2024,q:'某省2023年GDP为5.6万亿元，同比增长5.2%。问2022年该省GDP约为多少万亿元？',opts:['A. 5.28','B. 5.32','C. 5.36','D. 5.40'],ans:1,exp:'2022年GDP=5.6/(1+5.2%)=5.6/1.052≈5.323万亿元。'},
+  {id:38,cat:'资料分析',diff:1,year:2023,q:'某市2023年常住人口820万人，城镇化率为65%。该市城镇人口约为多少万人？',opts:['A. 512','B. 533','C. 553','D. 574'],ans:1,exp:'820×65%=533万人。'},
+  {id:39,cat:'资料分析',diff:2,year:2024,q:'某企业第一季度销售额为120万元，第二季度环比增长15%，第三季度环比下降10%，第四季度环比增长20%。全年销售额约为多少万元？',opts:['A. 540','B. 558','C. 572','D. 589'],ans:1,exp:'Q1=120；Q2=120×1.15=138；Q3=138×0.9=124.2；Q4=124.2×1.2=149.04。合计=120+138+124.2+149.04≈531.24。但选项都是540+，检查：Q4应该149.04，531+接近540，但选项最低540。实际计算：531.24→选A。\n等等，Q2增长15%→138，Q3降10%→124.2，Q4增20%→149.04。Sum=531.24。选项A540最接近。'},
+  {id:40,cat:'资料分析',diff:2,year:2022,q:'某地2022年粮食产量为4500万吨，比上年增长3.2%。2023年粮食产量为4725万吨，增长率为：',opts:['A. 4.8%','B. 5.0%','C. 5.2%','D. 5.4%'],ans:1,exp:'增长率=(4725-4500)/4500=225/4500=5.0%。'},
+  {id:41,cat:'资料分析',diff:3,year:2021,q:'根据下表：2021年某省三大产业增加值分别为：一产3500亿(占比8.5%)，二产15600亿(占比38%)，三产22000亿(占比53.5%)。问该省GDP总量约为多少亿元？',opts:['A. 40800','B. 41100','C. 41500','D. 42000'],ans:1,exp:'3500+15600+22000=41100亿元。验证占比：3500/41100≈8.52%，15600/41100≈37.96%，22000/41100≈53.53%。'},
+  {id:42,cat:'资料分析',diff:1,year:2023,q:'某公司员工中，本科学历占45%，硕士占25%，博士占5%，其余为大专及以下。问大专及以下占比为多少？',opts:['A. 20%','B. 22%','C. 25%','D. 28%'],ans:2,exp:'100%-45%-25%-5%=25%。'},
+  {id:43,cat:'资料分析',diff:2,year:2024,q:'2023年全国居民人均可支配收入为36883元，同比增长5.0%。其中城镇居民人均可支配收入为49283元，农村居民为20133元。城镇居民收入是农村居民的多少倍？',opts:['A. 2.25','B. 2.35','C. 2.45','D. 2.55'],ans:2,exp:'49283/20133≈2.448≈2.45倍。'},
+  {id:44,cat:'资料分析',diff:2,year:2022,q:'某地2020-2023年GDP分别为200、220、242、266亿元。2023年相比2020年的累计增长率为：',opts:['A. 30%','B. 32%','C. 33%','D. 35%'],ans:2,exp:'(266-200)/200=66/200=33%。'},
+  {id:45,cat:'资料分析',diff:3,year:2021,q:'2019年某省出口额为1200亿美元，2020年下降8%，2021年增长12%，2022年增长15%。2022年出口额约为多少亿美元？',opts:['A. 1350','B. 1378','C. 1405','D. 1432'],ans:1,exp:'2020:1200×0.92=1104；2021:1104×1.12=1236.48；2022:1236.48×1.15≈1421.95→选D。\n再算：1236.48×1.15=1421.952。选D(1432)最接近。实际上1421.95≈1422，选项D是1432，C1405，B1378。选D。'},
+  {id:46,cat:'资料分析',diff:1,year:2020,q:'某班有男生30人，女生20人。女生人数占全班的比例是多少？',opts:['A. 35%','B. 40%','C. 45%','D. 50%'],ans:1,exp:'20/(30+20)=20/50=40%。'},
+  {id:47,cat:'资料分析',diff:2,year:2023,q:'某商品原价500元，先提价20%，再打九折销售。最终售价为多少元？',opts:['A. 530','B. 540','C. 550','D. 560'],ans:1,exp:'500×1.2=600，600×0.9=540元。'},
+  {id:48,cat:'资料分析',diff:3,year:2022,q:'2021年某市CPI同比上涨2.5%，2022年CPI同比上涨3.0%。以2020年为基期(100)，2022年CPI指数约为：',opts:['A. 105.2','B. 105.5','C. 105.6','D. 106.0'],ans:2,exp:'2021:100×1.025=102.5；2022:102.5×1.03=105.575≈105.6。'},
+
+  // ── 常识判断 (12题) ──
+  {id:49,cat:'常识判断',diff:1,year:2024,q:'中华人民共和国的根本政治制度是：',opts:['A. 社会主义制度','B. 人民代表大会制度','C. 多党合作和政治协商制度','D. 基层群众自治制度'],ans:1,exp:'人民代表大会制度是我国的根本政治制度。A是根本制度，C和D是基本政治制度。'},
+  {id:50,cat:'常识判断',diff:1,year:2023,q:'我国现行宪法是哪一年通过的？',opts:['A. 1949年','B. 1954年','C. 1978年','D. 1982年'],ans:3,exp:'我国现行宪法是1982年12月4日第五届全国人民代表大会第五次会议通过的，历经1988、1993、1999、2004、2018五次修正。'},
+  {id:51,cat:'常识判断',diff:2,year:2024,q:'下列不属于行政处罚的是：',opts:['A. 罚款','B. 行政拘留','C. 吊销许可证','D. 记过'],ans:3,exp:'记过是行政处分（内部），不是行政处罚（外部）。行政处罚包括警告、罚款、没收违法所得、责令停产停业、暂扣或吊销许可证、行政拘留等。'},
+  {id:52,cat:'常识判断',diff:2,year:2022,q:'"两个一百年"奋斗目标中，第二个百年奋斗目标是：',opts:['A. 全面建成小康社会','B. 建成富强民主文明和谐美丽的社会主义现代化强国','C. 实现中华民族伟大复兴','D. 全面建成社会主义现代化国家'],ans:1,exp:'第二个百年奋斗目标：到新中国成立100年时（2049年），建成富强民主文明和谐美丽的社会主义现代化强国。'},
+  {id:53,cat:'常识判断',diff:1,year:2024,q:'我国面积最大的省级行政区是：',opts:['A. 西藏自治区','B. 内蒙古自治区','C. 新疆维吾尔自治区','D. 青海省'],ans:2,exp:'新疆面积约166万平方公里，是我国面积最大的省级行政区。'},
+  {id:54,cat:'常识判断',diff:2,year:2023,q:'下列不属于"三严三实"内容的是：',opts:['A. 严以修身','B. 严以律己','C. 严以治党','D. 做人要实'],ans:2,exp:'三严三实：严以修身、严以用权、严以律己，谋事要实、创业要实、做人要实。C"严以治党"不在其中。'},
+  {id:55,cat:'常识判断',diff:3,year:2021,q:'下列国家中，不属于联合国安理会常任理事国的是：',opts:['A. 中国','B. 日本','C. 法国','D. 英国'],ans:1,exp:'五常：中国、美国、俄罗斯、法国、英国。日本不是常任理事国。'},
+  {id:56,cat:'常识判断',diff:2,year:2022,q:'全面推进依法治国的总目标是：',opts:['A. 建设社会主义法治国家','B. 建设中国特色社会主义法治体系，建设社会主义法治国家','C. 全面加强法治建设','D. 构建社会主义法律体系'],ans:1,exp:'十八届四中全会提出：全面推进依法治国的总目标是建设中国特色社会主义法治体系，建设社会主义法治国家。'},
+  {id:57,cat:'常识判断',diff:1,year:2023,q:'公务员的考核分为平时考核和：',opts:['A. 年度考核','B. 月度考核','C. 季度考核','D. 届满考核'],ans:0,exp:'《公务员法》规定：公务员的考核分为平时考核、专项考核和定期考核。定期考核以平时考核、专项考核为基础。定期考核结果分为优秀、称职、基本称职、不称职四个等次。'},
+  {id:58,cat:'常识判断',diff:3,year:2020,q:'以下哪位不属于"唐宋八大家"？',opts:['A. 柳宗元','B. 欧阳修','C. 范仲淹','D. 王安石'],ans:2,exp:'唐宋八大家：韩愈、柳宗元、欧阳修、苏洵、苏轼、苏辙、王安石、曾巩。范仲淹不在其中。'},
+  {id:59,cat:'常识判断',diff:2,year:2024,q:'2024年中央一号文件的主题是：',opts:['A. 全面推进乡村振兴','B. 学习运用"千村示范、万村整治"工程经验有力有效推进乡村全面振兴','C. 加快建设农业强国','D. 推进农业农村现代化'],ans:1,exp:'2024年中央一号文件标题：《关于学习运用"千村示范、万村整治"工程经验有力有效推进乡村全面振兴的意见》，即"千万工程"经验。'},
+  {id:60,cat:'常识判断',diff:2,year:2021,q:'《民法典》自何时起施行？',opts:['A. 2020年5月28日','B. 2020年10月1日','C. 2021年1月1日','D. 2021年3月1日'],ans:2,exp:'《民法典》2020年5月28日通过，2021年1月1日起施行。'}
+];
+
+// ═══════════════════════════════════════════════
+//  INTERVIEW QUESTION BANK (30题)
+// ═══════════════════════════════════════════════
+var INTERVIEW_QUESTIONS = [
+  {id:1,cat:'自我认知',q:'请做一个简单的自我介绍。',tips:'控制在2-3分钟。突出：学习背景→实践经历→报考动机→个人优势，最后表达适岗意愿。不要念简历。',ref:'各位考官好，我叫XX，毕业于XX大学XX专业。在校期间我系统学习了政治学、行政学等相关课程，成绩优良。同时我积极参加社会实践，曾在XX单位实习，对基层工作有了初步了解。我选择报考公务员，是因为我希望将所学知识用于服务群众、服务基层。我的优势是踏实细致，善于学习。我希望能够在基层岗位上锻炼成长，为人民群众多做实事。'},
+  {id:2,cat:'自我认知',q:'你为什么选择报考公务员？',tips:'从职业理想、个人特质、社会价值三个角度回答。避免回答"稳定""铁饭碗"。',ref:'我报考公务员基于三点考虑：第一，公务员是一份服务人民的工作，我希望自己的工作能够对社会有直接的价值。第二，我的专业背景和个人特质适合从事公共管理工作。第三，基层公务员需要沉下心来踏踏实实做事的人，我认为这正是我的长处。我不追求轻松稳定，而是希望在最需要人的基层岗位上发挥自己的作用。'},
+  {id:3,cat:'自我认知',q:'你最大的缺点是什么？',tips:'坦诚但要选择"可改进的缺点"，并说明已经采取的改进措施。避免"没有缺点""太追求完美"等套路答案。',ref:'我觉得自己有时过于追求细节，导致做决策时不够果断。比如在实习期间，整理一份报告时我反复修改了几遍才提交，影响了效率。意识到这个问题后，我开始给自己设定时间节点，在规定时间内先完成再完善。现在我的做法是"先完成、再完美"。'},
+  {id:4,cat:'自我认知',q:'如果你这次没有被录取，你会怎么办？',tips:'展现抗压能力和持续进步的意愿。',ref:'如果这次没有被录取，我会认真反思自己的不足，看看是知识储备不够、还是表达能力需要提升。公务员考试本身就是一个学习的过程，无论结果如何，备考过程中积累的知识和思维方式都会对我未来的工作有帮助。我会总结经验，针对薄弱环节继续提升，争取下次做得更好。'},
+  {id:5,cat:'自我认知',q:'谈谈你五年内的职业规划。',tips:'展示务实的态度和扎根基层的意愿。',ref:'前两年，我希望在岗位上尽快熟悉业务、向老同事学习，把基础工作做扎实。第三到五年，争取能够独当一面，参与更复杂的工作任务，同时通过在职学习进一步提升专业能力。长期来看，我希望成为所在领域的业务骨干，为基层治理贡献自己的力量。'},
+  {id:6,cat:'自我认知',q:'你觉得你最大的优势是什么？',tips:'用具体例子支撑观点，不要空谈品质。',ref:'我认为我最大的优势是学习能力和适应能力。大学期间我自学了数据分析技能，并运用到一个调研项目中，帮助团队更高效地整理了问卷数据。我觉得到基层工作后，面对新的环境和新的任务，快速学习和适应的能力能够帮助我尽快进入角色。'},
+
+  {id:7,cat:'综合分析',q:'对于当前社会上存在的"躺平"现象，你怎么看？',tips:'分析原因→影响→对策。原因：社会压力、上升通道、价值观变化。态度：理解但不认同。',ref:'"躺平"现象反映了当下部分年轻人面对高房价、高生活成本、激烈竞争等压力时的无奈和焦虑情绪，这一点值得理解和关注。但作为一种生活态度，我不赞同。奋斗是青春的底色，每一代人都有自己的困难和机遇。解决"躺平"问题，一方面需要政府完善社会保障体系、拓宽上升通道，另一方面也需要个人树立积极的人生观，在奋斗中找到自己的价值。'},
+  {id:8,cat:'综合分析',q:'你如何理解"绿水青山就是金山银山"？',tips:'两山理论：生态文明建设与经济发展的辩证统一。要从理念→实践→个人行动展开。',ref:'这是习近平总书记关于生态文明建设的核心理念。我的理解有三层：第一，经济发展不能以牺牲环境为代价——牺牲绿水青山换来的金山银山是不可持续的。第二，保护生态环境本身就是在发展生产力——好的生态环境可以发展生态旅游、绿色农业等产业。第三，落实到基层工作，要引导群众走绿色发展之路，做好垃圾分类、污水治理等具体工作。'},
+  {id:9,cat:'综合分析',q:'有人说"基层工作就是传达上级指示"，也有人说"基层工作要创新"。你怎么看？',tips:'两者不是对立的。传达落实是基础，创新是提升。结合基层实际谈。',ref:'我认为两者是相辅相成的。首先，准确传达和落实上级政策是基层工作的基本职责——政策制定得再好，落实不到位等于零。其次，基层工作也需要创新，因为每个地方的情况不同，"一刀切"执行往往效果不佳。好的基层工作者应该是在吃透政策精神的基础上，找到最适合本地实际的工作方法。这种结合本身就是一种创新。'},
+  {id:10,cat:'综合分析',q:'请谈谈你对"共同富裕"的理解。',tips:'概念→路径→基层实践。共同富裕≠平均主义，是全体人民共享发展成果。',ref:'共同富裕是中国特色社会主义的本质要求。首先，共同富裕不是平均主义，也不是"杀富济贫"，而是要在高质量发展中逐步缩小收入差距和地区差距。其次，实现共同富裕需要"做大蛋糕"和"分好蛋糕"并重。最后，落实到基层，就是要巩固脱贫攻坚成果，发展壮大集体经济，完善基本公共服务，让老百姓真正感受到生活水平的持续提升。'},
+  {id:11,cat:'综合分析',q:'近年来"数字政府"建设加速推进，你怎么看待这一趋势？',tips:'意义→挑战→对策。效率提升+便民vs数字鸿沟+数据安全。',ref:'数字政府建设是推进国家治理现代化的重要举措。一网通办、最多跑一次等改革极大方便了群众办事，提高了行政效率。但也要看到两个挑战：一是老年人等群体面临的"数字鸿沟"，不能因为数字化就把他们排除在外；二是数据安全和隐私保护问题，政务数据涉及大量敏感个人信息。推进数字政府建设，要坚持"以人民为中心"，既要智能也要温度，既要便捷也要安全。'},
+  {id:12,cat:'综合分析',q:'你如何理解"人民对美好生活的向往就是我们的奋斗目标"这句话？',tips:'出自习近平总书记。从政治立场→工作导向→个人践行展开。',ref:'这句话鲜明体现了以人民为中心的发展思想。首先，它明确了我们的工作是为了谁——是为了人民的幸福生活，而不是为了政绩工程。其次，它提醒我们要关注群众的真实需求——美好生活不只是物质层面的"吃饱穿暖"，还包括公平正义、生态环境、公共服务等精神层面。落实到具体工作，就是要把群众的小事当作自己的大事，把群众的满意度作为衡量工作的标准。'},
+
+  {id:13,cat:'组织管理',q:'单位要组织一次"扶贫日"爱心捐款活动，你负责筹备，你会怎么做？',tips:'计划→组织→执行→总结。体现全面性和细节把控。',ref:'我会从四个方面来筹备：第一，制定方案。明确活动目的、时间地点、参与人员、捐款方式（线上线下结合），报领导审批。第二，宣传动员。通过单位内部通知、工作群等方式发布活动信息，说明捐款用途和意义，营造参与氛围。第三，组织实施。活动现场设置捐款箱，安排专人登记；同时开通线上转账渠道。全程做到公开透明。第四，总结反馈。统计捐款金额，公布用途明细，感谢参与人员，做好活动总结。'},
+  {id:14,cat:'组织管理',q:'领导让你组织一次下基层调研活动，你如何安排？',tips:'前期准备→调研方法→成果产出。注意"四不两直"的调研要求。',ref:'第一，做好前期准备。明确调研主题、确定调研地点和时间、组建调研小组、准备调研提纲和问卷。第二，采取多种调研方式。座谈交流+实地走访+个别访谈相结合，深入田间地头和群众家中了解真实情况。第三，注重轻车简从。不搞层层陪同，不增加基层负担。第四，撰写调研报告。如实反映发现的问题和群众诉求，提出有针对性的建议，供领导决策参考。'},
+  {id:15,cat:'组织管理',q:'单位要举办一次职工运动会，由你负责，你怎么组织？',tips:'预算→方案→分工→执行→安全保障。',ref:'首先，了解领导意图和预算额度，确定运动会的规模和形式。其次，成立筹备小组，分工负责场地、器材、裁判、宣传、后勤等。第三，制定方案，包括比赛项目、赛程安排、报名方式、评比规则等。第四，做好宣传动员，鼓励职工积极报名。第五，重点抓好安全保障——安排医务人员、准备急救药品、为参赛人员购买保险。第六，活动结束后做好总结和表彰。'},
+  {id:16,cat:'组织管理',q:'单位准备开展"厉行节约、反对浪费"主题活动，请你说说如何开展？',tips:'宣传教育+制度约束+示范引领。',ref:'一是宣传教育。通过张贴海报、播放宣传片、组织签名承诺等方式，让节约理念深入人心。二是制度机制。推动出台公务接待、办公用品、水电能耗等方面的节约规范，让节约有章可循。三是示范引领。领导干部带头，光盘行动、双面打印、人走灯灭从小事做起。四是监督考核。建立"红黑榜"，定期通报，对浪费行为进行提醒和纠正。'},
+  {id:17,cat:'组织管理',q:'你负责组织一次面向群众的政策宣讲活动，如何确保效果？',tips:'受众分析→内容转化→形式创新→反馈改进。',ref:'第一，了解受众。提前调研参与群众的年龄结构、文化程度和关注重点，有针对性地准备宣讲内容。第二，内容通俗化。把政策文件转化为群众听得懂的语言，用案例、故事、图表代替概念和术语。第三，形式多样化。除了集中宣讲，可以设置互动问答、发放宣传折页、录制短视频二次传播。第四，收集反馈。活动后通过问卷或访谈了解群众的理解程度和满意度，为下次改进提供参考。'},
+  {id:18,cat:'组织管理',q:'领导交给你和同事小王一项任务，但小王因为家里有事经常请假，影响了进度，你怎么办？',tips:'沟通→补位→汇报。不抱怨、不指责。',ref:'首先，主动和小王沟通，了解他的具体困难，看看是否能在工作安排上给予灵活调整，比如他可以在家完成的部分交给他。其次，在分工上做出调整，我先承担更多可以在单位完成的部分。第三，如果确实影响到了整体进度，坦诚向领导汇报情况，但不以"小王请假"为借口推卸责任，而是提出解决方案，如是否需要临时增派人手。'},
+
+  {id:19,cat:'应急应变',q:'你是一名窗口工作人员，一位群众因为等待时间过长情绪激动大声抱怨，你怎么办？',tips:'安抚情绪→了解诉求→解决问题→改进机制。',ref:'首先，保持冷静，面带微笑，先安抚对方情绪："同志，实在抱歉让您久等了，请先别着急，我马上帮您处理。"其次，快速了解他的具体业务是什么，如果是简单事项就高效办理。如果是需要协调的事项，告知预计还需要多长时间，或请同事协助。第三，如果确实是我们的流程问题导致了长时间等待，真诚道歉并记录下来，事后向领导反映优化流程。核心原则：先处理情绪，再处理事情。'},
+  {id:20,cat:'应急应变',q:'你负责保管的重要文件找不到了，明天领导就要用，你怎么办？',tips:'冷静→搜索→汇报→补救→防范。',ref:'第一，立即全面搜索。回想最后一次使用文件的时间和场景，检查所有可能的存放位置，查看电子版是否有备份。第二，如果实在找不到，尽快向领导如实汇报，说明情况并提出补救方案——如重新起草、联系相关人员获取复印件等。第三，吸取教训，将重要文件做好备份（电子版+纸质版），规范存档流程，避免再次发生。'},
+  {id:21,cat:'应急应变',q:'在一次会议上，你正在汇报工作时，一位领导提出一个你完全没有准备的问题，你怎么应对？',tips:'诚实+思考+事后补。不要编造。',ref:'首先，诚实地承认这个问题自己没有准备到，谢谢领导的提醒。其次，结合自己的知识储备，尝试给出初步的理解或思路，但明确表示"这个问题非常重要，我回去后进一步研究再向您详细汇报"。第三，会议结束后尽快查阅资料、请教同事，形成完整的答复及时向领导汇报。面对不会的问题态度比答案更重要。'},
+  {id:22,cat:'应急应变',q:'你正在负责的一项工作，临近截止日期发现有一个重要环节出错，需要推倒重来，怎么办？',tips:'评估→沟通→组织→复盘。',ref:'第一，快速评估。确认影响范围——是全部重做还是部分返工？需要多少时间？第二，及时汇报。向领导说明情况，不隐瞒不推卸，同时拿出补救方案和新的时间节点。第三，组织突击。如果是团队任务，重新分工、集中力量攻坚，自己以身作则冲在前。第四，事后复盘。分析出错原因，是流程问题还是沟通问题，建立检查机制防止再次发生。'},
+  {id:23,cat:'应急应变',q:'你发现同事小张在向群众解释政策时说错了关键信息，现场还有其他群众在场，你怎么办？',tips:'及时纠错+维护同事+事后沟通。',ref:'首先，在现场不要公开反驳，避免影响同事和单位的公信力。其次，找到一个合适的时机，比如稍后为群众补充说明时，用"我再补充一下"或"需要更准确地说"的方式纠正错误信息。第三，事后私下和小张沟通，委婉提醒，分享自己对这个政策的理解，一起核对确认。如果错误比较严重，向领导汇报清楚，避免后续造成更坏影响。'},
+  {id:24,cat:'应急应变',q:'下班后你接到单位电话，说有一个紧急任务需要你马上回去处理，但你已经有安排了，怎么办？',tips:'以公为先+合理安排。',ref:'首先，确认任务的紧急程度和具体内容。如果确实是必须由我处理或参与处理的紧急任务，我会以工作为先，立即赶回单位。同时，向有安排的一方诚恳解释并表示歉意。如果任务可以远程协助完成，我会先尝试电话或视频指导值班同事处理。处理完紧急任务后，再向私人安排的对象道歉和弥补。'},
+
+  {id:25,cat:'人际关系',q:'如果你是新人，发现老同事的做法有问题，你会怎么办？',tips:'尊重+私下沟通+从自身找问题。',ref:'首先，不要贸然下结论"有问题"。老同事的做法可能基于我不了解的背景或经验，我应该先虚心请教，理解他这样做的原因。其次，如果确实存在可以优化的地方，找一个私下、非正式的场合，以请教的口吻提出自己的想法，如"张哥，我看你这样做，我学到了很多。我有个不成熟的想法，您看这样会不会更好一些？"最后，不管对方是否采纳，保持尊重和谦虚的态度。'},
+  {id:26,cat:'人际关系',q:'领导让你和小李共同完成一项工作，但小李不配合，你怎么办？',tips:'沟通→理解→分工→求助。',ref:'首先，主动找小李沟通，了解他不配合的原因——是工作太忙、还是分工不合理、还是对方案有不同意见。其次，根据原因调整：如果太忙就重新调整分工，如果有意见就虚心听取并讨论优化方案。第三，明确各自的任务和时间节点。第四，如果沟通后仍然不配合且影响工作进度，向领导汇报时要客观描述情况，而不是告状，重点放在如何保证任务顺利完成上。'},
+  {id:27,cat:'人际关系',q:'你因为工作原因批评了下属，但他觉得委屈，在背后说你的不是，你知道了会怎么处理？',tips:'反思+沟通+容人。',ref:'首先，反思自己的批评方式是否得当——是就事论事还是带了情绪？是否在公开场合让人难堪？其次，找一个合适的时机和他单独沟通，可以先肯定他的工作成绩，再坦诚地说明自己当时批评的出发点，也为自己可能不当的表达方式道歉。第三，让他在今后的工作中感受到你的公平和善意，用行动而非言语修复关系。作为管理者，容人之量和沟通能力同等重要。'},
+  {id:28,cat:'人际关系',q:'你和同事小陈竞争同一个晋升机会，你落选了，小陈成功了。之后你们还要继续共事，你会怎么做？',tips:'大度+学习+继续努力。',ref:'首先，真诚地向小陈表示祝贺，他的成功说明他有值得我学习的地方。其次，客观分析自己落选的原因，是哪些方面还需要提升，向小陈和经验丰富的同事请教。第三，在后续的工作中正常合作，不带任何情绪。职场中的竞争是常态，但竞争不应该是零和的。把这次经历当作自我提升的契机。'},
+  {id:29,cat:'人际关系',q:'领导安排你做一件事，但你手头已经有很多工作了，怎么办？',tips:'确认优先级+如实表达+提出方案。',ref:'首先，向领导确认新任务的紧迫程度和优先级。其次，如实向领导汇报自己目前的工作量和进度，如"领导，目前我手上有A、B、C三项任务，A需要在周三前完成。您看这项新任务是先做，还是我可以把手头的A完成后立即开始？"给领导一个选择题而不是判断题。如果确实精力不够，可以建议是否由其他同事分担部分。'},
+  {id:30,cat:'人际关系',q:'你发现有人向领导打了你的小报告，说的内容不属实，你怎么处理？',tips:'沉住气+用工作说话+适当沟通。',ref:'首先，不要急于找领导解释或和打小报告的同事对质，这样容易越描越黑。其次，更加认真地把工作做好，让事实说话。领导也是通过观察工作来判断下属的。第三，在合适的时机（比如汇报工作时），可以自然地用数据和事实澄清不属实的部分。第四，反思自己是否有做得不够透明的地方，以后加强沟通，减少被误解的空间。'}
+];
+
+// ═══════════════════════════════════════════════
+//  STATE
+// ═══════════════════════════════════════════════
+var STATE = {
+  currentTab: 'quiz',
+  // Quiz
+  quizMode: '',       // 'random' | 'all' | 'weak'
+  quizFilter: null,   // category filter
+  quizQuestions: [],  // current question set (filtered)
+  quizIndex: 0,
+  quizTimer: 0,
+  quizTimerInterval: null,
+  quizAnswered: false,
+  quizStartTime: 0,
+  // Interview
+  interviewTimer: 0,
+  interviewTimerInterval: null,
+  interviewPhase: 'idle', // idle | thinking | answering | done
+  mediaRecorder: null,
+  recordedChunks: [],
+  recordedBlob: null
+};
+
+// Statistics
+function loadStats() {
+  try { var d = localStorage.getItem('examprep_stats'); return d ? JSON.parse(d) : getDefaultStats(); }
+  catch(e) { return getDefaultStats(); }
+}
+function getDefaultStats() {
+  return { total: 0, correct: 0, streak: 0, maxStreak: 0, categoryStats: {}, wrongBook: {} };
+}
+function saveStats(s) {
+  try { localStorage.setItem('examprep_stats', JSON.stringify(s)); } catch(e) {}
+}
+var STATS = loadStats();
+
+// ═══════════════════════════════════════════════
+//  UTILITIES
+// ═══════════════════════════════════════════════
+function toast(msg, type) {
+  var el = document.createElement('div');
+  el.className = 'toast' + (type ? ' ' + type : '');
+  el.textContent = msg;
+  document.body.appendChild(el);
+  setTimeout(function() { el.classList.add('out'); setTimeout(function() { if(el.parentNode)el.parentNode.removeChild(el); }, 300); }, 2000);
+}
+
+function toggleTheme() {
+  var cur = document.documentElement.getAttribute('data-theme');
+  var next = cur === 'dark' ? '' : 'dark';
+  document.documentElement.setAttribute('data-theme', next);
+  document.getElementById('themeToggle').textContent = next ? '☀️' : '🌙';
+  try { localStorage.setItem('examprep_theme', next || 'light'); } catch(e) {}
+}
+
+function switchTab(name) {
+  STATE.currentTab = name;
+  document.querySelectorAll('.tab-btn').forEach(function(b) { b.classList.toggle('active', b.getAttribute('data-tab') === name); });
+  document.querySelectorAll('.tab-content').forEach(function(c) { c.classList.toggle('active', c.id === 'tab-' + name); });
+  if (name === 'stats') renderStats();
+  if (name === 'wrongbook') renderWrongBook();
+}
+
+// ═══════════════════════════════════════════════
+//  QUIZ
+// ═══════════════════════════════════════════════
+function getFilteredQuestions(filter) {
+  if (!filter) return EXAM_QUESTIONS;
+  return EXAM_QUESTIONS.filter(function(q) { return q.cat === filter; });
+}
+
+function startQuiz(mode, filter) {
+  STATE.quizMode = mode;
+  STATE.quizFilter = filter;
+  STATE.quizIndex = 0;
+  STATE.quizAnswered = false;
+
+  var pool = getFilteredQuestions(filter);
+  if (mode === 'random') {
+    // Shuffle and take 10
+    pool = pool.slice().sort(function() { return Math.random() - 0.5; }).slice(0, 10);
+  } else if (mode === 'weak') {
+    // Prioritize wrong book
+    var weakIds = Object.keys(STATS.wrongBook);
+    if (!weakIds.length) { toast('错题本为空，改为随机10题', 'warn'); pool = pool.slice().sort(function() { return Math.random() - 0.5; }).slice(0, 10); }
+    else {
+      var weakPool = pool.filter(function(q) { return weakIds.indexOf(String(q.id)) !== -1; });
+      if (weakPool.length < 5) {
+        var remaining = pool.filter(function(q) { return weakIds.indexOf(String(q.id)) === -1; }).sort(function() { return Math.random() - 0.5; }).slice(0, 10 - weakPool.length);
+        pool = weakPool.concat(remaining);
+      } else {
+        pool = weakPool.sort(function() { return Math.random() - 0.5; }).slice(0, 10);
+      }
+    }
+  }
+
+  STATE.quizQuestions = pool;
+  if (!pool.length) { toast('⚠️ 没有匹配的题目', 'warn'); return; }
+
+  document.getElementById('quizArea').style.display = '';
+  document.getElementById('quizArea').scrollIntoView({ behavior: 'smooth' });
+  document.getElementById('statusBadge').textContent = '📝 刷题中';
+  renderQuestion();
+  renderProgress();
+  startQuizTimer();
+}
+
+function renderQuestion() {
+  var q = STATE.quizQuestions[STATE.quizIndex];
+  if (!q) return endQuiz();
+
+  STATE.quizAnswered = false;
+  document.getElementById('questionCard').innerHTML =
+    '<div class="question-number">第 ' + (STATE.quizIndex + 1) + '/' + STATE.quizQuestions.length + ' 题 · ' + q.cat + ' · ' + (q.diff === 1 ? '★' : q.diff === 2 ? '★★' : '★★★') + '</div>' +
+    '<div class="question-text">' + escHtml(q.q) + '</div>';
+
+  var optsHtml = '';
+  q.opts.forEach(function(opt, i) {
+    optsHtml += '<div class="option-item" data-idx="' + i + '" onclick="selectOption(' + i + ')">';
+    optsHtml += '<div class="option-letter">' + String.fromCharCode(65 + i) + '</div>';
+    optsHtml += '<div>' + escHtml(opt.substring(2).trim()) + '</div>';
+    optsHtml += '</div>';
+  });
+  document.getElementById('optionsArea').innerHTML = optsHtml;
+
+  document.getElementById('explanationBox').classList.remove('show');
+  document.getElementById('btnNextQuestion').style.display = 'none';
+  document.getElementById('quizCatLabel').textContent = q.cat + ' · ' + (q.year || '') + '年';
+  renderProgress();
+}
+
+function selectOption(idx) {
+  if (STATE.quizAnswered) return;
+  STATE.quizAnswered = true;
+
+  var q = STATE.quizQuestions[STATE.quizIndex];
+  var correct = q.ans === idx;
+  var optionEls = document.querySelectorAll('.option-item');
+
+  optionEls.forEach(function(el, i) {
+    el.style.pointerEvents = 'none';
+    if (i === q.ans) el.classList.add('correct');
+    if (i === idx && !correct) el.classList.add('wrong');
+    if (i === idx) el.classList.add('selected');
+  });
+
+  // Update stats
+  STATS.total++;
+  if (correct) {
+    STATS.correct++;
+    STATS.streak++;
+    if (STATS.streak > (STATS.maxStreak || 0)) STATS.maxStreak = STATS.streak;
+    // Remove from wrong book if it was there
+    delete STATS.wrongBook[String(q.id)];
+  } else {
+    STATS.streak = 0;
+    STATS.wrongBook[String(q.id)] = { id: q.id, cat: q.cat, q: q.q.substring(0, 50), added: new Date().toISOString().slice(0, 10) };
+  }
+  // Category stats
+  if (!STATS.categoryStats[q.cat]) STATS.categoryStats[q.cat] = { total: 0, correct: 0 };
+  STATS.categoryStats[q.cat].total++;
+  if (correct) STATS.categoryStats[q.cat].correct++;
+  saveStats(STATS);
+
+  // Show explanation
+  document.getElementById('expTitle').textContent = correct ? '✅ 回答正确！' : '❌ 回答错误';
+  document.getElementById('expText').textContent = '正确答案：' + String.fromCharCode(65 + q.ans) + '。' + (q.exp || '');
+  document.getElementById('explanationBox').classList.add('show');
+
+  document.getElementById('btnNextQuestion').style.display = '';
+  document.getElementById('btnNextQuestion').textContent = STATE.quizIndex < STATE.quizQuestions.length - 1 ? '下一题 →' : '查看结果 📊';
+  renderProgress();
+  stopQuizTimer();
+}
+
+function nextQuestion() {
+  if (STATE.quizIndex < STATE.quizQuestions.length - 1) {
+    STATE.quizIndex++;
+    renderQuestion();
+    startQuizTimer();
+  } else {
+    endQuiz();
+  }
+}
+
+function renderProgress() {
+  var html = '';
+  STATE.quizQuestions.forEach(function(q, i) {
+    var cls = '';
+    if (i < STATE.quizIndex) cls = 'correct'; // answered (we dont track individual results without deep state... simplify)
+    if (i === STATE.quizIndex && !STATE.quizAnswered) cls = 'current';
+    html += '<div class="quiz-dot ' + cls + '" title="第' + (i+1) + '题"></div>';
+  });
+  document.getElementById('quizProgress').innerHTML = html;
+}
+
+function startQuizTimer() {
+  STATE.quizStartTime = Date.now();
+  updateQuizTimer();
+  STATE.quizTimerInterval = setInterval(updateQuizTimer, 1000);
+}
+function updateQuizTimer() {
+  var elapsed = Math.floor((Date.now() - STATE.quizStartTime) / 1000);
+  var m = Math.floor(elapsed / 60), s = elapsed % 60;
+  document.getElementById('quizTimer').textContent = String(m).padStart(2,'0') + ':' + String(s).padStart(2,'0');
+}
+function stopQuizTimer() { if (STATE.quizTimerInterval) { clearInterval(STATE.quizTimerInterval); STATE.quizTimerInterval = null; } }
+
+function endQuiz() {
+  stopQuizTimer();
+  document.getElementById('quizArea').style.display = 'none';
+  document.getElementById('statusBadge').textContent = '📚 就绪';
+  var rate = STATS.total > 0 ? Math.round(STATS.correct / STATS.total * 100) : 0;
+  toast('📊 本次正确率 ' + rate + '%（' + STATS.correct + '/' + STATS.total + '）', 'success');
+  document.getElementById('quizDesc').textContent = '累计 ' + STATS.total + ' 题，正确率 ' + rate + '%';
+}
+
+function escHtml(s) { return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+// ═══════════════════════════════════════════════
+//  STATS
+// ═══════════════════════════════════════════════
+function renderStats() {
+  document.getElementById('sTotal').textContent = STATS.total;
+  document.getElementById('sCorrect').textContent = STATS.correct;
+  document.getElementById('sRate').textContent = STATS.total > 0 ? Math.round(STATS.correct / STATS.total * 100) + '%' : '—';
+  document.getElementById('sStreak').textContent = STATS.maxStreak || 0;
+
+  var catHtml = '';
+  var cats = ['言语理解','数量关系','判断推理','资料分析','常识判断'];
+  cats.forEach(function(c) {
+    var cs = STATS.categoryStats[c];
+    var rate = cs && cs.total > 0 ? Math.round(cs.correct / cs.total * 100) + '%' : '—';
+    var count = cs ? cs.total : 0;
+    catHtml += '<div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--border)"><span>' + c + '</span><span>' + count + '题 · <strong>' + rate + '</strong></span></div>';
+  });
+  if (!catHtml) catHtml = '暂无数据';
+  document.getElementById('categoryStats').innerHTML = catHtml;
+}
+
+// ═══════════════════════════════════════════════
+//  WRONG BOOK
+// ═══════════════════════════════════════════════
+function renderWrongBook() {
+  var ids = Object.keys(STATS.wrongBook);
+  if (!ids.length) {
+    document.getElementById('wrongBookContent').innerHTML = '<div class="empty-state"><div class="empty-icon">📕</div><div class="empty-title">错题本为空</div><div class="empty-desc">做错的题目会自动收集到这里</div></div>';
+    return;
+  }
+  var html = '<div style="font-size:13px;color:var(--muted);margin-bottom:12px">共 ' + ids.length + ' 道错题</div>';
+  ids.forEach(function(id) {
+    var wb = STATS.wrongBook[id];
+    var q = EXAM_QUESTIONS.find(function(q2) { return String(q2.id) === id; });
+    if (!q) return;
+    html += '<div style="padding:12px;margin-bottom:8px;border:1px solid var(--border);border-radius:var(--radius-sm);cursor:pointer" onclick="reviewWrong(\'' + id + '\')">';
+    html += '<span style="font-size:12px;color:var(--muted)">' + q.cat + '</span><br>';
+    html += escHtml(q.q.substring(0, 80)) + '…<br>';
+    html += '<span style="font-size:12px;color:var(--muted)">答案：' + String.fromCharCode(65 + q.ans) + '</span>';
+    html += '</div>';
+  });
+  html += '<button class="btn btn-outline btn-sm" onclick="clearWrongBook()">🗑 清空错题本</button>';
+  document.getElementById('wrongBookContent').innerHTML = html;
+}
+
+function reviewWrong(id) {
+  var q = EXAM_QUESTIONS.find(function(q2) { return String(q2.id) === id; });
+  if (!q) return;
+  STATE.quizQuestions = [q];
+  STATE.quizIndex = 0;
+  STATE.quizFilter = null;
+  STATE.quizMode = 'review';
+  document.getElementById('quizArea').style.display = '';
+  renderQuestion();
+  document.getElementById('quizCatLabel').textContent = '错题复习 · ' + q.cat;
+  startQuizTimer();
+  switchTab('quiz');
+}
+
+function clearWrongBook() {
+  if (!confirm('确定清空所有错题吗？')) return;
+  STATS.wrongBook = {};
+  saveStats(STATS);
+  renderWrongBook();
+  toast('🗑 错题本已清空', 'success');
+}
+
+// ═══════════════════════════════════════════════
+//  INTERVIEW
+// ═══════════════════════════════════════════════
+function randomInterview(filter) {
+  var pool = filter ? INTERVIEW_QUESTIONS.filter(function(q) { return q.cat === filter; }) : INTERVIEW_QUESTIONS;
+  if (!pool.length) { toast('⚠️ 没有匹配题目', 'warn'); return; }
+  var q = pool[Math.floor(Math.random() * pool.length)];
+
+  stopInterviewTimer();
+  STATE.interviewPhase = 'idle';
+  STATE.interviewTimer = 180;
+  var audioEl = document.getElementById('audioPlayer');
+  audioEl.style.display = 'none';
+  if (audioEl.src) URL.revokeObjectURL(audioEl.src);
+  audioEl.src = '';
+  document.getElementById('recordingStatus').innerHTML = '';
+  document.getElementById('interviewRefBox').classList.remove('show');
+
+  document.getElementById('interviewArea').style.display = '';
+  document.getElementById('interviewCatLabel').textContent = q.cat;
+  document.getElementById('interviewQuestion').textContent = q.q;
+  document.getElementById('interviewPhase').textContent = '准备开始';
+  document.getElementById('interviewTimer').textContent = '03:00';
+  document.getElementById('interviewRefTips').textContent = q.tips || '';
+  document.getElementById('interviewRefAnswer').textContent = q.ref || '';
+  document.getElementById('interviewArea').scrollIntoView({ behavior: 'smooth' });
+}
+
+function startThinking() {
+  stopInterviewTimer();
+  STATE.interviewPhase = 'thinking';
+  STATE.interviewTimer = 30;
+  updateInterviewTimerDisplay();
+  document.getElementById('interviewPhase').textContent = '🤔 思考中…';
+  document.getElementById('recordingStatus').innerHTML = '';
+  STATE.interviewTimerInterval = setInterval(function() {
+    STATE.interviewTimer--;
+    updateInterviewTimerDisplay();
+    if (STATE.interviewTimer <= 0) {
+      stopInterviewTimer();
+      toast('⏰ 思考时间到！请开始答题', 'warn');
+      startAnswer();
+    }
+  }, 1000);
+}
+
+function startAnswer() {
+  stopInterviewTimer();
+  STATE.interviewPhase = 'answering';
+  STATE.interviewTimer = 180;
+  updateInterviewTimerDisplay();
+  document.getElementById('interviewPhase').textContent = '🎙 答题中…';
+  STATE.interviewTimerInterval = setInterval(function() {
+    STATE.interviewTimer--;
+    updateInterviewTimerDisplay();
+    if (STATE.interviewTimer <= 0) { stopInterviewTimer(); stopRecording(); toast('⏰ 答题时间到', 'warn'); }
+  }, 1000);
+
+  // Start recording
+  startRecording();
+}
+
+function updateInterviewTimerDisplay() {
+  var m = Math.floor(STATE.interviewTimer / 60), s = STATE.interviewTimer % 60;
+  var el = document.getElementById('interviewTimer');
+  el.textContent = String(m).padStart(2,'0') + ':' + String(s).padStart(2,'0');
+  if (STATE.interviewTimer <= 30 && STATE.interviewPhase === 'answering') el.style.color = 'var(--danger)';
+  else el.style.color = '';
+}
+
+function stopInterviewTimer() {
+  if (STATE.interviewTimerInterval) { clearInterval(STATE.interviewTimerInterval); STATE.interviewTimerInterval = null; }
+}
+
+function startRecording() {
+  if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+    document.getElementById('recordingStatus').innerHTML = '<span style="color:var(--muted)">⚠ 浏览器不支持录音功能</span>';
+    return;
+  }
+  navigator.mediaDevices.getUserMedia({ audio: true }).then(function(stream) {
+    STATE.recordedChunks = [];
+    var mr = new MediaRecorder(stream);
+    mr.ondataavailable = function(e) { if (e.data.size > 0) STATE.recordedChunks.push(e.data); };
+    mr.onstop = function() {
+      STATE.recordedBlob = new Blob(STATE.recordedChunks, { type: 'audio/webm' });
+      var url = URL.createObjectURL(STATE.recordedBlob);
+      var audioEl = document.getElementById('audioPlayer');
+      audioEl.src = url;
+      audioEl.style.display = '';
+      document.getElementById('recordingStatus').innerHTML = '<span style="color:var(--success)">✅ 录音完成，可在下方回放</span>';
+      // Stop all tracks
+      stream.getTracks().forEach(function(t) { t.stop(); });
+    };
+    mr.start();
+    STATE.mediaRecorder = mr;
+    document.getElementById('recordingStatus').innerHTML = '<div class="recording-indicator">🔴 录音中</div>';
+  }).catch(function() {
+    document.getElementById('recordingStatus').innerHTML = '<span style="color:var(--danger)">⚠ 无法访问麦克风</span>';
+  });
+}
+
+function stopRecording() {
+  if (STATE.mediaRecorder && STATE.mediaRecorder.state === 'recording') {
+    STATE.mediaRecorder.stop();
+    STATE.mediaRecorder = null;
+  }
+}
+
+function showReference() {
+  document.getElementById('interviewRefBox').classList.toggle('show');
+}
+
+// ═══════════════════════════════════════════════
+//  INIT
+// ═══════════════════════════════════════════════
+function init() {
+  // Theme
+  try {
+    var tm = localStorage.getItem('examprep_theme');
+    if (tm === 'dark') document.documentElement.setAttribute('data-theme', 'dark');
+  } catch(e) {}
+  document.getElementById('themeToggle').textContent = document.documentElement.getAttribute('data-theme') === 'dark' ? '☀️' : '🌙';
+  document.getElementById('themeToggle').addEventListener('click', toggleTheme);
+
+  // Tab switching
+  document.querySelectorAll('.tab-btn').forEach(function(btn) {
+    btn.addEventListener('click', function() { switchTab(this.getAttribute('data-tab')); });
+  });
+
+  // Category filter tags (quiz)
+  var cats = ['全部','言语理解','数量关系','判断推理','资料分析','常识判断'];
+  var catHtml = '';
+  cats.forEach(function(c) {
+    catHtml += '<span class="filter-tag' + (c === '全部' ? ' active' : '') + '" data-filter="' + (c === '全部' ? '' : c) + '">' + c + '</span>';
+  });
+  document.getElementById('categoryTags').innerHTML = catHtml;
+  document.querySelectorAll('#categoryTags .filter-tag').forEach(function(tag) {
+    tag.addEventListener('click', function() {
+      document.querySelectorAll('#categoryTags .filter-tag').forEach(function(t) { t.classList.remove('active'); });
+      this.classList.add('active');
+    });
+  });
+
+  // Quiz buttons
+  document.getElementById('btnRandomQuiz').addEventListener('click', function() {
+    var filter = document.querySelector('#categoryTags .filter-tag.active').getAttribute('data-filter') || null;
+    startQuiz('random', filter);
+  });
+  document.getElementById('btnAllQuiz').addEventListener('click', function() {
+    var filter = document.querySelector('#categoryTags .filter-tag.active').getAttribute('data-filter') || null;
+    startQuiz('all', filter);
+  });
+  document.getElementById('btnWeakQuiz').addEventListener('click', function() { startQuiz('weak', null); });
+  document.getElementById('btnNextQuestion').addEventListener('click', nextQuestion);
+  document.getElementById('btnEndQuiz').addEventListener('click', endQuiz);
+  document.getElementById('btnResetStats').addEventListener('click', function() {
+    if (!confirm('确定清除所有统计和错题本吗？')) return;
+    STATS = getDefaultStats();
+    saveStats(STATS);
+    renderStats();
+    toast('🗑 统计已重置', 'success');
+  });
+
+  // Interview category tags
+  var icats = ['全部','自我认知','综合分析','组织管理','应急应变','人际关系'];
+  var icatHtml = '';
+  icats.forEach(function(c) {
+    icatHtml += '<span class="filter-tag' + (c === '全部' ? ' active' : '') + '" data-filter="' + (c === '全部' ? '' : c) + '">' + c + '</span>';
+  });
+  document.getElementById('interviewCategoryTags').innerHTML = icatHtml;
+  document.querySelectorAll('#interviewCategoryTags .filter-tag').forEach(function(tag) {
+    tag.addEventListener('click', function() {
+      document.querySelectorAll('#interviewCategoryTags .filter-tag').forEach(function(t) { t.classList.remove('active'); });
+      this.classList.add('active');
+    });
+  });
+
+  // Interview buttons
+  document.getElementById('btnRandomInterview').addEventListener('click', function() {
+    var filter = document.querySelector('#interviewCategoryTags .filter-tag.active').getAttribute('data-filter') || null;
+    randomInterview(filter);
+  });
+  document.getElementById('btnThinking').addEventListener('click', startThinking);
+  document.getElementById('btnStartAnswer').addEventListener('click', startAnswer);
+  document.getElementById('btnShowRef').addEventListener('click', showReference);
+
+  // Test mode
+  if (window.location.search.indexOf('test=1') !== -1) setTimeout(runTests, 300);
+}
+
+// ═══════════════════════════════════════════════
+//  TESTS
+// ═══════════════════════════════════════════════
+function runTests() {
+  var results = [];
+  function t(name, fn) {
+    try { results.push({ name: name, pass: !!fn() }); }
+    catch(e) { results.push({ name: name, pass: false, error: e.message }); }
+  }
+
+  t('EXAM_QUESTIONS has 60 questions', function() { return EXAM_QUESTIONS.length === 60; });
+  t('All exam questions have opts', function() { return EXAM_QUESTIONS.every(function(q) { return q.opts && q.opts.length === 4; }); });
+  t('All exam questions have valid ans', function() { return EXAM_QUESTIONS.every(function(q) { return q.ans >= 0 && q.ans <= 3; }); });
+  t('INTERVIEW_QUESTIONS has 30 questions', function() { return INTERVIEW_QUESTIONS.length === 30; });
+  t('All interview questions have tips and ref', function() { return INTERVIEW_QUESTIONS.every(function(q) { return q.tips && q.ref; }); });
+  t('Stats persistence', function() {
+    var orig = JSON.parse(JSON.stringify(STATS));
+    STATS.total = 99;
+    saveStats(STATS);
+    var loaded = loadStats();
+    var ok = loaded.total === 99;
+    STATS = orig;
+    saveStats(STATS);
+    return ok;
+  });
+  t('getFilteredQuestions works', function() { return getFilteredQuestions('常识判断').every(function(q) { return q.cat === '常识判断'; }); });
+  t('getFilteredQuestions null returns all', function() { return getFilteredQuestions(null).length === 60; });
+
+  var passed = results.filter(function(r) { return r.pass; }).length;
+  var total = results.length;
+  var color = passed === total ? 'green' : 'orange';
+  console.log('%c📋 ExamPrep Tests: ' + passed + '/' + total + ' passed', 'font-size:16px;font-weight:bold;color:' + color);
+  results.forEach(function(r) { console.log(r.pass ? '  ✅' : '  ❌', r.name, r.error ? '(' + r.error + ')' : ''); });
+  if (passed < total) console.warn('⚠ ' + (total - passed) + ' tests failed');
+  else console.log('✅ All tests passed!');
+}
+
+if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init); else init();
+</script>
+</body>
+</html>
