@@ -11,32 +11,33 @@
 :root {
   --primary: #dc2626; --primary-dark: #b91c1c;
   --accent: #ef4444; --accent-light: #fef2f2;
-  --bg: #fafafa; --card: #ffffff;
-  --border: #e5e7eb; --text: #111827; --muted: #6b7280;
+  --bg: #f2efe8; --card: rgba(255,255,255,0.7);
+  --border: rgba(0,0,0,0.07); --text: #1d1d1f; --muted: #6e6e73;
   --success: #16a34a; --danger: #dc2626; --warning: #d97706;
-  --radius: 16px; --radius-sm: 10px;
-  --shadow: 0 1px 3px rgba(0,0,0,0.06);
-  --shadow-lg: 0 10px 30px rgba(0,0,0,0.08);
-  --transition: 0.2s cubic-bezier(0.4,0,0.2,1);
+  --radius: 20px; --radius-sm: 12px;
+  --shadow: 0 1px 3px rgba(0,0,0,0.04);
+  --shadow-lg: 0 16px 48px rgba(0,0,0,0.1);
+  --spring: 0.35s cubic-bezier(0.22, 0.1, 0.2, 1);
+  --glass: blur(24px) saturate(180%);
 }
 [data-theme="dark"] {
   --primary: #f87171; --primary-dark: #ef4444;
   --accent: #fca5a5; --accent-light: #450a0a;
-  --bg: #0b1120; --card: #1e293b;
-  --border: #334155; --text: #f1f5f9; --muted: #94a3b8;
+  --bg: #1a1917; --card: rgba(36,35,33,0.76);
+  --border: rgba(255,255,255,0.07); --text: #f5f5f7; --muted: #98989d;
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;background:var(--bg);color:var(--text);line-height:1.6;-webkit-font-smoothing:antialiased;min-height:100vh;transition:background var(--transition),color var(--transition)}
-.container{max-width:1000px;margin:0 auto;padding:16px 20px}
+body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","PingFang SC","Noto Sans SC",sans-serif;background:var(--bg);color:var(--text);line-height:1.6;-webkit-font-smoothing:antialiased;min-height:100vh;transition:background 0.4s ease,color 0.4s ease;letter-spacing:-0.01em}
+.container{max-width:1000px;animation:pageEnter 0.45s var(--spring);margin:0 auto;padding:16px 20px}
 
-.header{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;padding:16px 24px;margin-bottom:16px;background:var(--card);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow)}
+.header{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;padding:16px 24px;margin-bottom:16px;background:var(--card);backdrop-filter:var(--glass);-webkit-backdrop-filter:var(--glass);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow)}
 .header-brand{display:flex;align-items:center;gap:10px}
 .header-logo{font-size:32px}
 .header-title{font-size:22px;font-weight:800}
 .header-subtitle{font-size:13px;color:var(--muted)}
 .header-right{display:flex;align-items:center;gap:12px}
 
-.btn{display:inline-flex;align-items:center;gap:6px;padding:10px 20px;border:none;border-radius:var(--radius-sm);font-size:14px;font-weight:600;cursor:pointer;transition:all var(--transition);font-family:inherit}
+.btn{display:inline-flex;align-items:center;gap:6px;padding:10px 20px;border:none;border-radius:var(--radius-sm);font-size:14px;font-weight:600;cursor:pointer;transition:all var(--spring);font-family:inherit}
 .btn-primary{background:var(--primary);color:#fff}
 .btn-primary:hover{background:var(--primary-dark)}
 .btn-primary:disabled{opacity:.5;cursor:not-allowed}
@@ -44,14 +45,14 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Micr
 .btn-outline:hover{background:var(--accent-light)}
 .btn-sm{padding:6px 14px;font-size:13px}
 .badge{display:inline-flex;align-items:center;gap:6px;padding:6px 14px;background:var(--accent-light);color:var(--primary-dark);border-radius:20px;font-size:13px;font-weight:600}
-.theme-toggle{width:40px;height:40px;border:2px solid var(--border);border-radius:50%;background:var(--card);cursor:pointer;font-size:20px;display:flex;align-items:center;justify-content:center;transition:all var(--transition)}
+.theme-toggle{width:40px;height:40px;border:2px solid var(--border);border-radius:50%;background:var(--card);backdrop-filter:var(--glass);-webkit-backdrop-filter:var(--glass);cursor:pointer;font-size:20px;display:flex;align-items:center;justify-content:center;transition:all var(--spring)}
 .theme-toggle:hover{border-color:var(--primary);transform:rotate(15deg)}
 
-.card{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);padding:24px;margin-bottom:16px;border:1px solid var(--border)}
+.card{background:var(--card);backdrop-filter:var(--glass);-webkit-backdrop-filter:var(--glass);border-radius:var(--radius);box-shadow:var(--shadow);padding:24px;margin-bottom:16px;border:1px solid var(--border)}
 
 /* ── Tabs ── */
 .tabs{display:flex;gap:4px;margin-bottom:16px;overflow-x:auto}
-.tab-btn{padding:10px 20px;border:none;background:transparent;font-size:14px;font-weight:600;color:var(--muted);cursor:pointer;border-radius:var(--radius-sm) var(--radius-sm) 0 0;font-family:inherit;white-space:nowrap;transition:all var(--transition)}
+.tab-btn{padding:10px 20px;border:none;background:transparent;font-size:14px;font-weight:600;color:var(--muted);cursor:pointer;border-radius:var(--radius-sm) var(--radius-sm) 0 0;font-family:inherit;white-space:nowrap;transition:all var(--spring)}
 .tab-btn:hover{color:var(--text);background:var(--accent-light)}
 .tab-btn.active{color:var(--primary);border-bottom:3px solid var(--primary)}
 .tab-content{display:none}
@@ -72,8 +73,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Micr
 .question-number{font-size:12px;color:var(--muted);font-weight:600;margin-bottom:4px}
 .question-text{font-size:16px;font-weight:600;line-height:1.7;margin-bottom:16px}
 
-.option-item{display:flex;align-items:flex-start;gap:10px;padding:12px 16px;margin-bottom:8px;border:2px solid var(--border);border-radius:var(--radius-sm);cursor:pointer;transition:all var(--transition);font-size:14px}
-.option-item:hover{border-color:var(--primary);background:var(--card)}
+.option-item{display:flex;align-items:flex-start;gap:10px;padding:12px 16px;margin-bottom:8px;border:2px solid var(--border);border-radius:var(--radius-sm);cursor:pointer;transition:all var(--spring);font-size:14px}
+.option-item:hover{border-color:var(--primary);background:var(--card);backdrop-filter:var(--glass);-webkit-backdrop-filter:var(--glass)}
 .option-item.selected{border-color:var(--primary);background:var(--accent-light)}
 .option-item.correct{border-color:var(--success);background:#f0fdf4}
 .option-item.wrong{border-color:var(--danger);background:#fef2f2}
@@ -82,7 +83,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Micr
 .option-item.correct .option-letter{border-color:var(--success);background:var(--success);color:#fff}
 .option-item.wrong .option-letter{border-color:var(--danger);background:var(--danger);color:#fff}
 
-.explanation-box{display:none;padding:16px;background:var(--card);border:1px solid var(--border);border-radius:var(--radius-sm);margin-top:12px}
+.explanation-box{display:none;padding:16px;background:var(--card);backdrop-filter:var(--glass);-webkit-backdrop-filter:var(--glass);border:1px solid var(--border);border-radius:var(--radius-sm);margin-top:12px}
 .explanation-box.show{display:block}
 .explanation-box .exp-title{font-weight:700;margin-bottom:4px}
 .explanation-box .exp-text{font-size:14px;color:var(--muted);line-height:1.7}
@@ -98,12 +99,12 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Micr
 
 /* ── Stats ── */
 .stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin-bottom:16px}
-.stat-card{text-align:center;padding:16px;background:var(--card);border:1px solid var(--border);border-radius:var(--radius-sm)}
+.stat-card{text-align:center;padding:16px;background:var(--card);backdrop-filter:var(--glass);-webkit-backdrop-filter:var(--glass);border:1px solid var(--border);border-radius:var(--radius-sm)}
 .stat-card .val{font-size:28px;font-weight:800;color:var(--primary)}
 .stat-card .lbl{font-size:12px;color:var(--muted);margin-top:2px}
 
 /* ── Toast ── */
-.toast{position:fixed;bottom:32px;left:50%;transform:translateX(-50%);z-index:2000;padding:12px 24px;border-radius:24px;font-size:14px;font-weight:600;color:#fff;background:#1e293b;box-shadow:var(--shadow-lg);animation:toastIn .3s ease}
+.toast{position:fixed;bottom:32px;left:50%;transform:translateX(-50%);z-index:2000;padding:12px 24px;border-radius:24px;font-size:14px;font-weight:600;color:#fff;background:rgba(30,30,32,0.94);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);box-shadow:var(--shadow-lg);animation:toastIn .3s ease}
 .toast.success{background:var(--success)}
 .toast.warn{background:var(--warning);color:#1e293b}
 .toast.out{animation:toastOut .3s ease forwards}
@@ -116,9 +117,12 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Micr
 
 .toolbar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
 .filter-tags{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}
-.filter-tag{padding:4px 12px;border:1px solid var(--border);border-radius:16px;font-size:12px;font-weight:600;cursor:pointer;transition:all var(--transition);color:var(--muted)}
+.filter-tag{padding:4px 12px;border:1px solid var(--border);border-radius:16px;font-size:12px;font-weight:600;cursor:pointer;transition:all var(--spring);color:var(--muted)}
 .filter-tag:hover,.filter-tag.active{border-color:var(--primary);color:var(--primary);background:var(--accent-light)}
 
+
+@keyframes pageEnter{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
 @keyframes toastIn{from{opacity:0;transform:translateX(-50%) translateY(16px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}
 @keyframes toastOut{from{opacity:1;transform:translateX(-50%) translateY(0)}to{opacity:0;transform:translateX(-50%) translateY(16px)}}
 
@@ -135,9 +139,22 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Micr
   .btn{padding:8px 14px;font-size:12px}
   .option-item{font-size:13px;padding:10px 12px}
 }
+
+/* ── Atmosphere ── */
+.atmo{position:fixed;inset:0;pointer-events:none;z-index:0}
+.atmo .orb{position:absolute;border-radius:50%;filter:blur(140px);opacity:0.35}
+.atmo .orb:nth-child(1){width:60vw;height:60vw;background:radial-gradient(circle,rgba(210,160,100,0.12),transparent);top:-25vh;left:-20vw}
+.atmo .orb:nth-child(2){width:50vw;height:50vw;background:radial-gradient(circle,rgba(100,175,165,0.09),transparent);bottom:-20vh;right:-15vw}
+.grid-texture{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:0.18;background-image:linear-gradient(var(--border) 1px,transparent 1px),linear-gradient(90deg,var(--border) 1px,transparent 1px);background-size:80px 80px;mask-image:radial-gradient(ellipse 70% 55% at 50% 45%,black 15%,transparent 70%);-webkit-mask-image:radial-gradient(ellipse 70% 55% at 50% 45%,black 15%,transparent 70%)}
+
+.page-exit-overlay{position:fixed;inset:0;z-index:9999;background:var(--bg);opacity:0;pointer-events:none;transition:opacity 0.3s ease}.page-exit-overlay.go{opacity:1;pointer-events:all}
 </style>
 </head>
 <body>
+
+<div class="page-exit-overlay" id="exitOverlay"></div>
+<div class="atmo"><div class="orb"></div><div class="orb"></div></div>
+<div class="grid-texture"></div>
 
 <div class="container">
 <header class="header">
@@ -899,6 +916,7 @@ function runTests() {
 }
 
 if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init); else init();
+window.addEventListener('beforeunload',function(){document.getElementById('exitOverlay').classList.add('go');});
 </script>
 </body>
 </html>
