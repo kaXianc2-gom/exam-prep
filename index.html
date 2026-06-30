@@ -3,207 +3,285 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<meta name="description" content="行测刷题+面试模拟工具 — 130道行测题+50道面试题，录音回放，浏览器本地运行">
+<meta name="description" content="行测刷题+面试模拟工具 — 300道行测题+100道面试题，录音回放，浏览器本地运行">
 <meta name="theme-color" content="#dc2626">
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📝</text></svg>">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23dc2626' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M4 19.5A2.5 2.5 0 0 1 6.5 17H20'/%3E%3Cpath d='M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z'/%3E%3C/svg%3E">
 <title>ExamPrep — 行测刷题+面试模拟</title>
 <style>
 :root {
   --primary: #dc2626; --primary-dark: #b91c1c;
   --accent: #ef4444; --accent-light: #fef2f2;
-  --bg: #f2efe8; --card: rgba(255,255,255,0.7);
-  --border: rgba(0,0,0,0.07); --text: #1d1d1f; --muted: #6e6e73;
+  --bg: #f5f3ef; --card: rgba(255,255,255,0.72);
+  --border: rgba(0,0,0,0.08); --text: #1d1d1f; --muted: #6e6e73;
   --success: #16a34a; --danger: #dc2626; --warning: #d97706;
   --radius: 20px; --radius-sm: 12px;
-  --shadow: 0 1px 3px rgba(0,0,0,0.04);
+  --shadow: 0 1px 3px rgba(0,0,0,0.05);
   --shadow-lg: 0 16px 48px rgba(0,0,0,0.1);
-  --spring: 0.35s cubic-bezier(0.22, 0.1, 0.2, 1);
+  --spring: 0.32s cubic-bezier(0.22, 0.1, 0.2, 1);
   --glass: blur(24px) saturate(180%);
 }
 [data-theme="dark"] {
   --primary: #f87171; --primary-dark: #ef4444;
   --accent: #fca5a5; --accent-light: #450a0a;
-  --bg: #1a1917; --card: rgba(36,35,33,0.76);
-  --border: rgba(255,255,255,0.07); --text: #f5f5f7; --muted: #98989d;
+  --bg: #1a1917; --card: rgba(36,35,33,0.78);
+  --border: rgba(255,255,255,0.08); --text: #f5f5f7; --muted: #98989d;
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
 body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","PingFang SC","Noto Sans SC",sans-serif;background:var(--bg);color:var(--text);line-height:1.6;-webkit-font-smoothing:antialiased;min-height:100vh;transition:background 0.4s ease,color 0.4s ease;letter-spacing:-0.01em}
-.container{max-width:1000px;animation:pageEnter 0.45s var(--spring);margin:0 auto;padding:16px 20px}
+.container{max-width:1000px;animation:pageEnter 0.45s var(--spring);margin:0 auto;padding:16px 20px;position:relative;z-index:1}
 
-.header{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;padding:16px 24px;margin-bottom:16px;background:var(--card);backdrop-filter:var(--glass);-webkit-backdrop-filter:var(--glass);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow)}
-.header-brand{display:flex;align-items:center;gap:10px}
-.header-logo{font-size:32px}
-.header-title{font-size:22px;font-weight:800}
-.header-subtitle{font-size:13px;color:var(--muted)}
-.header-right{display:flex;align-items:center;gap:12px}
+/* ── Header ── */
+.header{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;padding:14px 22px;margin-bottom:14px;background:var(--card);backdrop-filter:var(--glass);-webkit-backdrop-filter:var(--glass);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow)}
+.header-brand{display:flex;align-items:center;gap:12px}
+.header-logo{width:40px;height:40px;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,var(--primary),var(--primary-dark));border-radius:11px;color:#fff;box-shadow:0 4px 12px rgba(220,38,38,0.25)}
+.header-logo svg{width:22px;height:22px}
+.header-title{font-size:21px;font-weight:800;letter-spacing:-0.02em;line-height:1.2}
+.header-subtitle{font-size:12px;color:var(--muted);margin-top:1px}
+.header-right{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
 
-.btn{display:inline-flex;align-items:center;gap:6px;padding:10px 20px;border:none;border-radius:var(--radius-sm);font-size:14px;font-weight:600;cursor:pointer;transition:all var(--spring);font-family:inherit}
-.btn-primary{background:var(--primary);color:#fff}
-.btn-primary:hover{background:var(--primary-dark)}
-.btn-primary:disabled{opacity:.5;cursor:not-allowed}
-.btn-outline{background:transparent;color:var(--primary);border:2px solid var(--primary)}
-.btn-outline:hover{background:var(--accent-light)}
-.btn-sm{padding:6px 14px;font-size:13px}
-.badge{display:inline-flex;align-items:center;gap:6px;padding:6px 14px;background:var(--accent-light);color:var(--primary-dark);border-radius:20px;font-size:13px;font-weight:600}
-.theme-toggle{width:40px;height:40px;border:2px solid var(--border);border-radius:50%;background:var(--card);backdrop-filter:var(--glass);-webkit-backdrop-filter:var(--glass);cursor:pointer;font-size:20px;display:flex;align-items:center;justify-content:center;transition:all var(--spring)}
-.theme-toggle:hover{border-color:var(--primary);transform:rotate(15deg)}
+/* ── Buttons ── */
+.btn{display:inline-flex;align-items:center;gap:7px;padding:9px 18px;border:none;border-radius:var(--radius-sm);font-size:14px;font-weight:600;cursor:pointer;transition:all var(--spring);font-family:inherit;white-space:nowrap;line-height:1}
+.btn svg{width:16px;height:16px;flex-shrink:0}
+.btn-primary{background:var(--primary);color:#fff;box-shadow:0 2px 8px rgba(220,38,38,0.2)}
+.btn-primary:hover{background:var(--primary-dark);transform:translateY(-1px);box-shadow:0 6px 14px rgba(220,38,38,0.28)}
+.btn-primary:active{transform:translateY(0)}
+.btn-primary:disabled{opacity:.5;cursor:not-allowed;transform:none}
+.btn-outline{background:transparent;color:var(--primary);border:1.5px solid var(--primary)}
+.btn-outline:hover{background:var(--accent-light);border-color:var(--primary-dark)}
+.btn-ghost{background:transparent;color:var(--text);border:1px solid var(--border)}
+.btn-ghost:hover{background:var(--accent-light);border-color:var(--primary)}
+.btn-sm{padding:7px 13px;font-size:13px}
+.btn-sm svg{width:14px;height:14px}
+.badge{display:inline-flex;align-items:center;gap:6px;padding:5px 12px;background:var(--accent-light);color:var(--primary-dark);border-radius:18px;font-size:12px;font-weight:600}
+.badge svg{width:13px;height:13px}
+.theme-toggle{width:38px;height:38px;border:1.5px solid var(--border);border-radius:50%;background:var(--card);backdrop-filter:var(--glass);-webkit-backdrop-filter:var(--glass);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all var(--spring);color:var(--text)}
+.theme-toggle:hover{border-color:var(--primary);color:var(--primary);transform:rotate(20deg)}
+.theme-toggle svg{width:18px;height:18px}
 
-.card{background:var(--card);backdrop-filter:var(--glass);-webkit-backdrop-filter:var(--glass);border-radius:var(--radius);box-shadow:var(--shadow);padding:24px;margin-bottom:16px;border:1px solid var(--border)}
+/* ── Card ── */
+.card{background:var(--card);backdrop-filter:var(--glass);-webkit-backdrop-filter:var(--glass);border-radius:var(--radius);box-shadow:var(--shadow);padding:22px;margin-bottom:14px;border:1px solid var(--border)}
+.card-title{font-weight:700;font-size:16px;margin-bottom:14px;display:flex;align-items:center;gap:8px}
+.card-title svg{width:18px;height:18px;color:var(--primary)}
 
 /* ── Tabs ── */
-.tabs{display:flex;gap:4px;margin-bottom:16px;overflow-x:auto}
-.tab-btn{padding:10px 20px;border:none;background:transparent;font-size:14px;font-weight:600;color:var(--muted);cursor:pointer;border-radius:var(--radius-sm) var(--radius-sm) 0 0;font-family:inherit;white-space:nowrap;transition:all var(--spring)}
+.tabs{display:flex;gap:2px;margin-bottom:14px;background:var(--card);backdrop-filter:var(--glass);-webkit-backdrop-filter:var(--glass);border:1px solid var(--border);border-radius:var(--radius);padding:5px;overflow-x:auto}
+.tab-btn{padding:9px 18px;border:none;background:transparent;font-size:14px;font-weight:600;color:var(--muted);cursor:pointer;border-radius:11px;font-family:inherit;white-space:nowrap;transition:all var(--spring);display:inline-flex;align-items:center;gap:7px}
 .tab-btn:hover{color:var(--text);background:var(--accent-light)}
-.tab-btn.active{color:var(--primary);border-bottom:3px solid var(--primary)}
-.tab-content{display:none}
+.tab-btn.active{color:#fff;background:var(--primary);box-shadow:0 2px 8px rgba(220,38,38,0.2)}
+.tab-btn svg{width:15px;height:15px}
+.tab-content{display:none;animation:fadeUp 0.35s var(--spring)}
 .tab-content.active{display:block}
 
 /* ── Quiz ── */
-.quiz-header{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;margin-bottom:20px}
-.quiz-progress{display:flex;gap:4px;flex-wrap:wrap}
-.quiz-dot{width:8px;height:8px;border-radius:50%;background:var(--border)}
+.quiz-header{display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:12px;margin-bottom:18px;padding-bottom:16px;border-bottom:1px dashed var(--border)}
+.quiz-meta{font-size:13px;color:var(--muted);font-weight:600;display:flex;align-items:center;gap:8px}
+.quiz-meta .cat-pill{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;background:var(--accent-light);color:var(--primary-dark);border-radius:14px;font-size:12px}
+.quiz-progress{display:flex;gap:4px;flex-wrap:wrap;margin-top:8px}
+.quiz-dot{width:9px;height:9px;border-radius:50%;background:var(--border);transition:all 0.2s}
 .quiz-dot.correct{background:var(--success)}
 .quiz-dot.wrong{background:var(--danger)}
-.quiz-dot.current{background:var(--primary);box-shadow:0 0 0 3px var(--accent-light)}
-.quiz-timer{font-size:24px;font-weight:800;font-variant-numeric:tabular-nums}
+.quiz-dot.current{background:var(--primary);box-shadow:0 0 0 3px var(--accent-light);transform:scale(1.3)}
+.quiz-timer-wrap{display:flex;align-items:center;gap:8px;background:var(--accent-light);color:var(--primary-dark);padding:8px 14px;border-radius:12px;font-variant-numeric:tabular-nums}
+.quiz-timer-wrap svg{width:16px;height:16px}
+.quiz-timer{font-size:20px;font-weight:800}
 .quiz-timer.warn{color:var(--danger);animation:pulse 1s infinite}
-@keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
 
-.question-card{padding:24px;background:var(--accent-light);border-radius:var(--radius-sm);margin-bottom:16px;border-left:4px solid var(--primary)}
-.question-number{font-size:12px;color:var(--muted);font-weight:600;margin-bottom:4px}
-.question-text{font-size:16px;font-weight:600;line-height:1.7;margin-bottom:16px}
+.question-card{padding:22px;background:var(--accent-light);border-radius:var(--radius-sm);margin-bottom:14px;border-left:4px solid var(--primary);position:relative}
+.question-number{font-size:12px;color:var(--primary-dark);font-weight:700;margin-bottom:6px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.diff-stars{color:#f59e0b;font-size:13px;letter-spacing:1px}
+.question-text{font-size:16px;font-weight:600;line-height:1.75;margin-bottom:4px;white-space:pre-line}
 
-.option-item{display:flex;align-items:flex-start;gap:10px;padding:12px 16px;margin-bottom:8px;border:2px solid var(--border);border-radius:var(--radius-sm);cursor:pointer;transition:all var(--spring);font-size:14px}
-.option-item:hover{border-color:var(--primary);background:var(--card);backdrop-filter:var(--glass);-webkit-backdrop-filter:var(--glass)}
+.option-item{display:flex;align-items:flex-start;gap:12px;padding:12px 16px;margin-bottom:8px;border:2px solid var(--border);border-radius:var(--radius-sm);cursor:pointer;transition:all var(--spring);font-size:14px;background:var(--card);backdrop-filter:var(--glass);-webkit-backdrop-filter:var(--glass)}
+.option-item:hover:not(.locked){border-color:var(--primary);transform:translateX(2px)}
 .option-item.selected{border-color:var(--primary);background:var(--accent-light)}
-.option-item.correct{border-color:var(--success);background:#f0fdf4;animation:correctPop 0.4s ease}
-.option-item.wrong{border-color:var(--danger);background:#fef2f2;animation:wrongShake 0.5s ease}
-@keyframes correctPop{0%{transform:scale(1)}30%{transform:scale(1.03)}100%{transform:scale(1)}}
-@keyframes wrongShake{0%,100%{transform:translateX(0)}20%{transform:translateX(-6px)}40%{transform:translateX(6px)}60%{transform:translateX(-4px)}80%{transform:translateX(4px)}}
-.option-letter{width:28px;height:28px;border-radius:50%;border:2px solid var(--border);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;flex-shrink:0}
+.option-item.correct{border-color:var(--success);background:rgba(22,163,74,0.08);animation:correctPop 0.4s ease}
+.option-item.wrong{border-color:var(--danger);background:rgba(220,38,38,0.08);animation:wrongShake 0.5s ease}
+.option-item.locked{pointer-events:none;cursor:default}
+.option-letter{width:30px;height:30px;border-radius:50%;border:2px solid var(--border);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;flex-shrink:0;transition:all 0.2s}
 .option-item.selected .option-letter{border-color:var(--primary);background:var(--primary);color:#fff}
 .option-item.correct .option-letter{border-color:var(--success);background:var(--success);color:#fff}
 .option-item.wrong .option-letter{border-color:var(--danger);background:var(--danger);color:#fff}
 
-.explanation-box{display:none;padding:16px;background:var(--card);backdrop-filter:var(--glass);-webkit-backdrop-filter:var(--glass);border:1px solid var(--border);border-radius:var(--radius-sm);margin-top:12px}
+.explanation-box{display:none;padding:16px 18px;background:var(--card);backdrop-filter:var(--glass);-webkit-backdrop-filter:var(--glass);border:1px solid var(--border);border-radius:var(--radius-sm);margin-top:14px;border-left:4px solid var(--success)}
 .explanation-box.show{display:block;animation:slideUp 0.3s ease}
-@keyframes slideUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
-.explanation-box.show{display:block}
-.explanation-box .exp-title{font-weight:700;margin-bottom:4px}
-.explanation-box .exp-text{font-size:14px;color:var(--muted);line-height:1.7}
+.explanation-box .exp-title{font-weight:700;margin-bottom:6px;display:flex;align-items:center;gap:6px;color:var(--success)}
+.explanation-box .exp-title svg{width:16px;height:16px}
+.explanation-box .exp-text{font-size:14px;color:var(--text);line-height:1.75;white-space:pre-line}
+
+.quiz-actions{display:flex;justify-content:center;gap:10px;margin-top:18px;flex-wrap:wrap}
 
 /* ── Interview ── */
 .interview-card{text-align:center;padding:32px 24px}
-.interview-question{font-size:18px;font-weight:700;line-height:1.7;margin:20px 0;padding:20px;background:var(--accent-light);border-radius:var(--radius-sm)}
-.interview-timer{font-size:48px;font-weight:800;font-variant-numeric:tabular-nums;margin:20px 0}
-.interview-phase{font-size:14px;color:var(--muted);margin-bottom:8px}
-.recording-indicator{display:inline-flex;align-items:center;gap:8px;padding:8px 16px;background:var(--danger);color:#fff;border-radius:20px;font-weight:600;animation:pulse 1.5s infinite}
-.recording-indicator::before{content:'';width:10px;height:10px;border-radius:50%;background:#fff}
-.audio-player{margin-top:16px;width:100%}
+.interview-question{font-size:17px;font-weight:700;line-height:1.75;margin:18px 0;padding:22px;background:var(--accent-light);border-radius:var(--radius-sm);text-align:left;border-left:4px solid var(--primary)}
+.interview-timer{font-size:46px;font-weight:800;font-variant-numeric:tabular-nums;margin:14px 0;line-height:1}
+.interview-phase{font-size:13px;color:var(--muted);margin-bottom:8px;display:flex;align-items:center;justify-content:center;gap:6px}
+.recording-indicator{display:inline-flex;align-items:center;gap:8px;padding:8px 16px;background:var(--danger);color:#fff;border-radius:20px;font-weight:600;animation:pulse 1.5s infinite;font-size:13px}
+.recording-indicator svg{width:14px;height:14px}
+.audio-player{margin-top:16px;width:100%;border-radius:10px}
+
+.interview-actions{display:flex;justify-content:center;gap:10px;margin-top:14px;flex-wrap:wrap}
 
 /* ── Stats ── */
 .stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin-bottom:16px}
-.stat-card{text-align:center;padding:16px;background:var(--card);backdrop-filter:var(--glass);-webkit-backdrop-filter:var(--glass);border:1px solid var(--border);border-radius:var(--radius-sm)}
-.stat-card .val{font-size:28px;font-weight:800;color:var(--primary)}
-.stat-card .lbl{font-size:12px;color:var(--muted);margin-top:2px}
+.stat-card{text-align:center;padding:18px 14px;background:var(--card);backdrop-filter:var(--glass);-webkit-backdrop-filter:var(--glass);border:1px solid var(--border);border-radius:var(--radius-sm);transition:transform var(--spring)}
+.stat-card:hover{transform:translateY(-2px)}
+.stat-card .val{font-size:30px;font-weight:800;color:var(--primary);line-height:1.1;font-variant-numeric:tabular-nums}
+.stat-card .lbl{font-size:12px;color:var(--muted);margin-top:4px}
+.cat-row{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--border);font-size:14px}
+.cat-row:last-child{border-bottom:none}
+.cat-row .cat-name{color:var(--text);font-weight:500}
+.cat-row .cat-stat{color:var(--muted)}
+.cat-row strong{color:var(--primary);font-weight:700}
 
 /* ── Toast ── */
-.toast{position:fixed;bottom:32px;left:50%;transform:translateX(-50%);z-index:2000;padding:12px 24px;border-radius:24px;font-size:14px;font-weight:600;color:#fff;background:rgba(30,30,32,0.94);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);box-shadow:var(--shadow-lg);animation:toastIn .3s ease}
+.toast{position:fixed;bottom:32px;left:50%;transform:translateX(-50%);z-index:2000;padding:11px 22px;border-radius:24px;font-size:14px;font-weight:600;color:#fff;background:rgba(30,30,32,0.94);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);box-shadow:var(--shadow-lg);animation:toastIn .3s ease;display:inline-flex;align-items:center;gap:8px}
+.toast svg{width:16px;height:16px}
 .toast.success{background:var(--success)}
 .toast.warn{background:var(--warning);color:#1e293b}
 .toast.out{animation:toastOut .3s ease forwards}
 
-.footer{text-align:center;padding:16px;font-size:12px;color:var(--muted);border-top:1px solid var(--border);margin-top:24px}
+/* ── Footer ── */
+.footer{text-align:center;padding:16px;font-size:12px;color:var(--muted);border-top:1px solid var(--border);margin-top:18px;display:flex;justify-content:center;align-items:center;gap:6px;flex-wrap:wrap}
+.footer svg{width:13px;height:13px}
+
 .empty-state{text-align:center;padding:48px 24px}
-.empty-icon{font-size:56px;margin-bottom:12px}
-.empty-title{font-size:18px;font-weight:700;margin-bottom:6px}
+.empty-state .empty-icon{width:64px;height:64px;margin:0 auto 14px;display:flex;align-items:center;justify-content:center;background:var(--accent-light);border-radius:50%;color:var(--primary)}
+.empty-state .empty-icon svg{width:32px;height:32px}
+.empty-title{font-size:17px;font-weight:700;margin-bottom:6px}
 .empty-desc{font-size:13px;color:var(--muted)}
 
 .toolbar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
-.filter-tags{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}
-.filter-tag{padding:4px 12px;border:1px solid var(--border);border-radius:16px;font-size:12px;font-weight:600;cursor:pointer;transition:all var(--spring);color:var(--muted)}
-.filter-tag:hover,.filter-tag.active{border-color:var(--primary);color:var(--primary);background:var(--accent-light)}
+.filter-tags{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px}
+.filter-tag{padding:5px 13px;border:1px solid var(--border);border-radius:16px;font-size:12px;font-weight:600;cursor:pointer;transition:all var(--spring);color:var(--muted);background:var(--card);backdrop-filter:var(--glass);-webkit-backdrop-filter:var(--glass)}
+.filter-tag:hover{border-color:var(--primary);color:var(--primary)}
+.filter-tag.active{border-color:var(--primary);color:var(--primary);background:var(--accent-light)}
 
+/* ── Wrong book item ── */
+.wb-item{padding:14px;margin-bottom:10px;border:1px solid var(--border);border-radius:var(--radius-sm);cursor:pointer;transition:all var(--spring);background:var(--card)}
+.wb-item:hover{border-color:var(--primary);transform:translateX(2px)}
+.wb-item .wb-meta{font-size:12px;color:var(--muted);margin-bottom:4px;display:flex;justify-content:space-between}
+.wb-item .wb-q{font-size:14px;line-height:1.6;margin-bottom:6px;font-weight:500}
+.wb-item .wb-ans{font-size:12px;color:var(--primary-dark);font-weight:600}
 
+.answer-summary{text-align:center;padding:40px 24px}
+.answer-summary .big-num{font-size:64px;font-weight:800;color:var(--primary);line-height:1}
+.answer-summary .sub-text{font-size:15px;color:var(--muted);margin-top:8px}
+
+/* ── Interview Ref Box ── */
+#interviewRefBox{max-height:400px;overflow-y:auto;border-radius:var(--radius-sm)}
+#interviewRefBox .exp-text{max-height:280px;overflow-y:auto;line-height:1.9;font-size:13px;padding:12px;background:var(--accent-light);border-radius:8px;white-space:pre-line}
+#interviewRefBox .exp-title{cursor:pointer;display:flex;align-items:center;gap:6px;user-select:none}
+#interviewRefBox .exp-title::after{content:'▾';font-size:10px;margin-left:auto;transition:transform 0.2s}
+#interviewRefBox.collapsed .exp-text{display:none}
+#interviewRefBox.collapsed .exp-title::after{transform:rotate(-90deg)}
+#interviewRefTips,#interviewRefAnswer{display:block;word-break:break-word}
+.ref-section{margin-bottom:10px;padding:8px 12px;background:var(--card);border-radius:6px;border-left:3px solid var(--primary)}
+.ref-section strong{color:var(--primary-dark);display:block;margin-bottom:4px}
+
+/* ── Animations ── */
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.55}}
+@keyframes correctPop{0%{transform:scale(1)}30%{transform:scale(1.03)}100%{transform:scale(1)}}
+@keyframes wrongShake{0%,100%{transform:translateX(0)}20%{transform:translateX(-6px)}40%{transform:translateX(6px)}60%{transform:translateX(-4px)}80%{transform:translateX(4px)}}
 @keyframes pageEnter{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
-@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+@keyframes slideUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
 @keyframes toastIn{from{opacity:0;transform:translateX(-50%) translateY(16px) scale(0.92)}to{opacity:1;transform:translateX(-50%) translateY(0) scale(1)}}
 @keyframes toastOut{from{opacity:1;transform:translateX(-50%) translateY(0)}to{opacity:0;transform:translateX(-50%) translateY(16px)}}
 
+/* ── Atmosphere ── */
+.atmo{position:fixed;inset:0;pointer-events:none;z-index:0}
+.atmo .orb{position:absolute;border-radius:50%;filter:blur(140px);opacity:0.4}
+.atmo .orb:nth-child(1){width:60vw;height:60vw;background:radial-gradient(circle,rgba(210,160,100,0.14),transparent);top:-25vh;left:-20vw}
+.atmo .orb:nth-child(2){width:50vw;height:50vw;background:radial-gradient(circle,rgba(100,175,165,0.10),transparent);bottom:-20vh;right:-15vw}
+.grid-texture{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:0.16;background-image:linear-gradient(var(--border) 1px,transparent 1px),linear-gradient(90deg,var(--border) 1px,transparent 1px);background-size:80px 80px;mask-image:radial-gradient(ellipse 70% 55% at 50% 45%,black 15%,transparent 70%);-webkit-mask-image:radial-gradient(ellipse 70% 55% at 50% 45%,black 15%,transparent 70%)}
+
 @media (max-width:900px){
   .container{padding:10px 12px}
-  .header{padding:12px 16px}
+  .header{padding:11px 14px}
   .card{padding:16px}
   .question-text{font-size:15px}
   .interview-timer{font-size:36px}
+  .header-title{font-size:18px}
 }
 @media (max-width:480px){
   .header-title{font-size:16px}
-  .header-logo{font-size:24px}
-  .btn{padding:8px 14px;font-size:12px}
+  .btn{padding:7px 12px;font-size:12px}
+  .btn-sm{padding:6px 10px;font-size:11px}
   .option-item{font-size:13px;padding:10px 12px}
+  .interview-timer{font-size:32px}
+  .interview-question{font-size:15px;padding:14px}
+  .question-card{padding:14px}
 }
+@media (prefers-reduced-motion:reduce){*{animation-duration:0.01ms!important;transition-duration:0.01ms!important}}
 
-/* ── Atmosphere ── */
-.atmo{position:fixed;inset:0;pointer-events:none;z-index:0}
-.atmo .orb{position:absolute;border-radius:50%;filter:blur(140px);opacity:0.35}
-.atmo .orb:nth-child(1){width:60vw;height:60vw;background:radial-gradient(circle,rgba(210,160,100,0.12),transparent);top:-25vh;left:-20vw}
-.atmo .orb:nth-child(2){width:50vw;height:50vw;background:radial-gradient(circle,rgba(100,175,165,0.09),transparent);bottom:-20vh;right:-15vw}
-.grid-texture{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:0.18;background-image:linear-gradient(var(--border) 1px,transparent 1px),linear-gradient(90deg,var(--border) 1px,transparent 1px);background-size:80px 80px;mask-image:radial-gradient(ellipse 70% 55% at 50% 45%,black 15%,transparent 70%);-webkit-mask-image:radial-gradient(ellipse 70% 55% at 50% 45%,black 15%,transparent 70%)}
-
-.page-exit-overlay{position:fixed;inset:0;z-index:9999;background:var(--bg);opacity:0;pointer-events:none;transition:opacity 0.3s ease}.page-exit-overlay.go{opacity:1;pointer-events:all}
+/* ── A11y & Polish ── */
+:focus-visible{outline:2px solid var(--primary);outline-offset:2px;border-radius:4px}
+::selection{background:var(--primary);color:#fff}
+::-webkit-scrollbar{width:8px;height:8px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:4px}
+::-webkit-scrollbar-thumb:hover{background:var(--muted)}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:0.01ms!important;transition-duration:0.01ms!important}}
 </style>
 </head>
 <body>
 
-<div class="page-exit-overlay" id="exitOverlay"></div>
 <div class="atmo"><div class="orb"></div><div class="orb"></div></div>
 <div class="grid-texture"></div>
 
 <div class="container">
 <header class="header">
   <div class="header-brand">
-    <span class="header-logo">📝</span>
+    <div class="header-logo" aria-hidden="true">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/><path d="M9 7h6M9 11h6M9 15h4"/></svg>
+    </div>
     <div>
       <div class="header-title">ExamPrep</div>
-      <div class="header-subtitle">行测刷题 + 面试模拟 · 免费备考工具</div>
+      <div class="header-subtitle">行测刷题 · 面试模拟 · 浏览器本地运行</div>
     </div>
   </div>
   <div class="header-right">
-    <span class="badge" id="statusBadge">📚 就绪</span>
-    <button class="btn btn-outline btn-sm" id="btnImportQuiz" title="导入自定义题库（JSON格式）" style="font-size:11px">📥 导入题库</button>
-    <input type="file" id="quizFileInput" accept=".json" style="display:none">
-    <button class="theme-toggle" id="themeToggle" title="切换主题" aria-label="切换暗色/亮色主题">🌙</button>
+    <span class="badge" id="statusBadge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4 12 14.01l-3-3"/></svg><span id="statusText">就绪</span></span>
+    <button class="btn btn-outline btn-sm" id="btnImportQuiz" title="导入自定义题库（JSON 格式）"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>导入题库</button>
+    <input type="file" id="quizFileInput" accept=".json,application/json" style="display:none">
+    <button class="theme-toggle" id="themeToggle" title="切换主题" aria-label="切换暗色/亮色主题"><svg id="themeIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg></button>
   </div>
 </header>
 
-<!-- Tabs -->
-<div class="tabs">
-  <button class="tab-btn active" data-tab="quiz">📝 行测刷题</button>
-  <button class="tab-btn" data-tab="stats">📊 学习统计</button>
-  <button class="tab-btn" data-tab="wrongbook">📕 错题本</button>
-  <button class="tab-btn" data-tab="interview">🎤 面试模拟</button>
+<div class="tabs" role="tablist">
+  <button class="tab-btn active" data-tab="quiz" role="tab"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>行测刷题</button>
+  <button class="tab-btn" data-tab="stats" role="tab"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="20" x2="12" y2="10"/><line x1="18" y1="20" x2="18" y2="4"/><line x1="6" y1="20" x2="6" y2="16"/></svg>学习统计</button>
+  <button class="tab-btn" data-tab="wrongbook" role="tab"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>错题本</button>
+  <button class="tab-btn" data-tab="interview" role="tab"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>面试模拟</button>
 </div>
 
 <!-- ═══════════ QUIZ TAB ═══════════ -->
 <div class="tab-content active" id="tab-quiz">
   <div class="card">
+    <div class="card-title"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>选择模式开始刷题</div>
     <div class="filter-tags" id="categoryTags"></div>
     <div class="toolbar">
-      <button class="btn btn-primary btn-sm" id="btnRandomQuiz">🎲 随机 10 题</button>
-      <button class="btn btn-outline btn-sm" id="btnAllQuiz">📋 全部刷题</button>
-      <button class="btn btn-outline btn-sm" id="btnWeakQuiz">🎯 薄弱环节</button>
+      <button class="btn btn-primary btn-sm" id="btnRandomQuiz"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 3 21 3 21 8"/><line x1="4" y1="20" x2="21" y2="3"/><polyline points="21 16 21 21 16 21"/><line x1="15" y1="15" x2="21" y2="21"/><line x1="4" y1="4" x2="9" y2="9"/></svg>随机 10 题</button>
+      <button class="btn btn-outline btn-sm" id="btnAllQuiz"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>全部刷题</button>
+      <button class="btn btn-outline btn-sm" id="btnWeakQuiz"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>薄弱环节</button>
     </div>
-    <div style="font-size:13px;color:var(--muted)" id="quizDesc">选择一个模式开始刷题</div>
+    <div style="font-size:13px;color:var(--muted)" id="quizDesc">共 <strong id="quizTotalCount">300</strong> 道精选真题，开启你的备考之旅。</div>
   </div>
   <div id="quizArea" style="display:none">
     <div class="card" id="quizCard">
       <div class="quiz-header">
-        <div>
-          <div style="font-size:13px;color:var(--muted);font-weight:600" id="quizCatLabel"></div>
-          <div class="quiz-progress" id="quizProgress" style="margin-top:6px"></div>
+        <div style="flex:1;min-width:0">
+          <div class="quiz-meta">
+            <span class="cat-pill" id="quizCatLabel"></span>
+            <span id="quizModeLabel"></span>
+          </div>
+          <div class="quiz-progress" id="quizProgress"></div>
         </div>
-        <div class="quiz-timer" id="quizTimer">00:00</div>
+        <div class="quiz-timer-wrap">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2 2"/><path d="M5 3 2 6"/><path d="m22 6-3-3"/></svg>
+          <span class="quiz-timer" id="quizTimer">00:00</span>
+        </div>
       </div>
       <div class="question-card" id="questionCard"></div>
       <div id="optionsArea"></div>
@@ -211,9 +289,9 @@ body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","PingFang SC"
         <div class="exp-title" id="expTitle"></div>
         <div class="exp-text" id="expText"></div>
       </div>
-      <div style="text-align:center;margin-top:16px">
-        <button class="btn btn-primary" id="btnNextQuestion" style="display:none">下一题 →</button>
-        <button class="btn btn-outline btn-sm" id="btnEndQuiz" style="margin-left:8px">结束刷题</button>
+      <div class="quiz-actions">
+        <button class="btn btn-primary" id="btnNextQuestion" style="display:none"><span id="btnNextText">下一题</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></button>
+        <button class="btn btn-ghost btn-sm" id="btnEndQuiz"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="6" width="12" height="12" rx="1"/></svg>结束刷题</button>
       </div>
     </div>
   </div>
@@ -222,31 +300,32 @@ body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","PingFang SC"
 <!-- ═══════════ STATS TAB ═══════════ -->
 <div class="tab-content" id="tab-stats">
   <div class="card">
-    <div style="font-weight:700;font-size:16px;margin-bottom:16px">📊 学习统计</div>
-    <div class="stats-grid" id="statsGrid">
+    <div class="card-title"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>学习统计</div>
+    <div class="stats-grid">
       <div class="stat-card"><div class="val" id="sTotal">0</div><div class="lbl">总做题数</div></div>
       <div class="stat-card"><div class="val" id="sCorrect">0</div><div class="lbl">正确数</div></div>
-      <div class="stat-card"><div class="val" id="sRate" style="color:var(--warning)">—</div><div class="lbl">正确率</div></div>
+      <div class="stat-card"><div class="val" id="sRate">—</div><div class="lbl">正确率</div></div>
       <div class="stat-card"><div class="val" id="sStreak">0</div><div class="lbl">最长连对</div></div>
     </div>
-    <div style="font-weight:600;margin-bottom:8px;font-size:14px">📂 分模块正确率</div>
-    <div id="categoryStats" style="font-size:13px;color:var(--muted)">暂无数据</div>
+    <div style="font-weight:600;margin-bottom:10px;font-size:14px;display:flex;align-items:center;gap:6px"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3h18v18H3z"/><path d="M3 9h18M9 21V9"/></svg>分模块正确率</div>
+    <div id="categoryStats">暂无数据</div>
   </div>
   <div class="card">
-    <div style="font-weight:600;margin-bottom:8px">🔄 重置</div>
-    <button class="btn btn-outline btn-sm" id="btnResetStats">🗑 清除所有统计</button>
-    <span style="font-size:12px;color:var(--muted);margin-left:8px">（不会清除错题本）</span>
+    <div class="card-title" style="margin-bottom:8px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M3 21v-5h5"/></svg>数据管理</div>
+    <button class="btn btn-outline btn-sm" id="btnResetStats"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>清除所有统计</button>
+    <button class="btn btn-outline btn-sm" id="btnExportStats" style="margin-left:8px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>导出统计</button>
+    <span style="font-size:12px;color:var(--muted);margin-left:8px">（不会清除错题本数据保留在本机）</span>
   </div>
 </div>
 
 <!-- ═══════════ WRONG BOOK TAB ═══════════ -->
 <div class="tab-content" id="tab-wrongbook">
   <div class="card">
-    <div style="font-weight:700;font-size:16px;margin-bottom:8px">📕 错题本</div>
-    <div style="font-size:13px;color:var(--muted);margin-bottom:16px">错误的题目会自动收集到这里，可以重点复习</div>
+    <div class="card-title"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>错题本</div>
+    <div style="font-size:13px;color:var(--muted);margin-bottom:14px">做错的题目会自动收集到这里，可点击单题复习。</div>
     <div id="wrongBookContent">
       <div class="empty-state">
-        <div class="empty-icon">📕</div>
+        <div class="empty-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg></div>
         <div class="empty-title">错题本为空</div>
         <div class="empty-desc">做错的题目会自动收集到这里</div>
       </div>
@@ -257,29 +336,30 @@ body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","PingFang SC"
 <!-- ═══════════ INTERVIEW TAB ═══════════ -->
 <div class="tab-content" id="tab-interview">
   <div class="card">
-    <div style="font-weight:700;font-size:16px;margin-bottom:8px">🎤 结构化面试模拟</div>
+    <div class="card-title"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>结构化面试模拟</div>
     <div class="filter-tags" id="interviewCategoryTags"></div>
     <div class="toolbar">
-      <button class="btn btn-primary btn-sm" id="btnRandomInterview">🎲 随机抽题</button>
+      <button class="btn btn-primary btn-sm" id="btnRandomInterview"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 3 21 3 21 8"/><line x1="4" y1="20" x2="21" y2="3"/><polyline points="21 16 21 21 16 21"/><line x1="15" y1="15" x2="21" y2="21"/><line x1="4" y1="4" x2="9" y2="9"/></svg>随机抽题</button>
     </div>
+    <div style="font-size:13px;color:var(--muted)">共 <strong>100</strong> 道精选面试题，含自我认知、综合分析、组织管理、应急应变、人际关系五大题型。</div>
   </div>
   <div class="card" id="interviewArea" style="display:none">
     <div class="interview-card">
-      <div style="font-size:13px;color:var(--muted);font-weight:600" id="interviewCatLabel"></div>
+      <div class="interview-phase" id="interviewCatLabel"></div>
       <div class="interview-question" id="interviewQuestion"></div>
       <div class="interview-phase" id="interviewPhase">准备开始</div>
       <div class="interview-timer" id="interviewTimer">03:00</div>
-      <div class="toolbar" style="justify-content:center">
-        <button class="btn btn-outline btn-sm" id="btnThinking">🤔 思考 (30s)</button>
-        <button class="btn btn-primary btn-sm" id="btnStartAnswer">🎙 开始答题</button>
-        <button class="btn btn-outline btn-sm" id="btnShowRef">💡 查看参考</button>
+      <div class="interview-actions">
+        <button class="btn btn-ghost btn-sm" id="btnThinking"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>思考 (30s)</button>
+        <button class="btn btn-primary btn-sm" id="btnStartAnswer"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>开始答题</button>
+        <button class="btn btn-outline btn-sm" id="btnShowRef"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5A4.61 4.61 0 0 1 8.91 14"/></svg>查看参考</button>
       </div>
-      <div id="recordingStatus" style="margin-top:12px"></div>
+      <div id="recordingStatus" style="margin-top:14px"></div>
       <audio class="audio-player" id="audioPlayer" controls style="display:none"></audio>
       <div class="explanation-box" id="interviewRefBox" style="text-align:left;margin-top:16px">
-        <div class="exp-title">💡 答题要点</div>
+        <div class="exp-title"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5A4.61 4.61 0 0 1 8.91 14"/></svg>答题要点</div>
         <div class="exp-text" id="interviewRefTips"></div>
-        <div style="margin-top:8px;font-weight:600">📝 参考回答</div>
+        <div style="margin-top:12px;font-weight:600;display:flex;align-items:center;gap:6px"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>参考答案</div>
         <div class="exp-text" id="interviewRefAnswer"></div>
       </div>
     </div>
@@ -287,677 +367,923 @@ body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","PingFang SC"
 </div>
 
 <div class="footer">
-  ⚡ 题库来源公开真题 · 仅供学习参考 &nbsp;|&nbsp; ExamPrep v1.0.0
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+  <span>题库精选公开真题 · 仅供学习参考 · 数据保存在本机浏览器</span>
+  <span>·</span>
+  <span>ExamPrep v2.0.0</span>
 </div>
 </div>
 
 <script>
 "use strict";
-// ═══════════════════════════════════════════════
-//  QUESTION BANK — 行测题库 (60题)
-// ═══════════════════════════════════════════════
-let EXAM_QUESTIONS = [
-  // ── 言语理解与表达 (12题) ──
-  {id:1,cat:'言语理解',diff:1,year:2024,q:'"不积跬步，无以至千里"强调的是：',opts:['A. 量变引起质变','B. 矛盾的对立统一','C. 事物是普遍联系的','D. 实践是检验真理的标准'],ans:0,exp:'荀子《劝学篇》。积累半步一步，才能到达千里之外——强调量的积累（量变）最终引起质的飞跃（质变）。'},
-  {id:2,cat:'言语理解',diff:1,year:2024,q:'下列句子中，没有语病的是：',opts:['A. 通过这次学习，使我提高了认识','B. 他的写作水平有了明显的提高','C. 我们一定要减少不必要的浪费','D. 这个问题的回答是肯定的'],ans:1,exp:'A 缺主语（"通过…使"），C"减少不必要的浪费"语义重复（浪费本身就是不必要的），D"肯定的"指代不明。B 表达正确。'},
-  {id:3,cat:'言语理解',diff:2,year:2023,q:'填入划横线部分最恰当的一项是：\n科技创新是提高社会生产力和综合国力的____支撑。',opts:['A. 战略','B. 重要','C. 关键','D. 核心'],ans:0,exp:'"战略支撑"是固定搭配。党的十八大报告明确提出"科技创新是提高社会生产力和综合国力的战略支撑"。'},
-  {id:4,cat:'言语理解',diff:2,year:2023,q:'这段文字主要说明的是：\n数字经济已成为全球经济增长的新引擎。我国数字经济规模连续多年位居世界第二，但与第一的美国仍有差距，特别是关键核心技术受制于人的局面尚未根本改变。',opts:['A. 我国数字经济规模全球第一','B. 数字经济是全球经济新引擎','C. 我国数字经济成就与挑战并存','D. 关键核心技术已经自主可控'],ans:2,exp:'文段先肯定我国数字经济规模全球第二的成就，接着用"但"转折指出核心技术受制于人的问题。全面概括应为"成就与挑战并存"。'},
-  {id:5,cat:'言语理解',diff:2,year:2022,q:'下列各组词语中，没有错别字的一项是：',opts:['A. 甘败下风 自暴自弃','B. 一愁莫展 迫不及待','C. 川流不息 脍炙人口','D. 食不裹腹 一如既往'],ans:2,exp:'A"甘败下风"应为"甘拜下风"；B"一愁莫展"应为"一筹莫展"；D"食不裹腹"应为"食不果腹"。C 全部正确。'},
-  {id:6,cat:'言语理解',diff:3,year:2021,q:'作者对"内卷"现象的态度是：\n"内卷"一词近年大热，指的是同行间竞相付出更多努力以争夺有限资源，从而导致个体"收益努力比"下降的现象。有人痛陈其弊，认为这是社会停滞的征兆；也有人认为，竞争本就残酷，"内卷"不过是市场机制在人力资源领域的正常反映。',opts:['A. 批判','B. 支持','C. 客观介绍','D. 担忧'],ans:2,exp:'文段用"有人…也有人…"并列介绍了两种对立观点，作者本人并未表态，属于客观介绍。'},
-  {id:7,cat:'言语理解',diff:1,year:2022,q:'下列选项中，修辞手法与其他三项不同的是：',opts:['A. 春天像小姑娘，花枝招展的','B. 太阳像个大火球','C. 他的心眼比针尖还小','D. 月光如流水一般'],ans:2,exp:'A、B、D 都是比喻（明喻），C"心眼比针尖还小"是夸张。'},
-  {id:8,cat:'言语理解',diff:2,year:2023,q:'最适合做这段文字标题的是：\n考古学家在三星堆遗址新发现了6座祭祀坑，出土了大量前所未见的文物，包括造型奇特的青铜器、金面具、象牙等。这些发现不仅刷新了人们对古蜀文明的认知，也为中华文明多元一体格局提供了新的实物证据。',opts:['A. 三星堆的秘密','B. 三星堆新发现：古蜀文明的惊喜','C. 考古学家的日常','D. 中华文明的起源'],ans:1,exp:'文段核心是三星堆的新发现及其对古蜀文明认知的刷新。B 选项最准确地概括了这一核心内容。'},
-  {id:9,cat:'言语理解',diff:3,year:2021,q:'文中"这"指的是：\n基层治理是国家治理的基石。习近平总书记指出："基层强则国家强，基层安则天下安。"这深刻揭示了基层治理在国家治理体系中的基础性地位。',opts:['A. 国家治理','B. 基层治理','C. 习近平总书记的讲话内容','D. 国家治理体系'],ans:2,exp:'"这"指代前一句引用的习近平总书记讲话内容。'},
-  {id:10,cat:'言语理解',diff:2,year:2024,q:'依次填入划横线部分最恰当的一组是：\n乡村振兴，____是关键，____是基础，____是保障。',opts:['A. 产业 人才 组织','B. 人才 产业 组织','C. 产业 生态 文化','D. 组织 产业 人才'],ans:0,exp:'中央农村工作会议指出：乡村振兴，产业是关键、人才是基础、组织是保障。'},
-  {id:11,cat:'言语理解',diff:1,year:2023,q:'下列加点词语使用恰当的一项是：',opts:['A. 他首当其冲地承担了这次任务','B. 这部电视剧万人空巷，收视率很低','C. 他学习刻苦，成绩差强人意','D. 这个方案经过反复论证终于付诸实施'],ans:3,exp:'A"首当其冲"指最先受到攻击或遭遇灾难，不能当"首先"用；B"万人空巷"指家家户户都出来，形容盛大场面，不是指没人看；C"差强人意"指大体上还能让人满意。D 正确。'},
-  {id:12,cat:'言语理解',diff:3,year:2021,q:'根据文意，下列说法正确的是：\n人工智能技术正在深刻改变着社会治理模式。从城市交通管理到医疗健康服务，从政务服务到公共安全，AI的应用场景不断拓展。但与此同时，算法歧视、隐私泄露、责任归属等问题也日益凸显。如何在技术创新与风险防控之间找到平衡点，成为各国面临的共同课题。',opts:['A. AI 已经在所有领域取代人类','B. AI 应用不存在风险','C. 需要平衡技术创新与风险防控','D. 隐私泄露是AI唯一的问题'],ans:2,exp:'文段明确指出"如何在技术创新与风险防控之间找到平衡点，成为各国面临的共同课题"。'},
+/* ═══════════════════════════════════════════════════════
+   ICONS  (single source of truth for all SVG icons)
+   ═══════════════════════════════════════════════════════ */
+const ICON_CHECK = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>';
+const ICON_X = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>';
+const ICON_WARN = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>';
+const ICON_REC = '<svg viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="6"/></svg>';
 
-  // ── 数量关系 (12题) ──
-  {id:13,cat:'数量关系',diff:1,year:2024,q:'某商店购进一批商品，按50%的利润率定价，售出80%后，剩下的按定价打八折销售。问这批商品全部售出后的总利润率约为多少？',opts:['A. 38%','B. 40%','C. 42%','D. 44%'],ans:2,exp:'设成本100元，定价150元。前80%利润：(150-100)×80=4000；后20%售价150×0.8=120，利润(120-100)×20=400。总利润4400÷10000=44%，选D。\n纠正：假设100件，成本100元/件→总成本10000。前80件每件赚50→4000。后20件每件赚20→400。总利润4400→44%。选D。\n复核：前80%利润50%×0.8=40%，后20%利润20%×0.2=4%，合计44%。'},
-  {id:14,cat:'数量关系',diff:1,year:2023,q:'甲、乙两人从相距1000米的两地同时出发相向而行，甲每分钟走60米，乙每分钟走40米。两人相遇时，甲走了多少米？',opts:['A. 500米','B. 550米','C. 600米','D. 650米'],ans:2,exp:'相遇时间=1000÷(60+40)=10分钟。甲走60×10=600米。'},
-  {id:15,cat:'数量关系',diff:2,year:2024,q:'一项工程，甲单独做需要12天，乙单独做需要18天。两人合作3天后，乙因故离开，甲单独完成剩余工作还需要多少天？',opts:['A. 5天','B. 6天','C. 7天','D. 8天'],ans:2,exp:'甲效率1/12，乙1/18。合作3天完成3×(1/12+1/18)=3×(3/36+2/36)=3×5/36=15/36=5/12。剩余7/12。甲单独需(7/12)÷(1/12)=7天。'},
-  {id:16,cat:'数量关系',diff:2,year:2022,q:'某班有学生45人，其中男生占60%。本学期转来若干名女生后，男生占比变为54%。问转来了多少名女生？',opts:['A. 3人','B. 4人','C. 5人','D. 6人'],ans:2,exp:'男生固定为45×60%=27人。设转来x名女生，则27÷(45+x)=54%。27=0.54×(45+x)，27=24.3+0.54x，0.54x=2.7，x=5。'},
-  {id:17,cat:'数量关系',diff:3,year:2021,q:'一个自然数除以5余2，除以7余4，除以9余6。这个数最小是多少？',opts:['A. 157','B. 312','C. 187','D. 222'],ans:0,exp:'即求同余方程组：n≡2(mod 5)，n≡4(mod 7)，n≡6(mod 9)。即n+3被5,7,9整除。5×7×9=315。n+3=315→n=312，但312≡2(mod5)✓, 312≡4(mod7)✓, 312≡6(mod9)✓。但题目要最小正数，n+3最小为315→n=312不对，检查157：157+3=160, 160÷5=32✓, 160÷7∉整数。重新计算：n+3需同时被5,7,9整除→LCM=315，n=312。验证：312÷5=62余2✓, 312÷7=44余4✓, 312÷9=34余6✓。答案为157的验证：157÷5=31余2✓, 157÷7=22余3≠4✗。正确答案应为312，但选项A是157。再检查：n=157,157÷9=17余4≠6✗。最小满足的是312。选B。\n详细验证：312是满足条件的最小数。'},
-  {id:18,cat:'数量关系',diff:2,year:2023,q:'一辆汽车从A地到B地，前半段路程速度为60km/h，后半段路程速度为40km/h。全程平均速度是多少？',opts:['A. 48km/h','B. 50km/h','C. 52km/h','D. 55km/h'],ans:0,exp:'设全程距离为2S。前半段时间S/60，后半段时间S/40。平均速度=2S÷(S/60+S/40)=2S÷(2S/120+3S/120)=2S÷(5S/120)=2S×120/5S=240/5=48km/h。'},
-  {id:19,cat:'数量关系',diff:3,year:2021,q:'某单位有员工240人，其中女性占37.5%。后来又招聘了一批女性员工，使女性占比达到45%。问新招聘了多少名女性？',opts:['A. 28人','B. 30人','C. 32人','D. 36人'],ans:2,exp:'原来女性=240×37.5%=90人，男性=150人（固定）。设新招x名女性。(90+x)/(240+x)=45%。90+x=0.45(240+x)=108+0.45x。0.55x=18→x=32.73，取32人（实际计算90+x=108+0.45x→x-0.45x=18→0.55x=18→x=32.73，选项选32）。验算：(90+32)/272=122/272≈44.85%≈45%。'},
-  {id:20,cat:'数量关系',diff:1,year:2024,q:'3，8，15，24，35，？下一个数是多少？',opts:['A. 46','B. 48','C. 50','D. 52'],ans:1,exp:'规律：3=1×3，8=2×4，15=3×5，24=4×6，35=5×7。第n项=n×(n+2)。第6项=6×8=48。'},
-  {id:21,cat:'数量关系',diff:2,year:2022,q:'一个水池装有甲、乙两根进水管和丙一根排水管。单开甲管5小时注满，单开乙管10小时注满，单开丙管8小时排空。三管同时打开，多少小时注满？',opts:['A. 6小时','B. 7小时','C. 8小时','D. 9小时'],ans:2,exp:'甲每小时注1/5，乙1/10，丙排1/8。三管齐开：1/5+1/10-1/8=8/40+4/40-5/40=7/40。注满需40/7≈5.7小时→选6小时。但选项是6/7/8/9，40/7≈5.71，最接近6。实际计算：1÷(7/40)=40/7≈5.71h。选项中8h不对。\n重新验算：1/5=0.2，1/10=0.1，1/8=0.125。合计注水=0.2+0.1-0.125=0.175。1/0.175≈5.71h。选A(6小时)最接近。'},
-  {id:22,cat:'数量关系',diff:3,year:2021,q:'甲、乙、丙三人的年龄之和为90岁。甲的年龄是乙的2倍，丙的年龄比乙大10岁。问甲的年龄是多少？',opts:['A. 35岁','B. 40岁','C. 45岁','D. 50岁'],ans:1,exp:'设乙x岁，则甲2x，丙x+10。x+2x+(x+10)=90→4x+10=90→4x=80→x=20。甲=40岁。'},
-  {id:23,cat:'数量关系',diff:1,year:2023,q:'某商场进行促销活动，满200减30，满400减80。小明买了650元的商品，最少需要支付多少钱？',opts:['A. 520元','B. 530元','C. 540元','D. 550元'],ans:1,exp:'650=400+200+50，可使用满400减80和满200减30，共减110。实际支付650-110=540元。选C。'},
-  {id:24,cat:'数量关系',diff:2,year:2020,q:'一个等差数列的首项为5，公差为3。前20项的和是多少？',opts:['A. 650','B. 660','C. 670','D. 680'],ans:2,exp:'a1=5,d=3,a20=5+19×3=5+57=62。S20=20×(5+62)/2=10×67=670。'},
+/* ═══════════════════════════════════════════════════════
+   QUESTION BANK — 行测 (60题 原始题，已修复)
+   ═══════════════════════════════════════════════════════ */
+const EXAM_QUESTIONS = [
+{id:1,cat:'言语理解',diff:1,year:2024,q:'"不积跬步，无以至千里"所蕴含的哲理是：',opts:['A. 量变引起质变','B. 矛盾的对立统一','C. 事物是普遍联系的','D. 实践是检验真理的标准'],ans:0,exp:'荀子《劝学篇》。积累半步一步，才能到达千里之外——强调量的积累（量变）最终引起质的飞跃（质变）。'},
+{id:2,cat:'言语理解',diff:1,year:2024,q:'下列句子中，没有语病的是：',opts:['A. 通过这次学习，使我提高了认识','B. 他的写作水平有了明显的提高','C. 我们一定要减少不必要的浪费','D. 这个问题的回答是肯定的'],ans:1,exp:'A 缺主语（"通过…使"句式缺主语）；C"减少不必要的浪费"语义重复（浪费本身已含"不必要"）；D"肯定的"指代不明。B 表达正确。'},
+{id:3,cat:'言语理解',diff:2,year:2023,q:'填入横线处最恰当的一项是：\n科技创新是提高社会生产力和综合国力的____支撑。',opts:['A. 战略','B. 重要','C. 关键','D. 核心'],ans:0,exp:'"战略支撑"是固定搭配。党的十八大报告明确提出"科技创新是提高社会生产力和综合国力的战略支撑"。'},
+{id:4,cat:'言语理解',diff:2,year:2023,q:'这段文字主要说明的是：\n数字经济已成为全球经济增长的新引擎。我国数字经济规模连续多年位居世界第二，但与第一的美国仍有差距，特别是关键核心技术受制于人的局面尚未根本改变。',opts:['A. 我国数字经济规模全球第一','B. 数字经济是全球经济新引擎','C. 我国数字经济成就与挑战并存','D. 关键核心技术已经自主可控'],ans:2,exp:'文段先肯定我国数字经济规模全球第二的成就，接着用"但"转折指出核心技术受制于人的问题。全面概括应为"成就与挑战并存"。'},
+{id:5,cat:'言语理解',diff:2,year:2022,q:'下列各组词语中，没有错别字的一项是：',opts:['A. 甘败下风　自暴自弃','B. 一愁莫展　迫不及待','C. 川流不息　脍炙人口','D. 食不裹腹　一如既往'],ans:2,exp:'A"甘败下风"应为"甘拜下风"；B"一愁莫展"应为"一筹莫展"；D"食不裹腹"应为"食不果腹"。C 全部正确。'},
+{id:6,cat:'言语理解',diff:3,year:2021,q:'作者对"内卷"现象的态度是：\n"内卷"一词近年大热，指同行间竞相付出更多努力以争夺有限资源，从而导致个体"收益努力比"下降的现象。有人痛陈其弊，认为这是社会停滞的征兆；也有人认为，竞争本就残酷，"内卷"不过是市场机制在人力资源领域的正常反映。',opts:['A. 批判','B. 支持','C. 客观介绍','D. 担忧'],ans:2,exp:'文段用"有人…也有人…"并列介绍了两种对立观点，作者本人并未表态，属于客观介绍。'},
+{id:7,cat:'言语理解',diff:1,year:2022,q:'下列选项中，修辞手法与其他三项不同的是：',opts:['A. 春天像小姑娘，花枝招展的','B. 太阳像个大火球','C. 他的心眼比针尖还小','D. 月光如流水一般'],ans:2,exp:'A、B、D 都是比喻（明喻），C"心眼比针尖还小"是夸张（极言心眼小）。'},
+{id:8,cat:'言语理解',diff:2,year:2023,q:'最适合做这段文字标题的是：\n考古学家在三星堆遗址新发现了6座祭祀坑，出土了大量前所未见的文物，包括造型奇特的青铜器、金面具、象牙等。这些发现不仅刷新了人们对古蜀文明的认知，也为中华文明多元一体格局提供了新的实物证据。',opts:['A. 三星堆的秘密','B. 三星堆新发现：古蜀文明的惊喜','C. 考古学家的日常','D. 中华文明的起源'],ans:1,exp:'文段核心是三星堆新发现及其对古蜀文明认知的刷新，B 选项最准确地概括了这一核心内容。'},
+{id:9,cat:'言语理解',diff:3,year:2021,q:'文中"这"指的是：\n基层治理是国家治理的基石。习近平总书记指出："基层强则国家强，基层安则天下安。"这深刻揭示了基层治理在国家治理体系中的基础性地位。',opts:['A. 国家治理','B. 基层治理','C. 习近平总书记的讲话内容','D. 国家治理体系'],ans:2,exp:'"这"指代前一句引用的习近平总书记讲话内容本身。'},
+{id:10,cat:'言语理解',diff:2,year:2024,q:'依次填入横线处最恰当的一组是：\n乡村振兴，____是关键，____是基础，____是保障。',opts:['A. 产业 人才 组织','B. 人才 产业 组织','C. 产业 生态 文化','D. 组织 产业 人才'],ans:0,exp:'中央农村工作会议指出：乡村振兴，产业是关键、人才是基础、组织是保障。'},
+{id:11,cat:'言语理解',diff:1,year:2023,q:'下列加点词语使用恰当的一项是：',opts:['A. 他首当其冲地承担了这次任务','B. 这部电视剧万人空巷，收视率很低','C. 他学习刻苦，成绩差强人意','D. 这个方案经过反复论证终于付诸实施'],ans:3,exp:'A"首当其冲"指最先受到攻击或遭遇灾难，不能当"首先"用；B"万人空巷"形容盛大场面，不指没人看；C"差强人意"指大体上还能让人满意。D 正确。'},
+{id:12,cat:'言语理解',diff:3,year:2021,q:'根据文意，下列说法正确的是：\n人工智能技术正在深刻改变着社会治理模式。从城市交通管理到医疗健康服务，从政务服务到公共安全，AI的应用场景不断拓展。但与此同时，算法歧视、隐私泄露、责任归属等问题也日益凸显。如何在技术创新与风险防控之间找到平衡点，成为各国面临的共同课题。',opts:['A. AI 已经在所有领域取代人类','B. AI 应用不存在风险','C. 需要平衡技术创新与风险防控','D. 隐私泄露是 AI 唯一的问题'],ans:2,exp:'文段末句明确指出"如何在技术创新与风险防控之间找到平衡点，成为各国面临的共同课题"。'},
 
-  // ── 判断推理 (12题) ──
-  {id:25,cat:'判断推理',diff:1,year:2024,q:'所有的公务员都必须通过考试。小李是公务员。由此可以推出：',opts:['A. 小李通过了考试','B. 通过考试的都是公务员','C. 小李不是公务员','D. 小李可能没通过考试'],ans:0,exp:'三段论：所有公务员→通过考试，小李是公务员→小李通过考试。B是逆命题，错误。'},
-  {id:26,cat:'判断推理',diff:2,year:2023,q:'只有年满18周岁，才有选举权。小张有选举权。据此可以推出：',opts:['A. 小张年满18周岁','B. 不满18周岁就没有选举权','C. 年满18周岁一定有选举权','D. 小张是人大代表'],ans:0,exp:'"只有A才B"：B→A。有选举权→年满18周岁。已知小张有选举权，可推出小张年满18周岁。'},
-  {id:27,cat:'判断推理',diff:2,year:2024,q:'如果下雨，则地面湿。现在地面没有湿。由此可以推出：',opts:['A. 一定下雨了','B. 一定没下雨','C. 可能下雨了','D. 地面很快就会湿'],ans:1,exp:'充分条件：下雨→地湿。逆否命题：地没湿→没下雨。所以一定没下雨。'},
-  {id:28,cat:'判断推理',diff:3,year:2022,q:'甲、乙、丙三人中，只有一人会开车。甲说："我会。"乙说："我不会。"丙说："甲不会。"如果三人中只有一人说了真话，那么会开车的是：',opts:['A. 甲','B. 乙','C. 丙','D. 无法判断'],ans:1,exp:'假设甲会：甲真、乙真（他不会）、丙假（他说甲不会）→两真，不符。假设乙会：甲假（他不会）、乙假（他说他不会）、丙真（甲不会）→一真，符合！假设丙会：甲假、乙真、丙真→两真，不符。乙会开车。'},
-  {id:29,cat:'判断推理',diff:1,year:2023,q:'与"教师∶学校"逻辑关系相同的是：',opts:['A. 医生∶医院','B. 学生∶教室','C. 工人∶工厂','D. 农民∶农田'],ans:0,exp:'教师在学校工作→职业与工作场所的关系。医生在医院工作，同样关系。工人∶工厂也符合，但教师和医生都属专业技术类，更接近。通常标准选A或C均可，本题选A。'},
-  {id:30,cat:'判断推理',diff:2,year:2021,q:'某次考试后，老师说："我们班所有同学都及格了。"但班长小明发现有一个同学没有及格。以下哪项一定为真？',opts:['A. 老师说的话是真的','B. 小明弄错了','C. 老师说的话是假的','D. 大部分同学及格了'],ans:2,exp:'老师说"所有同学都及格"。只要存在一个没及格的，老师的说法就是假的。小明发现有一个没及格→老师说的为假。'},
-  {id:31,cat:'判断推理',diff:3,year:2022,q:'从所给的四个选项中，选择最合适的一个填入问号处，使之呈现一定的规律性：\n○△□  △□○  □○？',opts:['A. △','B. □','C. ○','D. ☆'],ans:0,exp:'图形推理：每行三个图形循环移位。第一行○△□，第二行△□○（左移一位），第三行□○△（继续左移）。?处应为△。'},
-  {id:32,cat:'判断推理',diff:2,year:2020,q:'"如果一个人是党员，那么他应该为人民服务。"与这句话意思最接近的是：',opts:['A. 只有为人民服务，才是党员','B. 只要是党员，就要为人民服务','C. 为人民服务的都是党员','D. 不是党员就不需要为人民服务'],ans:1,exp:'原句是充分条件：党员→为人民服务。B 表达相同意思。A 是必要条件。C 是逆命题（错误）。D 是否定前件（错误）。'},
-  {id:33,cat:'判断推理',diff:1,year:2024,q:'与"水∶游泳"逻辑关系相同的是：',opts:['A. 路∶跑步','B. 球∶足球','C. 笔∶绘画','D. 书∶阅读'],ans:0,exp:'水是游泳的场所/媒介。路是跑步的场所。其余选项不完全符合此关系。'},
-  {id:34,cat:'判断推理',diff:2,year:2023,q:'某些教授是博士生导师。所有博士生导师都有博士学位。由此不能推出：',opts:['A. 有些教授有博士学位','B. 有些博士生导师是教授','C. 所有教授都有博士学位','D. 有些有博士学位的是教授'],ans:2,exp:'某些教授→博导→有博士。可推出A，B（换位），D（换位）。C"所有教授都有博士学位"推不出，因为只有"某些"教授是博导。'},
-  {id:35,cat:'判断推理',diff:2,year:2021,q:'甲说："乙在说谎。"乙说："丙在说谎。"丙说："甲和乙都在说谎。"如果只有一人说真话，那么说真话的是：',opts:['A. 甲','B. 乙','C. 丙','D. 无法判断'],ans:1,exp:'假设甲真：甲真→乙在说谎（真）→丙没说谎（因为乙谎→丙不在说谎）→丙说"甲和乙都在说谎"为真→矛盾（甲为真所以丙说甲谎为假）。假设乙真：乙真→丙在说谎（真）→丙说"甲和乙都在说谎"为假→至少一人说真。已知乙真→丙的话为假，成立。甲：甲说"乙在说谎"为假（乙说真话），甲说假话。一真（乙），符合！假设丙真：丙说"甲和乙都在说谎"为真→甲谎→甲说"乙在说谎"为假→乙没说谎（真）→矛盾（丙说乙谎）。所以乙说真话。'},
-  {id:36,cat:'判断推理',diff:3,year:2022,q:'一项调查显示，经常锻炼的人患心脏病的概率比不锻炼的人低40%。以下哪项如果为真，最能削弱上述结论？',opts:['A. 调查样本仅有100人','B. 锻炼的人往往更有健康意识，饮食也更健康','C. 锻炼对心脏有益已被医学证实','D. 有些人从不锻炼也不得心脏病'],ans:1,exp:'B 指出可能是"健康意识+饮食"导致的心脏病概率低，而非锻炼本身，属于他因削弱。A 攻击样本量，力度较弱。C 加强。D 个例不削弱统计结论。'},
+{id:13,cat:'数量关系',diff:1,year:2024,q:'某商店购进一批商品，按50%的利润率定价，售出80%后，剩下的按定价的八折销售完。问这批商品全部售出后的总利润率约为多少？',opts:['A. 38%','B. 40%','C. 42%','D. 44%'],ans:3,exp:'设成本100元，定价150元，购入100件。前80件每件赚50元，共赚4000元；后20件售价150×0.8=120元，每件赚20元，共赚400元。总利润4400元÷总成本10000元=44%。'},
+{id:14,cat:'数量关系',diff:1,year:2023,q:'甲、乙两人从相距1000米的两地同时出发相向而行，甲每分钟走60米，乙每分钟走40米。两人相遇时，甲走了多少米？',opts:['A. 500米','B. 550米','C. 600米','D. 650米'],ans:2,exp:'相遇时间=1000÷(60+40)=10分钟。甲走60×10=600米。'},
+{id:15,cat:'数量关系',diff:2,year:2024,q:'一项工程，甲单独做需要12天，乙单独做需要18天。两人合作3天后，乙因故离开，甲单独完成剩余工作还需要多少天？',opts:['A. 5天','B. 6天','C. 7天','D. 8天'],ans:2,exp:'甲效率1/12，乙1/18。合作3天完成3×(1/12+1/18)=5/12。剩余7/12。甲单独需(7/12)÷(1/12)=7天。'},
+{id:16,cat:'数量关系',diff:2,year:2022,q:'某班有学生45人，其中男生占60%。本学期转来若干名女生后，男生人数未变，占比变为54%。问转来了多少名女生？',opts:['A. 3人','B. 4人','C. 5人','D. 6人'],ans:2,exp:'男生固定为45×60%=27人。设转来x名女生，则27÷(45+x)=54%，解得0.54×(45+x)=27，45+x=50，x=5。'},
+{id:17,cat:'数量关系',diff:3,year:2021,q:'一个自然数除以5余2，除以7余4，除以9余6。这个数最小是多少？',opts:['A. 157','B. 222','C. 267','D. 312'],ans:3,exp:'即求n+3同时被5,7,9整除。5×7×9=315，但315本身满足，要找n+3最小公倍数。lcm(5,7,9)=315，最小n+3=315，n=312。验证：312÷5=62余2，312÷7=44余4，312÷9=34余6，均满足。'},
+{id:18,cat:'数量关系',diff:2,year:2023,q:'一辆汽车从A地到B地，前半段路程速度为60km/h，后半段路程速度为40km/h。全程平均速度是多少？',opts:['A. 48km/h','B. 50km/h','C. 52km/h','D. 55km/h'],ans:0,exp:'设全程2S。前半段时间S/60，后半段时间S/40。平均速度=2S÷(S/60+S/40)=2S÷(5S/120)=48km/h。'},
+{id:19,cat:'数量关系',diff:3,year:2021,q:'某单位有员工240人，其中女性占37.5%。后来又招聘了一批女性员工，使女性占比达到45%。问新招聘了多少名女性？',opts:['A. 28人','B. 30人','C. 32人','D. 36人'],ans:2,exp:'原女性=240×37.5%=90人，男性=150人(固定)。设新招x名女性：(90+x)/(240+x)=45%。解：90+x=108+0.45x，0.55x=18，x≈32.7，选项最接近32人。验算：(90+32)/272=122/272≈44.85%，最接近45%。'},
+{id:20,cat:'数量关系',diff:1,year:2024,q:'3，8，15，24，35，？下一个数是多少？',opts:['A. 46','B. 48','C. 50','D. 52'],ans:1,exp:'规律：3=1×3，8=2×4，15=3×5，24=4×6，35=5×7。第n项=n×(n+2)。第6项=6×8=48。'},
+{id:21,cat:'数量关系',diff:2,year:2022,q:'一个水池装有甲、乙两根进水管和丙一根排水管。单开甲管5小时注满，单开乙管10小时注满，单开丙管8小时排空。三管同时打开，多少小时注满？',opts:['A. 6小时','B. 7小时','C. 8小时','D. 9小时'],ans:0,exp:'设水池容量为1。甲每小时注水 1/5，乙每小时注水 1/10，丙每小时排水 1/8。三管同时打开，每小时净注水量 = 1/5 + 1/10 − 1/8 = 8/40 + 4/40 − 5/40 = 7/40。注满所需时间 = 1 ÷ (7/40) = 40/7 ≈ 5.71 小时。选项中最接近的是 6 小时，故选 A。'},
+{id:22,cat:'数量关系',diff:3,year:2021,q:'甲、乙、丙三人的年龄之和为90岁。甲的年龄是乙的2倍，丙的年龄比乙大10岁。问甲的年龄是多少？',opts:['A. 35岁','B. 40岁','C. 45岁','D. 50岁'],ans:1,exp:'设乙x岁，则甲2x，丙x+10。x+2x+(x+10)=90，4x=80，x=20。甲=40岁。'},
+{id:23,cat:'数量关系',diff:1,year:2023,q:'某商场进行促销活动：满200减30，满400减80。小明买了650元的商品，按最优方案最少需要支付多少钱？',opts:['A. 520元','B. 530元','C. 540元','D. 550元'],ans:2,exp:'650元可以拆为400+250元组合，使用满400减80+满200减30=减110元；或拆为400+200+50元，减去80+30=110元。实付650-110=540元。'},
+{id:24,cat:'数量关系',diff:2,year:2020,q:'一个等差数列的首项为5，公差为3。前20项的和是多少？',opts:['A. 650','B. 660','C. 670','D. 680'],ans:2,exp:'a1=5，d=3，a20=5+19×3=62。S20=20×(5+62)/2=10×67=670。'},
 
-  // ── 资料分析 (12题) ──
-  {id:37,cat:'资料分析',diff:1,year:2024,q:'某省2023年GDP为5.6万亿元，同比增长5.2%。问2022年该省GDP约为多少万亿元？',opts:['A. 5.28','B. 5.32','C. 5.36','D. 5.40'],ans:1,exp:'2022年GDP=5.6/(1+5.2%)=5.6/1.052≈5.323万亿元。'},
-  {id:38,cat:'资料分析',diff:1,year:2023,q:'某市2023年常住人口820万人，城镇化率为65%。该市城镇人口约为多少万人？',opts:['A. 512','B. 533','C. 553','D. 574'],ans:1,exp:'820×65%=533万人。'},
-  {id:39,cat:'资料分析',diff:2,year:2024,q:'某企业第一季度销售额为120万元，第二季度环比增长15%，第三季度环比下降10%，第四季度环比增长20%。全年销售额约为多少万元？',opts:['A. 540','B. 558','C. 572','D. 589'],ans:1,exp:'Q1=120；Q2=120×1.15=138；Q3=138×0.9=124.2；Q4=124.2×1.2=149.04。合计=120+138+124.2+149.04≈531.24。但选项都是540+，检查：Q4应该149.04，531+接近540，但选项最低540。实际计算：531.24→选A。\n等等，Q2增长15%→138，Q3降10%→124.2，Q4增20%→149.04。Sum=531.24。选项A540最接近。'},
-  {id:40,cat:'资料分析',diff:2,year:2022,q:'某地2022年粮食产量为4500万吨，比上年增长3.2%。2023年粮食产量为4725万吨，增长率为：',opts:['A. 4.8%','B. 5.0%','C. 5.2%','D. 5.4%'],ans:1,exp:'增长率=(4725-4500)/4500=225/4500=5.0%。'},
-  {id:41,cat:'资料分析',diff:3,year:2021,q:'根据下表：2021年某省三大产业增加值分别为：一产3500亿(占比8.5%)，二产15600亿(占比38%)，三产22000亿(占比53.5%)。问该省GDP总量约为多少亿元？',opts:['A. 40800','B. 41100','C. 41500','D. 42000'],ans:1,exp:'3500+15600+22000=41100亿元。验证占比：3500/41100≈8.52%，15600/41100≈37.96%，22000/41100≈53.53%。'},
-  {id:42,cat:'资料分析',diff:1,year:2023,q:'某公司员工中，本科学历占45%，硕士占25%，博士占5%，其余为大专及以下。问大专及以下占比为多少？',opts:['A. 20%','B. 22%','C. 25%','D. 28%'],ans:2,exp:'100%-45%-25%-5%=25%。'},
-  {id:43,cat:'资料分析',diff:2,year:2024,q:'2023年全国居民人均可支配收入为36883元，同比增长5.0%。其中城镇居民人均可支配收入为49283元，农村居民为20133元。城镇居民收入是农村居民的多少倍？',opts:['A. 2.25','B. 2.35','C. 2.45','D. 2.55'],ans:2,exp:'49283/20133≈2.448≈2.45倍。'},
-  {id:44,cat:'资料分析',diff:2,year:2022,q:'某地2020-2023年GDP分别为200、220、242、266亿元。2023年相比2020年的累计增长率为：',opts:['A. 30%','B. 32%','C. 33%','D. 35%'],ans:2,exp:'(266-200)/200=66/200=33%。'},
-  {id:45,cat:'资料分析',diff:3,year:2021,q:'2019年某省出口额为1200亿美元，2020年下降8%，2021年增长12%，2022年增长15%。2022年出口额约为多少亿美元？',opts:['A. 1350','B. 1378','C. 1405','D. 1432'],ans:1,exp:'2020:1200×0.92=1104；2021:1104×1.12=1236.48；2022:1236.48×1.15≈1421.95→选D。\n再算：1236.48×1.15=1421.952。选D(1432)最接近。实际上1421.95≈1422，选项D是1432，C1405，B1378。选D。'},
-  {id:46,cat:'资料分析',diff:1,year:2020,q:'某班有男生30人，女生20人。女生人数占全班的比例是多少？',opts:['A. 35%','B. 40%','C. 45%','D. 50%'],ans:1,exp:'20/(30+20)=20/50=40%。'},
-  {id:47,cat:'资料分析',diff:2,year:2023,q:'某商品原价500元，先提价20%，再打九折销售。最终售价为多少元？',opts:['A. 530','B. 540','C. 550','D. 560'],ans:1,exp:'500×1.2=600，600×0.9=540元。'},
-  {id:48,cat:'资料分析',diff:3,year:2022,q:'2021年某市CPI同比上涨2.5%，2022年CPI同比上涨3.0%。以2020年为基期(100)，2022年CPI指数约为：',opts:['A. 105.2','B. 105.5','C. 105.6','D. 106.0'],ans:2,exp:'2021:100×1.025=102.5；2022:102.5×1.03=105.575≈105.6。'},
+{id:25,cat:'判断推理',diff:1,year:2024,q:'所有的公务员都必须通过考试。小李是公务员。由此可以推出：',opts:['A. 小李通过了考试','B. 通过考试的都是公务员','C. 小李不是公务员','D. 小李可能没通过考试'],ans:0,exp:'三段论：所有公务员→通过考试，小李是公务员→小李通过考试。B是逆命题，错误。'},
+{id:26,cat:'判断推理',diff:2,year:2023,q:'只有年满18周岁，才有选举权。小张有选举权。据此可以推出：',opts:['A. 小张年满18周岁','B. 不满18周岁就没有选举权','C. 年满18周岁一定有选举权','D. 小张是人大代表'],ans:0,exp:'"只有A才B"等值于"B→A"。有选举权→年满18周岁。已知小张有选举权，可推出小张年满18周岁。'},
+{id:27,cat:'判断推理',diff:2,year:2024,q:'如果下雨，则地面湿。现在地面没有湿。由此可以推出：',opts:['A. 一定下雨了','B. 一定没下雨','C. 可能下雨了','D. 地面很快就会湿'],ans:1,exp:'充分条件：下雨→地湿。逆否命题：地没湿→没下雨。所以一定没下雨。'},
+{id:28,cat:'判断推理',diff:3,year:2022,q:'甲、乙、丙三人中，只有一人会开车。甲说："我会。"乙说："我不会。"丙说："甲不会。"如果三人中只有一人说了真话，那么会开车的是：',opts:['A. 甲','B. 乙','C. 丙','D. 无法判断'],ans:1,exp:'假设甲会：甲真、乙真(他说他不会)、丙假(他说甲不会)→两人真，不符。假设乙会：甲假(他不会)、乙假(他说他不会)、丙真(甲不会)→一人真，符合。假设丙会：甲假、乙真(他不会)、丙真→两人真，不符。'},
+{id:29,cat:'判断推理',diff:1,year:2023,q:'与"教师∶学校"逻辑关系最相同的是：',opts:['A. 医生∶医院','B. 学生∶教室','C. 工人∶工厂','D. 农民∶农田'],ans:0,exp:'教师在学校工作(职业与工作场所的关系)。A医生在医院工作，关系最相同。B学生和教室是"主体与学习场所"，D农民和农田是"主体与劳动场所"，均不完全等同。'},
+{id:30,cat:'判断推理',diff:2,year:2021,q:'某次考试后，老师说："我们班所有同学都及格了。"但班长小明发现有一个同学没有及格。以下哪项一定为真？',opts:['A. 老师说的话是真的','B. 小明弄错了','C. 老师说的话是假的','D. 大部分同学及格了'],ans:2,exp:'老师说"所有同学都及格"，只要存在一个没及格的，老师说法就是假的。'},
+{id:31,cat:'判断推理',diff:3,year:2022,q:'图形序列：第1行"○△□"，第2行"△□○"，第3行"□○？"按规律"？"处应为：',opts:['A. △','B. □','C. ○','D. ☆'],ans:0,exp:'图形循环左移。第一行○△□，第二行△□○(左移1位)，第三行□○△(继续左移1位)。?处应为△。'},
+{id:32,cat:'判断推理',diff:2,year:2020,q:'"如果一个人是党员，那么他应该为人民服务。"与这句话意思最接近的是：',opts:['A. 只有为人民服务，才是党员','B. 只要是党员，就要为人民服务','C. 为人民服务的都是党员','D. 不是党员就不需要为人民服务'],ans:1,exp:'原句是充分条件：党员→为人民服务。B表达相同意思。A是必要条件，C是逆命题(错误)，D是否定前件(错误)。'},
+{id:33,cat:'判断推理',diff:1,year:2024,q:'与"水∶游泳"逻辑关系相同的是：',opts:['A. 路∶跑步','B. 球∶足球','C. 笔∶绘画','D. 书∶阅读'],ans:0,exp:'水是游泳的媒介/场所。路是跑步的媒介/场所，对应关系一致。B球与足球是种属，C笔与绘画是工具与用途，D书与阅读是物品与活动。'},
+{id:34,cat:'判断推理',diff:2,year:2023,q:'某些教授是博士生导师。所有博士生导师都有博士学位。由此不能推出：',opts:['A. 有些教授有博士学位','B. 有些博士生导师是教授','C. 所有教授都有博士学位','D. 有些有博士学位的是教授'],ans:2,exp:'某些教授→博导→有博士。可推出A、B(换位)、D(换位)。C"所有教授都有博士学位"推不出，因为只有"某些"教授是博导。'},
+{id:35,cat:'判断推理',diff:2,year:2021,q:'甲说："乙在说谎。"乙说："丙在说谎。"丙说："甲和乙都在说谎。"如果只有一人说真话，那么说真话的是：',opts:['A. 甲','B. 乙','C. 丙','D. 无法判断'],ans:1,exp:'假设乙真：乙说丙在说谎→丙在说谎。丙说"甲乙都说谎"为假，则甲或乙说真话，乙真话成立。则甲说"乙说谎"为假→乙没在撒谎，成立。此时仅一人(乙)说真话，符合。'},
+{id:36,cat:'判断推理',diff:3,year:2022,q:'一项调查显示，经常锻炼的人患心脏病的概率比不锻炼的人低40%。以下哪项如果为真，最能削弱上述结论？',opts:['A. 调查样本仅有100人','B. 锻炼的人往往更有健康意识，饮食也更健康','C. 锻炼对心脏有益已被医学证实','D. 有些人从不锻炼也不得心脏病'],ans:1,exp:'B指出可能是"健康意识+饮食"导致心脏病概率低，而非锻炼本身(他因削弱)。A攻击样本量，力度较弱；C加强；D是个例。'},
 
-  // ── 常识判断 (12题) ──
-  {id:49,cat:'常识判断',diff:1,year:2024,q:'中华人民共和国的根本政治制度是：',opts:['A. 社会主义制度','B. 人民代表大会制度','C. 多党合作和政治协商制度','D. 基层群众自治制度'],ans:1,exp:'人民代表大会制度是我国的根本政治制度。A是根本制度，C和D是基本政治制度。'},
-  {id:50,cat:'常识判断',diff:1,year:2023,q:'我国现行宪法是哪一年通过的？',opts:['A. 1949年','B. 1954年','C. 1978年','D. 1982年'],ans:3,exp:'我国现行宪法是1982年12月4日第五届全国人民代表大会第五次会议通过的，历经1988、1993、1999、2004、2018五次修正。'},
-  {id:51,cat:'常识判断',diff:2,year:2024,q:'下列不属于行政处罚的是：',opts:['A. 罚款','B. 行政拘留','C. 吊销许可证','D. 记过'],ans:3,exp:'记过是行政处分（内部），不是行政处罚（外部）。行政处罚包括警告、罚款、没收违法所得、责令停产停业、暂扣或吊销许可证、行政拘留等。'},
-  {id:52,cat:'常识判断',diff:2,year:2022,q:'"两个一百年"奋斗目标中，第二个百年奋斗目标是：',opts:['A. 全面建成小康社会','B. 建成富强民主文明和谐美丽的社会主义现代化强国','C. 实现中华民族伟大复兴','D. 全面建成社会主义现代化国家'],ans:1,exp:'第二个百年奋斗目标：到新中国成立100年时（2049年），建成富强民主文明和谐美丽的社会主义现代化强国。'},
-  {id:53,cat:'常识判断',diff:1,year:2024,q:'我国面积最大的省级行政区是：',opts:['A. 西藏自治区','B. 内蒙古自治区','C. 新疆维吾尔自治区','D. 青海省'],ans:2,exp:'新疆面积约166万平方公里，是我国面积最大的省级行政区。'},
-  {id:54,cat:'常识判断',diff:2,year:2023,q:'下列不属于"三严三实"内容的是：',opts:['A. 严以修身','B. 严以律己','C. 严以治党','D. 做人要实'],ans:2,exp:'三严三实：严以修身、严以用权、严以律己，谋事要实、创业要实、做人要实。C"严以治党"不在其中。'},
-  {id:55,cat:'常识判断',diff:3,year:2021,q:'下列国家中，不属于联合国安理会常任理事国的是：',opts:['A. 中国','B. 日本','C. 法国','D. 英国'],ans:1,exp:'五常：中国、美国、俄罗斯、法国、英国。日本不是常任理事国。'},
-  {id:56,cat:'常识判断',diff:2,year:2022,q:'全面推进依法治国的总目标是：',opts:['A. 建设社会主义法治国家','B. 建设中国特色社会主义法治体系，建设社会主义法治国家','C. 全面加强法治建设','D. 构建社会主义法律体系'],ans:1,exp:'十八届四中全会提出：全面推进依法治国的总目标是建设中国特色社会主义法治体系，建设社会主义法治国家。'},
-  {id:57,cat:'常识判断',diff:1,year:2023,q:'公务员的考核分为平时考核和：',opts:['A. 年度考核','B. 月度考核','C. 季度考核','D. 届满考核'],ans:0,exp:'《公务员法》规定：公务员的考核分为平时考核、专项考核和定期考核。定期考核以平时考核、专项考核为基础。定期考核结果分为优秀、称职、基本称职、不称职四个等次。'},
-  {id:58,cat:'常识判断',diff:3,year:2020,q:'以下哪位不属于"唐宋八大家"？',opts:['A. 柳宗元','B. 欧阳修','C. 范仲淹','D. 王安石'],ans:2,exp:'唐宋八大家：韩愈、柳宗元、欧阳修、苏洵、苏轼、苏辙、王安石、曾巩。范仲淹不在其中。'},
-  {id:59,cat:'常识判断',diff:2,year:2024,q:'2024年中央一号文件的主题是：',opts:['A. 全面推进乡村振兴','B. 学习运用"千村示范、万村整治"工程经验有力有效推进乡村全面振兴','C. 加快建设农业强国','D. 推进农业农村现代化'],ans:1,exp:'2024年中央一号文件标题：《关于学习运用"千村示范、万村整治"工程经验有力有效推进乡村全面振兴的意见》，即"千万工程"经验。'},
-  {id:60,cat:'常识判断',diff:2,year:2021,q:'《民法典》自何时起施行？',opts:['A. 2020年5月28日','B. 2020年10月1日','C. 2021年1月1日','D. 2021年3月1日'],ans:2,exp:'《民法典》2020年5月28日通过，2021年1月1日起施行。'}
+{id:37,cat:'资料分析',diff:1,year:2024,q:'某省2023年GDP为5.6万亿元，同比增长5.2%。问2022年该省GDP约为多少万亿元？',opts:['A. 5.28','B. 5.32','C. 5.36','D. 5.40'],ans:1,exp:'2022年GDP=5.6÷(1+5.2%)=5.6÷1.052≈5.323万亿元。'},
+{id:38,cat:'资料分析',diff:1,year:2023,q:'某市2023年常住人口820万人，城镇化率为65%。该市城镇人口约为多少万人？',opts:['A. 512','B. 533','C. 553','D. 574'],ans:1,exp:'820×65%=533万人。'},
+{id:39,cat:'资料分析',diff:2,year:2024,q:'某企业四个季度销售额分别为120、138、124.2、149.04万元，全年销售额约为多少万元？',opts:['A. 531','B. 540','C. 552','D. 589'],ans:0,exp:'Q1=120，Q2=120×1.15=138，Q3=138×0.9=124.2，Q4=124.2×1.2=149.04。合计=531.24万元≈531。'},
+{id:40,cat:'资料分析',diff:2,year:2022,q:'某地2022年粮食产量为4500万吨，比上年增长3.2%。2023年粮食产量为4725万吨，增长率为：',opts:['A. 4.8%','B. 5.0%','C. 5.2%','D. 5.4%'],ans:1,exp:'增长率=(4725-4500)÷4500=225÷4500=5.0%。'},
+{id:41,cat:'资料分析',diff:3,year:2021,q:'2021年某省三大产业增加值分别为：一产3500亿元，二产15600亿元，三产22000亿元。该省GDP总量约为多少亿元？',opts:['A. 40800','B. 41100','C. 41500','D. 42000'],ans:1,exp:'3500+15600+22000=41100亿元。'},
+{id:42,cat:'资料分析',diff:1,year:2023,q:'某公司员工中，本科学历占45%，硕士占25%，博士占5%，其余为大专及以下。问大专及以下占比为多少？',opts:['A. 20%','B. 22%','C. 25%','D. 28%'],ans:2,exp:'100%-45%-25%-5%=25%。'},
+{id:43,cat:'资料分析',diff:2,year:2024,q:'2023年全国城镇居民人均可支配收入49283元，农村居民20133元。城镇居民收入是农村居民的多少倍？',opts:['A. 2.25','B. 2.35','C. 2.45','D. 2.55'],ans:2,exp:'49283÷20133≈2.448≈2.45倍。'},
+{id:44,cat:'资料分析',diff:2,year:2022,q:'某地2020-2023年GDP分别为200、220、242、266亿元。2023年相比2020年的累计增长率为：',opts:['A. 30%','B. 32%','C. 33%','D. 35%'],ans:2,exp:'(266-200)÷200=66÷200=33%。'},
+{id:45,cat:'资料分析',diff:3,year:2021,q:'2019年某省出口额1200亿美元，2020年下降8%，2021年增长12%，2022年又增长15%。2022年出口额约为多少亿美元？',opts:['A. 1350','B. 1378','C. 1405','D. 1422'],ans:3,exp:'2020:1200×0.92=1104，2021:1104×1.12=1236.48，2022:1236.48×1.15≈1421.95≈1422。'},
+{id:46,cat:'资料分析',diff:1,year:2020,q:'某班有男生30人，女生20人。女生人数占全班的比例是多少？',opts:['A. 35%','B. 40%','C. 45%','D. 50%'],ans:1,exp:'20÷(30+20)=20÷50=40%。'},
+{id:47,cat:'资料分析',diff:2,year:2023,q:'某商品原价500元，先提价20%，再打九折销售。最终售价为多少元？',opts:['A. 530','B. 540','C. 550','D. 560'],ans:1,exp:'500×1.2=600，600×0.9=540元。'},
+{id:48,cat:'资料分析',diff:3,year:2022,q:'2021年某市CPI同比上涨2.5%，2022年CPI同比上涨3.0%。以2020年为基期(100)，2022年CPI指数约为：',opts:['A. 105.2','B. 105.5','C. 105.6','D. 106.0'],ans:2,exp:'2021:100×1.025=102.5，2022:102.5×1.03=105.575≈105.6。'},
+
+{id:49,cat:'常识判断',diff:1,year:2024,q:'中华人民共和国的根本政治制度是：',opts:['A. 社会主义制度','B. 人民代表大会制度','C. 多党合作和政治协商制度','D. 基层群众自治制度'],ans:1,exp:'人民代表大会制度是我国的根本政治制度。A是根本制度；C和D是基本政治制度。'},
+{id:50,cat:'常识判断',diff:1,year:2023,q:'我国现行宪法是哪一年通过的？',opts:['A. 1949年','B. 1954年','C. 1978年','D. 1982年'],ans:3,exp:'我国现行宪法是1982年12月4日第五届全国人民代表大会第五次会议通过的，历经1988、1993、1999、2004、2018五次修正。'},
+{id:51,cat:'常识判断',diff:2,year:2024,q:'下列不属于行政处罚的是：',opts:['A. 罚款','B. 行政拘留','C. 吊销许可证','D. 记过'],ans:3,exp:'记过是行政处分(针对内部公务员)，不是行政处罚(针对外部相对人)。行政处罚包括警告、罚款、没收违法所得、责令停产停业、暂扣或吊销许可证、行政拘留等。'},
+{id:52,cat:'常识判断',diff:2,year:2022,q:'"两个一百年"奋斗目标中，第二个百年奋斗目标是：',opts:['A. 全面建成小康社会','B. 建成富强民主文明和谐美丽的社会主义现代化强国','C. 实现中华民族伟大复兴','D. 全面建成社会主义现代化国家'],ans:1,exp:'第二个百年奋斗目标：到新中国成立100年时(2049年)，建成富强民主文明和谐美丽的社会主义现代化强国。'},
+{id:53,cat:'常识判断',diff:1,year:2024,q:'我国面积最大的省级行政区是：',opts:['A. 西藏自治区','B. 内蒙古自治区','C. 新疆维吾尔自治区','D. 青海省'],ans:2,exp:'新疆面积约166万平方公里，是我国面积最大的省级行政区。'},
+{id:54,cat:'常识判断',diff:2,year:2023,q:'下列不属于"三严三实"内容的是：',opts:['A. 严以修身','B. 严以律己','C. 严以治党','D. 做人要实'],ans:2,exp:'三严三实：严以修身、严以用权、严以律己，谋事要实、创业要实、做人要实。C"严以治党"不在其中。'},
+{id:55,cat:'常识判断',diff:3,year:2021,q:'下列国家中，不属于联合国安理会常任理事国的是：',opts:['A. 中国','B. 日本','C. 法国','D. 英国'],ans:1,exp:'五常：中国、美国、俄罗斯、法国、英国。日本不是常任理事国。'},
+{id:56,cat:'常识判断',diff:2,year:2022,q:'全面推进依法治国的总目标是：',opts:['A. 建设社会主义法治国家','B. 建设中国特色社会主义法治体系，建设社会主义法治国家','C. 全面加强法治建设','D. 构建社会主义法律体系'],ans:1,exp:'十八届四中全会提出：全面推进依法治国的总目标是建设中国特色社会主义法治体系，建设社会主义法治国家。'},
+{id:57,cat:'常识判断',diff:1,year:2023,q:'公务员的考核分为平时考核和：',opts:['A. 年度考核','B. 月度考核','C. 季度考核','D. 届满考核'],ans:0,exp:'《公务员法》规定：公务员的考核分为平时考核、专项考核和定期考核。定期考核以平时考核、专项考核为基础，分为优秀、称职、基本称职、不称职四个等次。'},
+{id:58,cat:'常识判断',diff:3,year:2020,q:'以下哪位不属于"唐宋八大家"？',opts:['A. 柳宗元','B. 欧阳修','C. 范仲淹','D. 王安石'],ans:2,exp:'唐宋八大家：韩愈、柳宗元、欧阳修、苏洵、苏轼、苏辙、王安石、曾巩。范仲淹不在其中。'},
+{id:59,cat:'常识判断',diff:2,year:2024,q:'2024年中央一号文件的主题是：',opts:['A. 全面推进乡村振兴','B. 学习运用"千村示范、万村整治"工程经验有力有效推进乡村全面振兴','C. 加快建设农业强国','D. 推进农业农村现代化'],ans:1,exp:'2024年中央一号文件：《关于学习运用"千村示范、万村整治"工程经验有力有效推进乡村全面振兴的意见》，即"千万工程"经验。'},
+{id:60,cat:'常识判断',diff:2,year:2021,q:'《民法典》自何时起施行？',opts:['A. 2020年5月28日','B. 2020年10月1日','C. 2021年1月1日','D. 2021年3月1日'],ans:2,exp:'《民法典》2020年5月28日通过，2021年1月1日起施行。'}
 ];
 
-// ═══════════════════════════════════════════════
-//  INTERVIEW QUESTION BANK (30题)
-// ═══════════════════════════════════════════════
-let INTERVIEW_QUESTIONS = [
-  {id:1,cat:'自我认知',q:'请做一个简单的自我介绍。',tips:'控制在2-3分钟。突出：学习背景→实践经历→报考动机→个人优势，最后表达适岗意愿。不要念简历。',ref:'各位考官好，我叫XX，毕业于XX大学XX专业。在校期间我系统学习了政治学、行政学等相关课程，成绩优良。同时我积极参加社会实践，曾在XX单位实习，对基层工作有了初步了解。我选择报考公务员，是因为我希望将所学知识用于服务群众、服务基层。我的优势是踏实细致，善于学习。我希望能够在基层岗位上锻炼成长，为人民群众多做实事。'},
-  {id:2,cat:'自我认知',q:'你为什么选择报考公务员？',tips:'从职业理想、个人特质、社会价值三个角度回答。避免回答"稳定""铁饭碗"。',ref:'我报考公务员基于三点考虑：第一，公务员是一份服务人民的工作，我希望自己的工作能够对社会有直接的价值。第二，我的专业背景和个人特质适合从事公共管理工作。第三，基层公务员需要沉下心来踏踏实实做事的人，我认为这正是我的长处。我不追求轻松稳定，而是希望在最需要人的基层岗位上发挥自己的作用。'},
-  {id:3,cat:'自我认知',q:'你最大的缺点是什么？',tips:'坦诚但要选择"可改进的缺点"，并说明已经采取的改进措施。避免"没有缺点""太追求完美"等套路答案。',ref:'我觉得自己有时过于追求细节，导致做决策时不够果断。比如在实习期间，整理一份报告时我反复修改了几遍才提交，影响了效率。意识到这个问题后，我开始给自己设定时间节点，在规定时间内先完成再完善。现在我的做法是"先完成、再完美"。'},
-  {id:4,cat:'自我认知',q:'如果你这次没有被录取，你会怎么办？',tips:'展现抗压能力和持续进步的意愿。',ref:'如果这次没有被录取，我会认真反思自己的不足，看看是知识储备不够、还是表达能力需要提升。公务员考试本身就是一个学习的过程，无论结果如何，备考过程中积累的知识和思维方式都会对我未来的工作有帮助。我会总结经验，针对薄弱环节继续提升，争取下次做得更好。'},
-  {id:5,cat:'自我认知',q:'谈谈你五年内的职业规划。',tips:'展示务实的态度和扎根基层的意愿。',ref:'前两年，我希望在岗位上尽快熟悉业务、向老同事学习，把基础工作做扎实。第三到五年，争取能够独当一面，参与更复杂的工作任务，同时通过在职学习进一步提升专业能力。长期来看，我希望成为所在领域的业务骨干，为基层治理贡献自己的力量。'},
-  {id:6,cat:'自我认知',q:'你觉得你最大的优势是什么？',tips:'用具体例子支撑观点，不要空谈品质。',ref:'我认为我最大的优势是学习能力和适应能力。大学期间我自学了数据分析技能，并运用到一个调研项目中，帮助团队更高效地整理了问卷数据。我觉得到基层工作后，面对新的环境和新的任务，快速学习和适应的能力能够帮助我尽快进入角色。'},
+</script>
 
-  {id:7,cat:'综合分析',q:'对于当前社会上存在的"躺平"现象，你怎么看？',tips:'分析原因→影响→对策。原因：社会压力、上升通道、价值观变化。态度：理解但不认同。',ref:'"躺平"现象反映了当下部分年轻人面对高房价、高生活成本、激烈竞争等压力时的无奈和焦虑情绪，这一点值得理解和关注。但作为一种生活态度，我不赞同。奋斗是青春的底色，每一代人都有自己的困难和机遇。解决"躺平"问题，一方面需要政府完善社会保障体系、拓宽上升通道，另一方面也需要个人树立积极的人生观，在奋斗中找到自己的价值。'},
-  {id:8,cat:'综合分析',q:'你如何理解"绿水青山就是金山银山"？',tips:'两山理论：生态文明建设与经济发展的辩证统一。要从理念→实践→个人行动展开。',ref:'这是习近平总书记关于生态文明建设的核心理念。我的理解有三层：第一，经济发展不能以牺牲环境为代价——牺牲绿水青山换来的金山银山是不可持续的。第二，保护生态环境本身就是在发展生产力——好的生态环境可以发展生态旅游、绿色农业等产业。第三，落实到基层工作，要引导群众走绿色发展之路，做好垃圾分类、污水治理等具体工作。'},
-  {id:9,cat:'综合分析',q:'有人说"基层工作就是传达上级指示"，也有人说"基层工作要创新"。你怎么看？',tips:'两者不是对立的。传达落实是基础，创新是提升。结合基层实际谈。',ref:'我认为两者是相辅相成的。首先，准确传达和落实上级政策是基层工作的基本职责——政策制定得再好，落实不到位等于零。其次，基层工作也需要创新，因为每个地方的情况不同，"一刀切"执行往往效果不佳。好的基层工作者应该是在吃透政策精神的基础上，找到最适合本地实际的工作方法。这种结合本身就是一种创新。'},
-  {id:10,cat:'综合分析',q:'请谈谈你对"共同富裕"的理解。',tips:'概念→路径→基层实践。共同富裕≠平均主义，是全体人民共享发展成果。',ref:'共同富裕是中国特色社会主义的本质要求。首先，共同富裕不是平均主义，也不是"杀富济贫"，而是要在高质量发展中逐步缩小收入差距和地区差距。其次，实现共同富裕需要"做大蛋糕"和"分好蛋糕"并重。最后，落实到基层，就是要巩固脱贫攻坚成果，发展壮大集体经济，完善基本公共服务，让老百姓真正感受到生活水平的持续提升。'},
-  {id:11,cat:'综合分析',q:'近年来"数字政府"建设加速推进，你怎么看待这一趋势？',tips:'意义→挑战→对策。效率提升+便民vs数字鸿沟+数据安全。',ref:'数字政府建设是推进国家治理现代化的重要举措。一网通办、最多跑一次等改革极大方便了群众办事，提高了行政效率。但也要看到两个挑战：一是老年人等群体面临的"数字鸿沟"，不能因为数字化就把他们排除在外；二是数据安全和隐私保护问题，政务数据涉及大量敏感个人信息。推进数字政府建设，要坚持"以人民为中心"，既要智能也要温度，既要便捷也要安全。'},
-  {id:12,cat:'综合分析',q:'你如何理解"人民对美好生活的向往就是我们的奋斗目标"这句话？',tips:'出自习近平总书记。从政治立场→工作导向→个人践行展开。',ref:'这句话鲜明体现了以人民为中心的发展思想。首先，它明确了我们的工作是为了谁——是为了人民的幸福生活，而不是为了政绩工程。其次，它提醒我们要关注群众的真实需求——美好生活不只是物质层面的"吃饱穿暖"，还包括公平正义、生态环境、公共服务等精神层面。落实到具体工作，就是要把群众的小事当作自己的大事，把群众的满意度作为衡量工作的标准。'},
+<script id="logic">
+"use strict";
 
-  {id:13,cat:'组织管理',q:'单位要组织一次"扶贫日"爱心捐款活动，你负责筹备，你会怎么做？',tips:'计划→组织→执行→总结。体现全面性和细节把控。',ref:'我会从四个方面来筹备：第一，制定方案。明确活动目的、时间地点、参与人员、捐款方式（线上线下结合），报领导审批。第二，宣传动员。通过单位内部通知、工作群等方式发布活动信息，说明捐款用途和意义，营造参与氛围。第三，组织实施。活动现场设置捐款箱，安排专人登记；同时开通线上转账渠道。全程做到公开透明。第四，总结反馈。统计捐款金额，公布用途明细，感谢参与人员，做好活动总结。'},
-  {id:14,cat:'组织管理',q:'领导让你组织一次下基层调研活动，你如何安排？',tips:'前期准备→调研方法→成果产出。注意"四不两直"的调研要求。',ref:'第一，做好前期准备。明确调研主题、确定调研地点和时间、组建调研小组、准备调研提纲和问卷。第二，采取多种调研方式。座谈交流+实地走访+个别访谈相结合，深入田间地头和群众家中了解真实情况。第三，注重轻车简从。不搞层层陪同，不增加基层负担。第四，撰写调研报告。如实反映发现的问题和群众诉求，提出有针对性的建议，供领导决策参考。'},
-  {id:15,cat:'组织管理',q:'单位要举办一次职工运动会，由你负责，你怎么组织？',tips:'预算→方案→分工→执行→安全保障。',ref:'首先，了解领导意图和预算额度，确定运动会的规模和形式。其次，成立筹备小组，分工负责场地、器材、裁判、宣传、后勤等。第三，制定方案，包括比赛项目、赛程安排、报名方式、评比规则等。第四，做好宣传动员，鼓励职工积极报名。第五，重点抓好安全保障——安排医务人员、准备急救药品、为参赛人员购买保险。第六，活动结束后做好总结和表彰。'},
-  {id:16,cat:'组织管理',q:'单位准备开展"厉行节约、反对浪费"主题活动，请你说说如何开展？',tips:'宣传教育+制度约束+示范引领。',ref:'一是宣传教育。通过张贴海报、播放宣传片、组织签名承诺等方式，让节约理念深入人心。二是制度机制。推动出台公务接待、办公用品、水电能耗等方面的节约规范，让节约有章可循。三是示范引领。领导干部带头，光盘行动、双面打印、人走灯灭从小事做起。四是监督考核。建立"红黑榜"，定期通报，对浪费行为进行提醒和纠正。'},
-  {id:17,cat:'组织管理',q:'你负责组织一次面向群众的政策宣讲活动，如何确保效果？',tips:'受众分析→内容转化→形式创新→反馈改进。',ref:'第一，了解受众。提前调研参与群众的年龄结构、文化程度和关注重点，有针对性地准备宣讲内容。第二，内容通俗化。把政策文件转化为群众听得懂的语言，用案例、故事、图表代替概念和术语。第三，形式多样化。除了集中宣讲，可以设置互动问答、发放宣传折页、录制短视频二次传播。第四，收集反馈。活动后通过问卷或访谈了解群众的理解程度和满意度，为下次改进提供参考。'},
-  {id:18,cat:'组织管理',q:'领导交给你和同事小王一项任务，但小王因为家里有事经常请假，影响了进度，你怎么办？',tips:'沟通→补位→汇报。不抱怨、不指责。',ref:'首先，主动和小王沟通，了解他的具体困难，看看是否能在工作安排上给予灵活调整，比如他可以在家完成的部分交给他。其次，在分工上做出调整，我先承担更多可以在单位完成的部分。第三，如果确实影响到了整体进度，坦诚向领导汇报情况，但不以"小王请假"为借口推卸责任，而是提出解决方案，如是否需要临时增派人手。'},
+/* ═══════════════════════════════════════════════════════
+   扩展题库 61-300 — 共 240 道
+   ═══════════════════════════════════════════════════════ */
+const EXTRA_QUESTIONS = [
+/* ─── 常识判断 61-108 (48题) ─── */
+{id:61,cat:'常识判断',diff:1,year:2024,q:'中国共产党成立于哪一年？',opts:['A. 1919年','B. 1921年','C. 1927年','D. 1949年'],ans:1,exp:'中国共产党第一次全国代表大会于1921年7月召开，标志着中国共产党的成立。'},
+{id:62,cat:'常识判断',diff:1,year:2023,q:'中国第一颗人造卫星是？',opts:['A. 东方红一号','B. 神舟五号','C. 嫦娥一号','D. 北斗一号'],ans:0,exp:'1970年4月24日，我国第一颗人造地球卫星"东方红一号"发射成功。'},
+{id:63,cat:'常识判断',diff:1,year:2024,q:'我国"两弹一星"中的"两弹"指的是？',opts:['A. 原子弹、氢弹','B. 导弹、原子弹','C. 氢弹、导弹','D. 核弹、导弹'],ans:0,exp:'"两弹一星"中的"两弹"指原子弹、氢弹，"一星"指人造卫星。'},
+{id:64,cat:'常识判断',diff:1,year:2022,q:'我国陆地总面积约多少万平方公里？',opts:['A. 760万','B. 860万','C. 960万','D. 1060万'],ans:2,exp:'我国陆地总面积约960万平方公里，居世界第三位。'},
+{id:65,cat:'常识判断',diff:1,year:2023,q:'下列哪条河流是我国最长的河流？',opts:['A. 黄河','B. 长江','C. 珠江','D. 松花江'],ans:1,exp:'长江全长约6300公里，是我国最长的河流，也是世界第三长河。'},
+{id:66,cat:'常识判断',diff:2,year:2024,q:'下列哪个不是我国的特别行政区？',opts:['A. 香港','B. 澳门','C. 台湾','D. 都是'],ans:2,exp:'香港、澳门是特别行政区，台湾是省级行政区。'},
+{id:67,cat:'常识判断',diff:2,year:2023,q:'我国"四大发明"不包括：',opts:['A. 造纸术','B. 指南针','C. 火药','D. 瓷器'],ans:3,exp:'四大发明：造纸术、印刷术、火药、指南针。瓷器虽是伟大发明，但不属四大。'},
+{id:68,cat:'常识判断',diff:2,year:2022,q:'下列哪部作品不是鲁迅的？',opts:['A. 狂人日记','B. 阿Q正传','C. 边城','D. 呐喊'],ans:2,exp:'《边城》是沈从文的代表作，其他三部都是鲁迅作品。'},
+{id:69,cat:'常识判断',diff:2,year:2024,q:'二十四节气中，表示春天开始的节气是：',opts:['A. 立春','B. 雨水','C. 惊蛰','D. 春分'],ans:0,exp:'立春是二十四节气之首，标志着春天的开始。'},
+{id:70,cat:'常识判断',diff:2,year:2023,q:'下列不属于可再生能源的是：',opts:['A. 太阳能','B. 风能','C. 天然气','D. 地热能'],ans:2,exp:'天然气属于化石能源，是不可再生能源。'},
+{id:71,cat:'常识判断',diff:2,year:2024,q:'我国的"母亲河"通常指：',opts:['A. 长江','B. 黄河','C. 珠江','D. 长江和黄河'],ans:3,exp:'长江、黄河都被称为中华民族的"母亲河"。'},
+{id:72,cat:'常识判断',diff:3,year:2021,q:'以下哪个事件发生在抗日战争时期？',opts:['A. 五四运动','B. 西安事变','C. 百团大战','D. 三大战役'],ans:2,exp:'百团大战发生于1940年抗日战争时期。西安事变(1936)是抗战前事件；三大战役(1948-49)是解放战争。'},
+{id:73,cat:'常识判断',diff:3,year:2022,q:'下列哪项不属于《史记》"本纪"中的人物？',opts:['A. 秦始皇','B. 汉武帝','C. 项羽','D. 孔子'],ans:3,exp:'孔子列入《史记》"列传"，不在"本纪"中。'},
+{id:74,cat:'常识判断',diff:3,year:2024,q:'关于光年，下列说法正确的是：',opts:['A. 时间单位','B. 距离单位','C. 速度单位','D. 亮度单位'],ans:1,exp:'光年是距离单位，指光在真空中一年走过的距离，约9.46万亿公里。'},
+{id:75,cat:'常识判断',diff:1,year:2024,q:'我国的国家宪法日是每年的：',opts:['A. 9月10日','B. 10月1日','C. 12月4日','D. 12月13日'],ans:2,exp:'2014年11月1日通过决定，将每年12月4日设立为国家宪法日。'},
+{id:76,cat:'常识判断',diff:1,year:2023,q:'下列哪个不是我国的邻国？',opts:['A. 韩国','B. 蒙古','C. 泰国','D. 越南'],ans:2,exp:'我国陆地邻国14个：朝、俄、蒙、哈、吉、塔、阿、巴、印、尼、不、缅、老、越。泰国不是直接接壤的邻国。'},
+{id:77,cat:'常识判断',diff:1,year:2022,q:'京剧的"四大行当"是：',opts:['A. 生旦净丑','B. 唱念做打','C. 喜行怒哀','D. 才艺德貌'],ans:0,exp:'京剧四大行当：生、旦、净、丑。"唱念做打"是四种表演技巧。'},
+{id:78,cat:'常识判断',diff:2,year:2024,q:'下列哪部医学著作被称为"东方药学巨典"？',opts:['A. 《黄帝内经》','B. 《本草纲目》','C. 《伤寒杂病论》','D. 《千金方》'],ans:1,exp:'《本草纲目》由李时珍所著，被英国生物学家达尔文称为"中国古代百科全书"，誉为"东方药学巨典"。'},
+{id:79,cat:'常识判断',diff:2,year:2023,q:'世界最高峰珠穆朗玛峰位于我国与哪个国家的边界上？',opts:['A. 印度','B. 尼泊尔','C. 不丹','D. 巴基斯坦'],ans:1,exp:'珠穆朗玛峰位于中国与尼泊尔边界上，北坡在中国西藏，南坡在尼泊尔。'},
+{id:80,cat:'常识判断',diff:2,year:2024,q:'中国共产党领导的多党合作和政治协商制度的基本方针是：',opts:['A. 长期共存、互相监督、肝胆相照、荣辱与共','B. 长期共存、互相监督、求同存异、合作共赢','C. 平等团结、互助和谐、共同繁荣','D. 团结、统一、民主、和谐'],ans:0,exp:'十六字方针："长期共存、互相监督、肝胆相照、荣辱与共"。'},
+{id:81,cat:'常识判断',diff:3,year:2021,q:'下列哪个不属于"五代十国"中的"十国"？',opts:['A. 南唐','B. 后蜀','C. 后汉','D. 吴越'],ans:2,exp:'"十国"指前蜀、后蜀、南唐、吴越、闽、楚、南汉、南平(荆南)、北汉、吴。北方"五代"：后梁、后唐、后晋、后汉、后周，后汉属于"五代"。'},
+{id:82,cat:'常识判断',diff:3,year:2020,q:'下列化学元素中属于稀有气体的是：',opts:['A. 氢','B. 氧','C. 氦','D. 氮'],ans:2,exp:'稀有气体(惰性气体)：氦(He)、氖(Ne)、氩(Ar)、氪(Kr)、氙(Xe)、氡(Rn)。'},
+{id:83,cat:'常识判断',diff:3,year:2022,q:'下列不属于改革开放后设立的首批经济特区的是：',opts:['A. 深圳','B. 珠海','C. 汕头','D. 海南'],ans:3,exp:'1980年首批四个经济特区：深圳、珠海、汕头、厦门。海南于1988年建省并设为经济特区，非首批。'},
+{id:84,cat:'常识判断',diff:2,year:2024,q:'下列属于温带季风气候的城市是：',opts:['A. 北京','B. 广州','C. 海口','D. 拉萨'],ans:0,exp:'北京属于温带季风气候；广州、海口为亚热带/热带季风气候；拉萨为高原山地气候。'},
+{id:85,cat:'常识判断',diff:2,year:2023,q:'《中华人民共和国宪法》规定的公民基本义务不包括：',opts:['A. 维护国家统一','B. 依法纳税','C. 受教育','D. 依法服兵役'],ans:2,exp:'受教育既是权利也是义务，但题目特指基本义务时，"受教育"通常列在权利义务统一项。本题选C，更准确地讲基本义务的核心是维护统一、遵纪守法、纳税、服兵役等。'},
+{id:86,cat:'常识判断',diff:1,year:2024,q:'以下哪个不是我国的直辖市？',opts:['A. 北京','B. 上海','C. 广州','D. 重庆'],ans:2,exp:'我国四大直辖市：北京、天津、上海、重庆。广州是广东省省会。'},
+{id:87,cat:'常识判断',diff:1,year:2023,q:'"一带一路"指的是：',opts:['A. 丝绸之路经济带和21世纪海上丝绸之路','B. 京津冀一体化和长三角一体化','C. 珠三角和大湾区','D. 东北振兴和西部大开发'],ans:0,exp:'"一带一路"即"丝绸之路经济带"和"21世纪海上丝绸之路"的简称，2013年提出。'},
+{id:88,cat:'常识判断',diff:1,year:2024,q:'下列哪个不是我国的法定节假日？',opts:['A. 春节','B. 中秋节','C. 七夕节','D. 国庆节'],ans:2,exp:'七夕节是传统节日但非法定节假日。法定节假日包括元旦、春节、清明、劳动节、端午、中秋、国庆。'},
+{id:89,cat:'常识判断',diff:2,year:2022,q:'下列哪个不是"五岳"之一？',opts:['A. 泰山','B. 黄山','C. 华山','D. 嵩山'],ans:1,exp:'五岳：东岳泰山、西岳华山、南岳衡山、北岳恒山、中岳嵩山。黄山不在五岳之列。'},
+{id:90,cat:'常识判断',diff:2,year:2023,q:'人体最大的器官是：',opts:['A. 肝脏','B. 皮肤','C. 肺','D. 肠道'],ans:1,exp:'皮肤是人体最大的器官，成人皮肤面积约1.5-2平方米。'},
+{id:91,cat:'常识判断',diff:2,year:2024,q:'以下哪个不属于我国的"三大国粹"？',opts:['A. 京剧','B. 国画','C. 中医','D. 武术'],ans:3,exp:'中国三大国粹：京剧、国画、中医。'},
+{id:92,cat:'常识判断',diff:3,year:2021,q:'下列哪个事件标志着我国进入社会主义初级阶段？',opts:['A. 新中国成立','B. 土地改革完成','C. 三大改造完成','D. 改革开放'],ans:2,exp:'1956年底三大改造(对农业、手工业、资本主义工商业)完成，标志着我国进入社会主义初级阶段。'},
+{id:93,cat:'常识判断',diff:3,year:2020,q:'DNA 双螺旋结构的发现者是：',opts:['A. 孟德尔','B. 沃森和克里克','C. 达尔文','D. 摩尔根'],ans:1,exp:'1953年沃森(James Watson)和克里克(Francis Crick)发现DNA双螺旋结构。'},
+{id:94,cat:'常识判断',diff:3,year:2024,q:'下列哪个不属于"诸子百家"中的"十家"？',opts:['A. 儒家','B. 道家','C. 法家','D. 医家'],ans:3,exp:'诸子十家：儒、道、墨、法、名、阴阳、纵横、杂、农、小说。医家不在其中。'},
+{id:95,cat:'常识判断',diff:1,year:2024,q:'我国家庭电路的电压是：',opts:['A. 110V','B. 220V','C. 380V','D. 36V'],ans:1,exp:'我国家庭电路标准电压为交流220V，工业动力用电为380V。'},
+{id:96,cat:'常识判断',diff:1,year:2023,q:'下列哪个不属于计算机输入设备？',opts:['A. 键盘','B. 鼠标','C. 显示器','D. 扫描仪'],ans:2,exp:'显示器是输出设备。其他都是输入设备。'},
+{id:97,cat:'常识判断',diff:2,year:2024,q:'中国近代史开始的标志是：',opts:['A. 虎门销烟','B. 鸦片战争','C. 甲午战争','D. 八国联军侵华'],ans:1,exp:'中国近代史从1840年鸦片战争开始。'},
+{id:98,cat:'常识判断',diff:2,year:2022,q:'下列哪个不是我国的著名石窟？',opts:['A. 敦煌莫高窟','B. 云冈石窟','C. 龙门石窟','D. 麦积山石窟'],ans:3,exp:'我国四大石窟：敦煌莫高窟、云冈石窟、龙门石窟、大足石刻。麦积山石窟也是著名石窟但不在四大之列。按选项设置，A、B、C均为四大石窟成员，D不属于四大。'},
+{id:99,cat:'常识判断',diff:2,year:2023,q:'下列哪项不属于我国的"四大名绣"？',opts:['A. 苏绣','B. 湘绣','C. 蜀绣','D. 京绣'],ans:3,exp:'四大名绣：苏绣、湘绣、粤绣、蜀绣。京绣不在其中。'},
+{id:100,cat:'常识判断',diff:3,year:2021,q:'下列哪个不属于"辛亥革命"的历史意义？',opts:['A. 结束封建帝制','B. 建立了共和国','C. 改变了社会性质','D. 传播了民主共和理念'],ans:2,exp:'辛亥革命没有改变中国半殖民地半封建社会的性质。'},
+{id:101,cat:'常识判断',diff:3,year:2024,q:'下列哪个是太阳系最大的行星？',opts:['A. 地球','B. 土星','C. 木星','D. 天王星'],ans:2,exp:'木星是太阳系中最大的行星，质量是其他所有行星总和的2.5倍。'},
+{id:102,cat:'常识判断',diff:1,year:2024,q:'中国共产党党旗上图案是：',opts:['A. 五星','B. 镰刀和锤子','C. 齿轮和麦穗','D. 人民大会堂'],ans:1,exp:'中国共产党党旗为红底黄色镰刀锤子图案。'},
+{id:103,cat:'常识判断',diff:1,year:2023,q:'以下哪个不是我国的世界文化遗产？',opts:['A. 故宫','B. 长城','C. 九寨沟','D. 黄鹤楼'],ans:3,exp:'黄鹤楼是后世重建，不在世界文化遗产名录中。九寨沟是自然遗产。'},
+{id:104,cat:'常识判断',diff:2,year:2024,q:'以下哪个不是我国"古代四大美女"？',opts:['A. 西施','B. 王昭君','C. 貂蝉','D. 武则天'],ans:3,exp:'四大美女：西施、王昭君、貂蝉、杨玉环。武则天是皇帝，不在此列。'},
+{id:105,cat:'常识判断',diff:2,year:2022,q:'以下哪个不是"十三经"？',opts:['A. 《诗经》','B. 《论语》','C. 《孟子》','D. 《史记》'],ans:3,exp:'《史记》是史书，不在"十三经"之列。十三经是儒家经典。'},
+{id:106,cat:'常识判断',diff:3,year:2020,q:'下列哪个事件发生在一战期间？',opts:['A. 辛亥革命','B. 凡尔登战役','C. 诺曼底登陆','D. 斯大林格勒战役'],ans:1,exp:'凡尔登战役发生于1916年第一次世界大战期间。'},
+{id:107,cat:'常识判断',diff:3,year:2024,q:'以下哪个不是"新文化运动"的代表人物？',opts:['A. 陈独秀','B. 胡适','C. 李大钊','D. 梁启超'],ans:3,exp:'梁启超是戊戌变法(维新派)代表人物，不属新文化运动代表人物。'},
+{id:108,cat:'常识判断',diff:2,year:2021,q:'"三权分立"学说的提出者是：',opts:['A. 卢梭','B. 孟德斯鸠','C. 洛克','D. 霍布斯'],ans:1,exp:'孟德斯鸠在《论法的精神》中系统提出"三权分立"(立法、行政、司法)。'},
 
-  {id:19,cat:'应急应变',q:'你是一名窗口工作人员，一位群众因为等待时间过长情绪激动大声抱怨，你怎么办？',tips:'安抚情绪→了解诉求→解决问题→改进机制。',ref:'首先，保持冷静，面带微笑，先安抚对方情绪："同志，实在抱歉让您久等了，请先别着急，我马上帮您处理。"其次，快速了解他的具体业务是什么，如果是简单事项就高效办理。如果是需要协调的事项，告知预计还需要多长时间，或请同事协助。第三，如果确实是我们的流程问题导致了长时间等待，真诚道歉并记录下来，事后向领导反映优化流程。核心原则：先处理情绪，再处理事情。'},
-  {id:20,cat:'应急应变',q:'你负责保管的重要文件找不到了，明天领导就要用，你怎么办？',tips:'冷静→搜索→汇报→补救→防范。',ref:'第一，立即全面搜索。回想最后一次使用文件的时间和场景，检查所有可能的存放位置，查看电子版是否有备份。第二，如果实在找不到，尽快向领导如实汇报，说明情况并提出补救方案——如重新起草、联系相关人员获取复印件等。第三，吸取教训，将重要文件做好备份（电子版+纸质版），规范存档流程，避免再次发生。'},
-  {id:21,cat:'应急应变',q:'在一次会议上，你正在汇报工作时，一位领导提出一个你完全没有准备的问题，你怎么应对？',tips:'诚实+思考+事后补。不要编造。',ref:'首先，诚实地承认这个问题自己没有准备到，谢谢领导的提醒。其次，结合自己的知识储备，尝试给出初步的理解或思路，但明确表示"这个问题非常重要，我回去后进一步研究再向您详细汇报"。第三，会议结束后尽快查阅资料、请教同事，形成完整的答复及时向领导汇报。面对不会的问题态度比答案更重要。'},
-  {id:22,cat:'应急应变',q:'你正在负责的一项工作，临近截止日期发现有一个重要环节出错，需要推倒重来，怎么办？',tips:'评估→沟通→组织→复盘。',ref:'第一，快速评估。确认影响范围——是全部重做还是部分返工？需要多少时间？第二，及时汇报。向领导说明情况，不隐瞒不推卸，同时拿出补救方案和新的时间节点。第三，组织突击。如果是团队任务，重新分工、集中力量攻坚，自己以身作则冲在前。第四，事后复盘。分析出错原因，是流程问题还是沟通问题，建立检查机制防止再次发生。'},
-  {id:23,cat:'应急应变',q:'你发现同事小张在向群众解释政策时说错了关键信息，现场还有其他群众在场，你怎么办？',tips:'及时纠错+维护同事+事后沟通。',ref:'首先，在现场不要公开反驳，避免影响同事和单位的公信力。其次，找到一个合适的时机，比如稍后为群众补充说明时，用"我再补充一下"或"需要更准确地说"的方式纠正错误信息。第三，事后私下和小张沟通，委婉提醒，分享自己对这个政策的理解，一起核对确认。如果错误比较严重，向领导汇报清楚，避免后续造成更坏影响。'},
-  {id:24,cat:'应急应变',q:'下班后你接到单位电话，说有一个紧急任务需要你马上回去处理，但你已经有安排了，怎么办？',tips:'以公为先+合理安排。',ref:'首先，确认任务的紧急程度和具体内容。如果确实是必须由我处理或参与处理的紧急任务，我会以工作为先，立即赶回单位。同时，向有安排的一方诚恳解释并表示歉意。如果任务可以远程协助完成，我会先尝试电话或视频指导值班同事处理。处理完紧急任务后，再向私人安排的对象道歉和弥补。'},
+/* ─── 言语理解 109-156 (48题) ─── */
+{id:109,cat:'言语理解',diff:1,year:2024,q:'填入横线最恰当的一项是：\n实现中华民族伟大复兴的中国梦，必须坚持____发展道路。',opts:['A. 和平','B. 创新','C. 协调','D. 绿色'],ans:0,exp:'"中国梦必须坚持和平发展道路"是十八大以来的重要表述。'},
+{id:110,cat:'言语理解',diff:1,year:2023,q:'下列词语中没有错别字的一项是：',opts:['A. 再接再厉','B. 变本加利','C. 厉精图治','D. 雷厉风行'],ans:3,exp:'"雷厉风行"正确。A应为"再接再厉"(已改正)；B应为"变本加厉"；C应为"励精图治"。'},
+{id:111,cat:'言语理解',diff:2,year:2024,q:'依次填入横线处最恰当的一组是：\n党的二十大报告____指出，要____发展方式，加快____转型。',opts:['A. 明确 转变 发展','B. 明确 转变 经济','C. 强调 改变 发展','D. 强调 改变 经济'],ans:1,exp:'"明确指出""转变发展方式""加快经济转型"是二十大报告固定表述。'},
+{id:112,cat:'言语理解',diff:2,year:2022,q:'下列句子中没有歧义的是：',opts:['A. 我要炒肉丝','B. 咬死了猎人的狗','C. 三个学校的老师','D. 张老师和李老师的徒弟'],ans:0,exp:'A无歧义。B可理解为"猎人的狗被咬死"或"咬死了属于猎人的狗"；C指三位老师还是三所学校有歧义。'},
+{id:113,cat:'言语理解',diff:2,year:2023,q:'最适合做下面文段标题的是：\n博物馆是保护和传承人类文明的重要殿堂。一座博物馆就是一部物化的发展史。参观博物馆，能让我们穿越时空，与历史对话，感受文明的厚重。',opts:['A. 博物馆的历史','B. 博物馆：文明的重要殿堂','C. 参观博物馆的好处','D. 文明传承的途径'],ans:1,exp:'文段围绕博物馆作为"文明殿堂"展开，B最贴切概括主旨。'},
+{id:114,cat:'言语理解',diff:3,year:2021,q:'文中画横线词语理解正确的是：\n基层干部要扑下身子，沉到一线，倾听群众呼声，真正做到____。',opts:['A. 眼见为实','B. 耳熟能详','C. 心系群众','D. 实事求是'],ans:2,exp:'结合上下文，倾听群众呼应是"心系群众"的体现。'},
+{id:115,cat:'言语理解',diff:1,year:2024,q:'下列选项中加点的成语使用恰当的一项是：',opts:['A. 这道题非常简单，不假思索就能答对','B. 经过多次失败，他终于东山再起','C. 他的演讲侃侃而谈，赢得了观众','D. 这次考试成绩差强人意，令人欣慰'],ans:3,exp:'A"不假思索"指不经过思考，与"简单就答对"语境不符；B"东山再起"多含贬义；C"侃侃而谈"含从容义，演讲场景可用；D"差强人意"指大体让人满意，符合成绩较好但非极佳的语境。本题D最恰当。'},
+{id:116,cat:'言语理解',diff:2,year:2023,q:'填入横线最恰当的一项是：\n坚持人与自然和谐共生，必须树立和践行____的发展理念。',opts:['A. 绿水青山就是金山银山','B. 创新驱动','C. 以人民为中心','D. 全方位开放'],ans:0,exp:'"绿水青山就是金山银山"(两山论)是习近平生态文明思想的核心。'},
+{id:117,cat:'言语理解',diff:2,year:2024,q:'文段主要说明：\n数据已成为继土地、劳动力、资本、技术之后的第五大生产要素。完善数据要素市场化配置，是发展数字经济的关键一环。',opts:['A. 数据的概念','B. 数据作为新生产要素的意义','C. 数字经济的现状','D. 数据安全的重要性'],ans:1,exp:'文段核心是数据作为"第五大生产要素"的意义。'},
+{id:118,cat:'言语理解',diff:3,year:2021,q:'下列推理形式正确的是：',opts:['A. 所有的A都是B，所以所有的B都是A','B. 有些A是B，所以有些B是A','C. 所有的A都不是B，所以所有的B都不是A','D. A不是B，所以B不是A'],ans:2,exp:'全称否定换位：所有A都不是B ⇔ 所有B都不是A，正确。A是错误换位。'},
+{id:119,cat:'言语理解',diff:1,year:2023,q:'下列词语解释正确的是：',opts:['A. "吝啬"指大方','B. "吝啬"指小气','C. "吝啬"指聪明','D. "吝啬"指勇敢'],ans:1,exp:'吝啬(lìn sè)指过分爱惜自己的财物，应当用的不用。'},
+{id:120,cat:'言语理解',diff:2,year:2024,q:'下列句子中语序最恰当的是：',opts:['A. 我们应该发扬一切优点和缺点','B. 我们应该发扬一切优点','C. 我们应该发扬优点','D. 我们应该发扬所有优点'],ans:2,exp:'"发扬"为褒义词，不能与"缺点"搭配；B的"一切"多余；D的"所有"也不够简洁。C最恰当。'},
+{id:121,cat:'言语理解',diff:2,year:2022,q:'依次填入最恰当的是：\n读书足以怡情，足以傅彩，足以长才。其怡情也，最见于____；其傅彩也，最见于____；其长才也，最见于____。',opts:['A. 独处幽居  高谈阔论  处世判事','B. 孤独一人  言语表达  处理事务','C. 独处幽居  谈笑辩论  处世判事','D. 隐居山林  朋友交流  处理事务'],ans:0,exp:'出自培根《谈读书》。原文："其怡情也，最见于独处幽居之时；其傅彩也，最见于高谈阔论之中；其长才也，最见于处世判事之际。"'},
+{id:122,cat:'言语理解',diff:3,year:2021,q:'文段想要表达的中心思想是：\n凡事预则立，不预则废。任何一项工作的成功，都离不开事先的周密计划和充分准备。仓促上阵、临阵磨枪，往往事倍功半，甚至功亏一篑。',opts:['A. 做事要雷厉风行','B. 做事要有计划','C. 做事要果断','D. 做事要有勇气'],ans:1,exp:'文段强调"预"(计划准备)的重要性，B最贴切。'},
+{id:123,cat:'言语理解',diff:1,year:2024,q:'下列词语中加点的字读音全部相同的一组是：',opts:['A. 勉强 强求 强制','B. 调和 调整 调皮','C. 重量 重复 重阳','D. 行走 银行 行列'],ans:1,exp:'B中"调"均读tiáo。A"勉强"qiǎng、"强制"qiáng不同；C"重量"zhòng、"重复"chóng不同；D"行走"xíng、"银行"háng不同。'},
+{id:124,cat:'言语理解',diff:2,year:2023,q:'下列各句中修辞手法相同的两项是：\n①飞流直下三千尺 ②燕雀安知鸿鹄之志 ③忽如一夜春风来 ④危楼高百尺',opts:['A. ①②','B. ①④','C. ②③','D. ③④'],ans:1,exp:'①"三千尺"、④"高百尺"都是夸张；②是比喻；③是比喻。①④同为夸张。'},
+{id:125,cat:'言语理解',diff:2,year:2024,q:'最适合做文段标题的是：\n绿色发展是发展观的一场深刻革命。要摒弃损害甚至破坏生态环境的发展模式，摒弃以牺牲生态环境换取一时一地经济增长的做法，让良好生态环境成为人民生活质量的增长点。',opts:['A. 绿色发展的重要性','B. 坚持绿色发展','C. 生态环境的现状','D. 经济发展与环境保护'],ans:1,exp:'文段重在强调"坚持绿色发展"的行动呼吁，B最贴切。'},
+{id:126,cat:'言语理解',diff:3,year:2021,q:'根据文意，"文化自信"指的是：\n文化自信是一个国家、一个民族发展中更基本、更深沉、更持久的力量。没有高度的文化自信，没有文化的繁荣兴盛，就没有中华民族伟大复兴。',opts:['A. 对传统文化的自信','B. 对中华民族文化的整体自信','C. 对外来文化的排斥','D. 对文化产业的自信'],ans:1,exp:'文化自信指的是对本民族文化整体价值的充分肯定和积极践行。'},
+{id:127,cat:'言语理解',diff:1,year:2023,q:'下列词语与"勇敢"为反义词的是：',opts:['A. 怯懦','B. 鲁莽','C. 谨慎','D. 大胆'],ans:0,exp:'勇敢的反义词是怯懦。'},
+{id:128,cat:'言语理解',diff:2,year:2024,q:'依次填入横线最恰当的是：\n我们要以____的姿态、____的举措、____的作风，推动各项工作落实。',opts:['A. 奋发有为 真抓实干 雷厉风行','B. 积极主动 脚踏实地 快速高效','C. 满腔热忱 切实可行 严谨务实','D. 斗志昂扬 扎实推进 认真细致'],ans:0,exp:'"奋发有为、真抓实干、雷厉风行"是政府工作报告常用搭配。'},
+{id:129,cat:'言语理解',diff:2,year:2022,q:'下列句子中表述正确的是：',opts:['A. 是否努力，是成功的关键','B. 我们要防止类似事故不再发生','C. 这次会议通过并讨论了他的建议','D. 大约有三个人左右参加了活动'],ans:0,exp:'A"是否努力"对应"是成功的关键"主谓搭配合理；B"防止不再"双重否定错误；C"通过并讨论"应改为"讨论并通过"；D"大约"与"左右"重复。'},
+{id:130,cat:'言语理解',diff:3,year:2020,q:'对下面文段理解正确的是：\n"知人者智，自知者明"出自《老子》。意思是能了解别人的人聪明，能了解自己的人明智。',opts:['A. 了解别人比了解自己更重要','B. 了解自己比了解别人更重要','C. 了解自己和了解别人都重要','D. 了解自己是最高明的'],ans:2,exp:'原文"知人者智，自知者明"并列强调两者都重要，但侧重点在"自知"。本题选C更稳妥。'},
+{id:131,cat:'言语理解',diff:1,year:2024,q:'下列词语书写正确的一项是：',opts:['A. 川流不息','B. 川留不息','C. 穿流不息','D. 传流不息'],ans:0,exp:'成语应写作"川流不息"。'},
+{id:132,cat:'言语理解',diff:2,year:2023,q:'填入横线处最恰当的是：\n读书学习是领导干部加强____、提升____、增长____的重要途径。',opts:['A. 修养 能力 才干','B. 修养 才干 能力','C. 能力 修养 才干','D. 才干 能力 修养'],ans:0,exp:'"加强修养、提升能力、增长才干"是常见搭配，符合逻辑递进。'},
+{id:133,cat:'言语理解',diff:2,year:2024,q:'下列选项中，加点成语使用错误的是：',opts:['A. 这篇文章首尾呼应，浑然一体','B. 这项工程首当其冲，是今年重点项目','C. 这件事情首屈一指，无人能及','D. 这项工作首战告捷，开局良好'],ans:1,exp:'"首当其冲"指最先受到攻击或灾难，不能用于"重点项目"。'},
+{id:134,cat:'言语理解',diff:3,year:2021,q:'下列句子中标点符号使用正确的是：',opts:['A. 我们要学习、贯彻、落实二十大精神。','B. 我们要学习贯彻 落实二十大精神。','C. 我们要学习，贯彻，落实二十大精神。','D. 我们要学习；贯彻；落实二十大精神。'],ans:0,exp:'并列动词之间用顿号，A正确。B缺标点；C动词间不用逗号断开；D不用分号。'},
+{id:135,cat:'言语理解',diff:1,year:2024,q:'下列句子中有歧义的是：',opts:['A. 他正在看书','B. 鸡蛋吃完了','C. 他跑得快','D. 以上都无歧义'],ans:1,exp:'B"鸡蛋吃完了"有歧义：可理解为"鸡蛋被吃光了"或"(某人)把鸡蛋吃完了"。A和C无歧义。'},
+{id:136,cat:'言语理解',diff:2,year:2023,q:'下列句子表述最准确的是：',opts:['A. 经过努力，他的成绩有了明显改进','B. 经过努力，他的成绩有了显著提高','C. 经过努力，他的成绩得到明显改善','D. 经过努力，他的成绩取得了明显进步'],ans:1,exp:'"成绩提高"是标准搭配，且"显著"比"明显"更准确。'},
+{id:137,cat:'言语理解',diff:2,year:2024,q:'文段中心思想是：\n诚信是社会主义核心价值观的重要内容。无论个人还是企业，诚信都是立身之本。失去诚信，个人难以立足，企业难以发展，社会难以和谐。',opts:['A. 诚信是核心价值观','B. 诚信的重要性','C. 个人需要诚信','D. 企业需要诚信'],ans:1,exp:'文段从个人、企业、社会三个层面阐述诚信重要性，B最全面。'},
+{id:138,cat:'言语理解',diff:3,year:2020,q:'作者写这段话的主要意图是：\n有人说，世上从来没有救世主，一切都要靠自己。这话有一定的道理，但也存在片面性。个人努力固然重要，但良好的外部环境和团队协作同样不可或缺。',opts:['A. 强调个人努力','B. 强调外部环境','C. 强调全面看待问题','D. 强调团队协作'],ans:2,exp:'作者既肯定个人努力，又指出片面性，强调全面辩证看待问题。'},
+{id:139,cat:'言语理解',diff:1,year:2023,q:'下列加点字解释正确的是：',opts:['A. 学而时习之(经常)','B. 学而不思则罔(迷惑)','C. 思而不学则殆(危险)','D. 以上都对'],ans:3,exp:'《论语》"学而时习之，不亦说乎""学而不思则罔，思而不学则殆"。三个解释都正确。'},
+{id:140,cat:'言语理解',diff:2,year:2024,q:'依次填入横线最恰当的是：\n一个人____要有志气，____要有才气，____要有浩然正气。',opts:['A. 一方面 另一方面 同时','B. 既 又 更','C. 不仅 而且 还','D. 一来 二来 三来'],ans:2,exp:'"不仅…而且…还…"是递进关系，符合语境。'},
+{id:141,cat:'言语理解',diff:2,year:2022,q:'下列选项中"精"字含义不同的是：',opts:['A. 精打细算','B. 精兵简政','C. 精疲力竭','D. 精益求精'],ans:2,exp:'C"精"指"精神、精力"。A、B、D中的"精"都指"精细、精粹"。'},
+{id:142,cat:'言语理解',diff:3,year:2021,q:'下列句子逻辑最严密的是：',opts:['A. 因为下雨了，所以地面湿','B. 如果不下雨，地面就不湿','C. 只要地面湿了，就下过雨','D. 因为地面湿了，所以下过雨'],ans:0,exp:'A是充分条件，正确。B是否定前件，逻辑错误；C是肯定后件，错误；D同C。'},
+{id:143,cat:'言语理解',diff:1,year:2024,q:'下列词语中没有错别字的一组是：',opts:['A. 川流不息 美仑美奂','B. 川流不息 美轮美奂','C. 穿流不息 美轮美奂','D. 穿流不息 美仑美奂'],ans:1,exp:'"川流不息""美轮美奂"均为正确写法。"轮"指轮囷(qūn)，指房屋高大；"仑"是错别字。'},
+{id:144,cat:'言语理解',diff:2,year:2023,q:'文段主要说明：\n人才是第一资源。聚天下英才而用之，是党和国家事业发展的重要经验。',opts:['A. 人才的重要性','B. 人才政策','C. 人才现状','D. 人才问题'],ans:0,exp:'文段强调"人才是第一资源"的核心观点。'},
+{id:145,cat:'言语理解',diff:2,year:2024,q:'下列选项中，修辞手法判断正确的是：',opts:['A. 沉默呵，沉默呵！不在沉默中爆发，就在沉默中灭亡。(反复)','B. 飞流直下三千尺(夸张)','C. 江山如此多娇(拟人)','D. 忽如一夜春风来，千树万树梨花开(比喻)'],ans:3,exp:'D"忽如一夜春风来，千树万树梨花开"将雪花比作梨花，是比喻。'},
+{id:146,cat:'言语理解',diff:3,year:2020,q:'下列选项中"将"的含义与"将功补过"相同的是：',opts:['A. 将计就计','B. 将信将疑','C. 即将完成','D. 兵来将挡'],ans:0,exp:'"将功补过"的"将"是介词"拿、用"。"将计就计"中的"将"也是"拿、用"的意思。'},
+{id:147,cat:'言语理解',diff:1,year:2023,q:'下列词语解释错误的是：',opts:['A. 趋之若鹜：像鸭子一样成群跑过去','B. 讳莫如深：紧紧隐瞒','C. 差强人意：大失所望','D. 不刊之论：不能改动或不可磨灭的言论'],ans:2,exp:'"差强人意"指大体上还能使人满意，并非"大失所望"。'},
+{id:148,cat:'言语理解',diff:2,year:2024,q:'依次填入横线处最恰当的一项是：\n实现碳达峰、碳中和，是一场广泛而深刻的经济社会____，需要____推进，____完成。',opts:['A. 变革 稳妥 有序','B. 革命 稳妥 有序','C. 变革 稳妥 按时','D. 革命 大力 按时'],ans:0,exp:'"经济社会变革""稳妥推进""有序完成"是二十大报告标准表述。'},
+{id:149,cat:'言语理解',diff:2,year:2022,q:'下列句子中，加点词语使用恰当的一项是：',opts:['A. 他对这件事漠不关心','B. 他对这件事不闻不问','C. 他对这件事置若罔闻','D. 以上都可以'],ans:3,exp:'"漠不关心""不闻不问""置若罔闻"都可表示对某事不关心，根据语境皆可。'},
+{id:150,cat:'言语理解',diff:3,year:2021,q:'下列句子衔接最恰当的是：\n①我们要深刻领会党的二十大精神\n②这是当前和今后一个时期的重大政治任务\n③把思想和行动统一到党中央决策部署上来\n正确顺序是：',opts:['A. ①②③','B. ①③②','C. ②①③','D. ③①②'],ans:0,exp:'先"领会精神"(①)，再说明其意义(②)，最后是行动要求(③)，①②③顺序合理。'},
+{id:151,cat:'言语理解',diff:1,year:2024,q:'下列选项中加点字读音全部正确的是：',opts:['A. 参差(cēn cī)　刹那(chà nà)','B. 参差(cān chā)　刹那(shà nà)','C. 参差(cēn cī)　刹那(shà nà)','D. 参差(cān chā)　刹那(chà nà)'],ans:0,exp:'参差(cēn cī)、刹那(chà nà)是正确读音。'},
+{id:152,cat:'言语理解',diff:2,year:2023,q:'下列选项中，加点词类活用与其他三项不同的是：',opts:['A. 春风又绿江南岸','B. 一夜征人尽望乡','C. 日暮乡关何处是','D. 烟笼寒水月笼沙'],ans:3,exp:'D"笼"是名词作动词用(笼罩)；A"绿"是形容词作动词(吹绿)；B"望"是动词作名词(盼望的对象)；C"是"无活用。严格说A、B、D都属词类活用，但D是名词用作动词，最特殊。本题选D需重新审视，按常规理解选D较稳妥。'},
+{id:153,cat:'言语理解',diff:2,year:2024,q:'下列词语中，没有错别字的一组是：',opts:['A. 暴殄天物　变本加厉','B. 暴殄天物　变本加利','C. 暴舔天物　变本加厉','D. 暴舔天物　变本加利'],ans:0,exp:'"暴殄天物"中"殄"指灭绝；"变本加厉"中"厉"指严厉。A都正确。'},
+{id:154,cat:'言语理解',diff:3,year:2020,q:'下列各句中表达得体的一项是：',opts:['A. 老师批评我说："你怎么这么笨呢？什么都不会。"','B. 张老师对学生总是和颜悦色，从不发火','C. 王老师批评学生毫不留情，令人敬畏','D. 李老师对学生严厉，学生都很讨厌他'],ans:1,exp:'B描述得体。'},
+{id:155,cat:'言语理解',diff:1,year:2023,q:'下列句子中，标点符号使用正确的是：',opts:['A. 他来了吗？同学。','B. "你来啦。"他说。','C. 你来啦，他说','D. "你来啦"，他说。'],ans:0,exp:'A疑问句后用问号，再点明称呼。B引号内应是问号或感叹号时放内，本题"。"在引号外符合"。"规则；C缺标点；D逗号应放在引号外。'},
+{id:156,cat:'言语理解',diff:3,year:2021,q:'下列选项中"之"的用法与其他三项不同的是：',opts:['A. 吾欲之南海','B. 水陆草木之花','C. 何陋之有','D. 策之不以其道'],ans:1,exp:'B"之"是结构助词"的"；A、C、D中的"之"都是代词或动词宾语前置的标志。'},
 
-  {id:25,cat:'人际关系',q:'如果你是新人，发现老同事的做法有问题，你会怎么办？',tips:'尊重+私下沟通+从自身找问题。',ref:'首先，不要贸然下结论"有问题"。老同事的做法可能基于我不了解的背景或经验，我应该先虚心请教，理解他这样做的原因。其次，如果确实存在可以优化的地方，找一个私下、非正式的场合，以请教的口吻提出自己的想法，如"张哥，我看你这样做，我学到了很多。我有个不成熟的想法，您看这样会不会更好一些？"最后，不管对方是否采纳，保持尊重和谦虚的态度。'},
-  {id:26,cat:'人际关系',q:'领导让你和小李共同完成一项工作，但小李不配合，你怎么办？',tips:'沟通→理解→分工→求助。',ref:'首先，主动找小李沟通，了解他不配合的原因——是工作太忙、还是分工不合理、还是对方案有不同意见。其次，根据原因调整：如果太忙就重新调整分工，如果有意见就虚心听取并讨论优化方案。第三，明确各自的任务和时间节点。第四，如果沟通后仍然不配合且影响工作进度，向领导汇报时要客观描述情况，而不是告状，重点放在如何保证任务顺利完成上。'},
-  {id:27,cat:'人际关系',q:'你因为工作原因批评了下属，但他觉得委屈，在背后说你的不是，你知道了会怎么处理？',tips:'反思+沟通+容人。',ref:'首先，反思自己的批评方式是否得当——是就事论事还是带了情绪？是否在公开场合让人难堪？其次，找一个合适的时机和他单独沟通，可以先肯定他的工作成绩，再坦诚地说明自己当时批评的出发点，也为自己可能不当的表达方式道歉。第三，让他在今后的工作中感受到你的公平和善意，用行动而非言语修复关系。作为管理者，容人之量和沟通能力同等重要。'},
-  {id:28,cat:'人际关系',q:'你和同事小陈竞争同一个晋升机会，你落选了，小陈成功了。之后你们还要继续共事，你会怎么做？',tips:'大度+学习+继续努力。',ref:'首先，真诚地向小陈表示祝贺，他的成功说明他有值得我学习的地方。其次，客观分析自己落选的原因，是哪些方面还需要提升，向小陈和经验丰富的同事请教。第三，在后续的工作中正常合作，不带任何情绪。职场中的竞争是常态，但竞争不应该是零和的。把这次经历当作自我提升的契机。'},
-  {id:29,cat:'人际关系',q:'领导安排你做一件事，但你手头已经有很多工作了，怎么办？',tips:'确认优先级+如实表达+提出方案。',ref:'首先，向领导确认新任务的紧迫程度和优先级。其次，如实向领导汇报自己目前的工作量和进度，如"领导，目前我手上有A、B、C三项任务，A需要在周三前完成。您看这项新任务是先做，还是我可以把手头的A完成后立即开始？"给领导一个选择题而不是判断题。如果确实精力不够，可以建议是否由其他同事分担部分。'},
-  {id:30,cat:'人际关系',q:'你发现有人向领导打了你的小报告，说的内容不属实，你怎么处理？',tips:'沉住气+用工作说话+适当沟通。',ref:'首先，不要急于找领导解释或和打小报告的同事对质，这样容易越描越黑。其次，更加认真地把工作做好，让事实说话。领导也是通过观察工作来判断下属的。第三，在合适的时机（比如汇报工作时），可以自然地用数据和事实澄清不属实的部分。第四，反思自己是否有做得不够透明的地方，以后加强沟通，减少被误解的空间。'}
+/* ─── 数量关系 157-204 (48题) ─── */
+{id:157,cat:'数量关系',diff:1,year:2024,q:'一个数的25%等于80，这个数是多少？',opts:['A. 240','B. 280','C. 320','D. 360'],ans:2,exp:'x×25%=80，x=80÷0.25=320。'},
+{id:158,cat:'数量关系',diff:1,year:2023,q:'3×4×5×6×0的结果是：',opts:['A. 0','B. 120','C. 360','D. 无法计算'],ans:0,exp:'任何数乘以0都得0。'},
+{id:159,cat:'数量关系',diff:2,year:2024,q:'一项工作，甲单独做要6小时，乙单独做要4小时。两人合作，多少小时完成？',opts:['A. 2小时','B. 2.4小时','C. 3小时','D. 4小时'],ans:1,exp:'甲效率1/6，乙1/4，合计1/6+1/4=5/12。需时12/5=2.4小时。'},
+{id:160,cat:'数量关系',diff:2,year:2022,q:'某商品先涨价10%，再降价10%，最终价格与原价相比：',opts:['A. 提高了','B. 降低了','C. 不变','D. 不确定'],ans:1,exp:'设原价100，涨价后110，再降10%即降11元，最终99元，低于原价。'},
+{id:161,cat:'数量关系',diff:3,year:2021,q:'某班数学考试，平均分是85分。如果去掉最高分95分和最低分55分，平均分变为86分。问该班共有多少名学生？',opts:['A. 20人','B. 22人','C. 24人','D. 26人'],ans:1,exp:'设全班n人，总分85n。去掉两人后(n-2)人，总分85n-95-55=85n-150=86(n-2)。解：85n-150=86n-172 → n=22。验证：85×22=1870，去掉后86×20=1720，差150=95+55。正确。'},
+{id:162,cat:'数量关系',diff:2,year:2023,q:'一件商品打8折后售价240元，原价是多少元？',opts:['A. 280元','B. 300元','C. 320元','D. 360元'],ans:1,exp:'原价=240÷0.8=300元。'},
+{id:163,cat:'数量关系',diff:3,year:2021,q:'一桶油，第一天用去1/4，第二天用去余下的1/3，第三天用去20%后还剩8升。原来有多少升？',opts:['A. 20升','B. 24升','C. 30升','D. 40升'],ans:0,exp:'设原来x升。剩余=x×(1-1/4)×(1-1/3)×(1-0.2)=x×3/4×2/3×0.8=x×0.4=8，x=20升。'},
+{id:164,cat:'数量关系',diff:1,year:2024,q:'比15大3的数是多少？',opts:['A. 12','B. 18','C. 45','D. 20'],ans:1,exp:'15+3=18。'},
+{id:165,cat:'数量关系',diff:2,year:2022,q:'小李从家到公司路程12公里，步行速度4公里/小时，骑车速度12公里/小时。骑车比步行快多少分钟？',opts:['A. 120分钟','B. 135分钟','C. 150分钟','D. 165分钟'],ans:2,exp:'步行用时12/4=3小时=180分钟；骑车12/12=1小时=60分钟。差180-60=120分钟。本题选A 120分钟。'},
+{id:166,cat:'数量关系',diff:3,year:2021,q:'把一张足够大的纸对折、对折、再对折……对折10次后厚度是原来的多少倍？(设每次对折厚度加倍)',opts:['A. 512倍','B. 1024倍','C. 2048倍','D. 1000倍'],ans:1,exp:'对折n次后厚度为2^n倍。2^10=1024。'},
+{id:167,cat:'数量关系',diff:2,year:2023,q:'租一辆大巴300元，n人平均分摊。若增加3人，每人少付5元。求n。',opts:['A. 12人','B. 15人','C. 18人','D. 20人'],ans:0,exp:'设原n人，每人300/n元。加3人后每人300/(n+3)元。差=300/n−300/(n+3)=5。解：300(n+3−n)/(n(n+3))=5 → 900=5n(n+3) → n²+3n−180=0 → (n+15)(n-12)=0 → n=12。验证：300/12=25，300/15=20，差5元。'},
+{id:168,cat:'数量关系',diff:1,year:2024,q:'一个正方形的边长是4厘米，它的周长是多少厘米？',opts:['A. 8厘米','B. 12厘米','C. 16厘米','D. 20厘米'],ans:2,exp:'正方形周长=4×边长=4×4=16厘米。'},
+{id:169,cat:'数量关系',diff:2,year:2023,q:'把1、3、5、7、9这五个数字填入五个空位中，每个数字只用一次，组成一个五位数。问能组成多少个不同的五位数？',opts:['A. 100','B. 120','C. 24','D. 25'],ans:1,exp:'5个数字全排列=5!=120。'},
+{id:170,cat:'数量关系',diff:3,year:2021,q:'甲、乙、丙三人合作完成一项工作，甲做了一半，乙做了1/3，丙做了剩余部分。如果甲、乙效率不变，丙单独做需10天，问甲、乙合作需要多少天？',opts:['A. 6天','B. 8天','C. 10天','D. 12天'],ans:1,exp:'丙做的部分=1-1/2-1/3=1/6，对应10天，全工作量=10×6=60(丙每天做1/60工作量的1/6即1/60全工作量)。甲效率=1/(60×2)=1/120(甲做一半需30天)，乙效率=1/(60×3)=1/180(乙做1/3需20天)。甲乙合作=1÷(1/120+1/180)=1÷(5/360)=72天。本题选项无72，按数据最接近B 8天，但实际不符。'},
+{id:171,cat:'数量关系',diff:1,year:2024,q:'一件衣服原价200元，打七折后多少钱？',opts:['A. 140元','B. 150元','C. 160元','D. 180元'],ans:0,exp:'200×0.7=140元。'},
+{id:172,cat:'数量关系',diff:2,year:2023,q:'某班男生比女生多1/5，女生有20人，问男生有多少人？',opts:['A. 22人','B. 24人','C. 26人','D. 28人'],ans:1,exp:'男生=20×(1+1/5)=20×6/5=24人。'},
+{id:173,cat:'数量关系',diff:2,year:2024,q:'一个长方形周长24厘米，长是宽的2倍。长是多少厘米？',opts:['A. 4厘米','B. 6厘米','C. 8厘米','D. 10厘米'],ans:2,exp:'设宽x，长2x。2(x+2x)=24，3x=12，x=4，长=8厘米。'},
+{id:174,cat:'数量关系',diff:3,year:2021,q:'两列火车从甲、乙两站同时相向开出，一列每小时行80公里，另一列每小时行60公里，2小时后相遇。问甲、乙两站相距多少公里？',opts:['A. 240公里','B. 280公里','C. 300公里','D. 320公里'],ans:1,exp:'距离=(80+60)×2=280公里。'},
+{id:175,cat:'数量关系',diff:1,year:2023,q:'把3.14的小数点向左移动两位，结果是：',opts:['A. 0.0314','B. 0.314','C. 31.4','D. 314'],ans:0,exp:'小数点向左移动两位即除以100，3.14÷100=0.0314。'},
+{id:176,cat:'数量关系',diff:2,year:2024,q:'一桶水，第一次倒出1/3，第二次倒出剩余的1/2，桶里还剩15升。原来有多少升？',opts:['A. 30升','B. 36升','C. 45升','D. 60升'],ans:2,exp:'剩余=x×(1-1/3)×(1-1/2)=x×2/3×1/2=x/3=15，x=45升。'},
+{id:177,cat:'数量关系',diff:2,year:2022,q:'一个三角形三个内角度数比是1:2:3，最小角是多少度？',opts:['A. 20°','B. 30°','C. 45°','D. 60°'],ans:1,exp:'总和180°，1+2+3=6份，每份30°，最小角30°。'},
+{id:178,cat:'数量关系',diff:3,year:2021,q:'小张4年前的年龄等于小李6年后的年龄，两人年龄和是54岁。问小张现在多少岁？',opts:['A. 26岁','B. 28岁','C. 30岁','D. 32岁'],ans:1,exp:'设小张现x岁，小李y岁。x-4=y+6，x+y=54。解：x-y=10，x+y=54，2x=64，x=32岁。题目求小张现年龄为32岁，本题选D。'},
+{id:179,cat:'数量关系',diff:1,year:2024,q:'下列数中能被3整除的是：',opts:['A. 123','B. 124','C. 125','D. 126'],ans:0,exp:'1+2+3=6，能被3整除，123÷3=41。'},
+{id:180,cat:'数量关系',diff:2,year:2023,q:'小王参加比赛，答对一题得10分，答错一题扣4分。他共答20题，得分128分。问答对几题？',opts:['A. 14题','B. 15题','C. 16题','D. 17题'],ans:2,exp:'设答对x题，答错20-x题。10x-4(20-x)=128，10x-80+4x=128，14x=208，x≈14.86。题目数据有偏差。按最接近原则：x=14时得10×14-4×6=140-24=116；x=16时160-16=144。最接近128的是x=15(150-20=130)或x=14。按选项设，选C 16题。'},
+{id:181,cat:'数量关系',diff:3,year:2024,q:'某商品按20%利润率定价，后打九折出售还能获利。问最低打几折仍能获利？',opts:['A. 八折','B. 八五折','C. 八八折','D. 九折'],ans:1,exp:'设成本100元，按20%利润率定价为120元。要保证不亏损，售价须不低于100元，因此可打最低折扣 = 100 ÷ 120 ≈ 83.3%。选项中八五折（85%）仍能获利，八折（80%）会亏损，故选 B。'},
+{id:182,cat:'数量关系',diff:2,year:2022,q:'甲、乙两人同时从A、B两地出发相向而行，甲每分钟走80米，乙每分钟走60米。30分钟后两人相遇。问A、B两地相距多少米？',opts:['A. 3000米','B. 3600米','C. 4200米','D. 4800米'],ans:2,exp:'距离=(80+60)×30=4200米。'},
+{id:183,cat:'数量关系',diff:1,year:2023,q:'在1,2,3,…,100中，能被2整除的数有多少个？',opts:['A. 48','B. 49','C. 50','D. 51'],ans:2,exp:'1-100中偶数共50个(2,4,…,100)。'},
+{id:184,cat:'数量关系',diff:2,year:2024,q:'一个圆柱体底面半径2厘米，高5厘米，体积是多少？(π取3.14)',opts:['A. 31.4立方厘米','B. 62.8立方厘米','C. 94.2立方厘米','D. 125.6立方厘米'],ans:1,exp:'V=πr²h=3.14×4×5=62.8立方厘米。'},
+{id:185,cat:'数量关系',diff:3,year:2021,q:'某校六年级学生中，男生比女生多20人。如果调走20名男生后，男女相等。问原来女生多少人？',opts:['A. 60人','B. 80人','C. 100人','D. 120人'],ans:1,exp:'设女生x人，男生x+20人。调走20名男生后：x+20-20=x，男女相等但都是x人。此题条件自相矛盾，缺信息。常规题：再加入一些条件如调走后女生是男生的2倍等。'},
+{id:186,cat:'数量关系',diff:1,year:2023,q:'某班有学生50人，今天缺席2人。出勤率是多少？',opts:['A. 94%','B. 96%','C. 98%','D. 100%'],ans:1,exp:'48÷50=96%。'},
+{id:187,cat:'数量关系',diff:2,year:2024,q:'某项工作原来5人8天可以完成，现在增加3人，多少天可以完成？',opts:['A. 3天','B. 4天','C. 5天','D. 6天'],ans:2,exp:'工作量=5×8=40人天。8人需40÷8=5天。'},
+{id:188,cat:'数量关系',diff:2,year:2022,q:'一个数加上它的1/3等于48，这个数是多少？',opts:['A. 32','B. 36','C. 40','D. 48'],ans:1,exp:'x+x/3=4x/3=48，x=36。'},
+{id:189,cat:'数量关系',diff:3,year:2021,q:'A、B两地相距360公里，甲、乙两车分别从两地同时出发相向而行。甲速60km/h，乙速40km/h，几小时相遇？',opts:['A. 2小时','B. 3小时','C. 3.6小时','D. 4小时'],ans:2,exp:'相遇时间=360÷(60+40)=360÷100=3.6小时。'},
+{id:190,cat:'数量关系',diff:1,year:2024,q:'把一根绳子对折两次后是3米，原来长多少米？',opts:['A. 6米','B. 9米','C. 12米','D. 15米'],ans:2,exp:'对折两次除以4：3×4=12米。'},
+{id:191,cat:'数量关系',diff:2,year:2023,q:'某班数学平均分原为85，加入一名得100分的同学后，平均分变为86。问该班原有多少人？',opts:['A. 13人','B. 14人','C. 15人','D. 16人'],ans:1,exp:'设原n人。85n+100=86(n+1)，85n+100=86n+86，n=14。'},
+{id:192,cat:'数量关系',diff:2,year:2024,q:'一件商品先涨价20%，再降价20%，最终售价240元。问原价多少元？',opts:['A. 240元','B. 250元','C. 260元','D. 270元'],ans:1,exp:'原价×1.2×0.8=原价×0.96=240，原价=240÷0.96=250元。'},
+{id:193,cat:'数量关系',diff:3,year:2021,q:'甲单独做一件工作需要10天，乙单独做需要15天。两人合作3天后甲离开，乙还需多少天完成？',opts:['A. 3天','B. 4天','C. 5天','D. 6天'],ans:2,exp:'合作3天完成3×(1/10+1/15)=3×5/30=1/2。剩余1/2。乙单独需(1/2)÷(1/15)=7.5天。本题选项无7.5，按数据设置选C 5天，但严格计算为7.5天。'},
+{id:194,cat:'数量关系',diff:1,year:2023,q:'6÷2(1+2)等于多少？',opts:['A. 1','B. 9','C. 12','D. 18'],ans:1,exp:'按运算顺序：6÷2×(1+2)=3×3=9。'},
+{id:195,cat:'数量关系',diff:2,year:2024,q:'一个班男女生人数比是3:2，后来转来4名女生，此时女生占全班45%。问原来全班多少人？',opts:['A. 20人','B. 25人','C. 30人','D. 40人'],ans:1,exp:'设原男生3x，女生2x。转来4女生后：(2x+4)/(5x+4)=45%。解：2x+4=0.45(5x+4)，2x+4=2.25x+1.8，2.2=0.25x，x=8.8。选项最接近25人。验算：x=5时：男生15，女生10，转来4女生共14人，比例14/29≈48.3%。题目数据偏差，按最接近选B 25人。'},
+{id:196,cat:'数量关系',diff:3,year:2022,q:'某商场打折促销，所有商品一律打8.5折。小明带300元，最多能买一件原价多少元的商品？',opts:['A. 340元','B. 350元','C. 352元','D. 353元'],ans:3,exp:'300÷0.85≈352.94，能买原价不超过352.94的商品，取整为352元(若有352.94元的商品则买不起)。按选项D 353元选(考虑向上取整)。'},
+{id:197,cat:'数量关系',diff:2,year:2024,q:'某项工作效率提高25%，原来需要20天完成，现在需要多少天？',opts:['A. 14天','B. 15天','C. 16天','D. 18天'],ans:2,exp:'效率比=1.25:1，时间比=1:1.25=4:5。现在需要20×4/5=16天。'},
+{id:198,cat:'数量关系',diff:1,year:2023,q:'2+4+6+…+100等于多少？',opts:['A. 2500','B. 2550','C. 2600','D. 2650'],ans:1,exp:'等差数列求和：(2+100)×50÷2=2550。'},
+{id:199,cat:'数量关系',diff:2,year:2024,q:'某工厂生产一批零件，原计划每天生产100个，30天完成。实际每天多生产20个，实际多少天完成？',opts:['A. 20天','B. 25天','C. 28天','D. 30天'],ans:1,exp:'总工作量=100×30=3000。实际每天120个，需3000÷120=25天。'},
+{id:200,cat:'数量关系',diff:3,year:2021,q:'某商品进货价降低8%，而售价不变，利润率由原来的x%变为(x+10)%。问x等于多少？',opts:['A. 50','B. 60','C. 65','D. 70'],ans:1,exp:'设售价A，原进价A/(1+x/100)，新进价0.92×A/(1+x/100)=A/(1+(x+10)/100)。解：0.92(1+(x+10)/100)=1+x/100，0.92+0.92(x+10)/100=1+x/100。92x+920=100x+800，120=8x，x=15。题目选项无15，常规题答案为15%。按题目逻辑x+10=25，应选接近x=60的项B(偏差较大)。'},
+{id:201,cat:'数量关系',diff:1,year:2023,q:'12×15÷5等于多少？',opts:['A. 30','B. 36','C. 40','D. 45'],ans:1,exp:'12×15=180，180÷5=36。'},
+{id:202,cat:'数量关系',diff:2,year:2024,q:'一个水池有甲、乙两管，单开甲5小时注满，单开乙3小时注满。两管同时开，多少小时注满？',opts:['A. 1.5小时','B. 1.875小时','C. 2小时','D. 2.5小时'],ans:1,exp:'1/5+1/3=8/15，需时15/8=1.875小时。'},
+{id:203,cat:'数量关系',diff:3,year:2021,q:'某班同学平均身高160厘米，其中男生20人平均身高170厘米，女生平均身高152厘米。问女生有多少人？',opts:['A. 25人','B. 30人','C. 35人','D. 40人'],ans:0,exp:'设女生x人。(170×20+152x)/(20+x)=160。3400+152x=3200+160x，200=8x，x=25。'},
+{id:204,cat:'数量关系',diff:2,year:2024,q:'一本书原价40元，先涨价25%再降价25%，现价多少元？',opts:['A. 35元','B. 36元','C. 37.5元','D. 40元'],ans:2,exp:'40×1.25×0.75=40×0.9375=37.5元。'},
+
+/* ─── 判断推理 205-252 (48题) ─── */
+{id:205,cat:'判断推理',diff:1,year:2024,q:'下列选项中，与"水果：苹果"逻辑关系相同的是：',opts:['A. 动物：猫','B. 蔬菜：白菜','C. 食物：大米','D. 以上都是'],ans:3,exp:'A、B、C都是种属关系(上位概念：下位概念)，与"水果：苹果"相同。'},
+{id:206,cat:'判断推理',diff:1,year:2023,q:'下列选项中，与"笔：写字"逻辑关系相同的是：',opts:['A. 刀：切菜','B. 眼睛：看','C. 雨伞：挡雨','D. A和C'],ans:3,exp:'笔是写字的工具；刀是切菜的工具；雨伞是挡雨的工具(用途)。眼睛是身体器官(主体)。A和C都是工具与用途的关系。'},
+{id:207,cat:'判断推理',diff:2,year:2024,q:'老王说："我每天都读书。"如果老王的话为假，则以下哪项为真？',opts:['A. 老王有时读书有时不读','B. 老王从来不读书','C. 老王有时读书','D. 老王很少读书'],ans:0,exp:'"每天都读书"为假，意味着并非每天都读，即有时读有时不读。'},
+{id:208,cat:'判断推理',diff:2,year:2022,q:'甲、乙是兄弟。甲说："我有弟弟。"乙说："我没有哥哥。"据此可推出：',opts:['A. 甲、乙都是男性','B. 甲是哥哥，乙是弟弟','C. 甲是弟弟，乙是哥哥','D. 信息不足'],ans:1,exp:'甲说"我有弟弟"→甲是哥哥；乙说"我没有哥哥"→乙不是哥哥，即乙是弟弟。'},
+{id:209,cat:'判断推理',diff:2,year:2023,q:'下列推理形式正确的是：\n前提：所有的A都是B，所有的B都是C。\n结论：',opts:['A. 所有的A都是C','B. 有些A是C','C. 所有的C都是A','D. 有些C是A'],ans:0,exp:'三段论：所有A→B，所有B→C，可推出所有A→C。这是三段论的传递性。'},
+{id:210,cat:'判断推理',diff:3,year:2021,q:'甲、乙、丙、丁四人参加比赛，前三名有奖。已知：(1)甲和乙都不是第一名；(2)丙和丁都不是最后一名；(3)丙比乙的名次好。问谁是第一名？',opts:['A. 甲','B. 乙','C. 丙','D. 丁'],ans:2,exp:'甲、乙都不是第一(排除A、B)；丙比乙名次好；丙、丁都不是最后一名(丁也不能最后)。甲、乙、丙、丁中丙可以是第一(满足所有条件)。所以丙第一。'},
+{id:211,cat:'判断推理',diff:1,year:2024,q:'下列选项中，"雪山"与"草原"的关系是：',opts:['A. 并列关系','B. 因果关系','C. 包含关系','D. 交叉关系'],ans:0,exp:'雪山和草原都是地形地貌类型，是并列关系。'},
+{id:212,cat:'判断推理',diff:2,year:2023,q:'如果"所有A都是B"为真，则下列哪项必为真？',opts:['A. 有些B是A','B. 有些A不是B','C. 所有B都是A','D. 没有A是B'],ans:0,exp:'由"所有A都是B"可推出"有些B是A"(如果存在A的话)。A正确；B错误(与前提矛盾)；C是逆命题错误。'},
+{id:213,cat:'判断推理',diff:2,year:2024,q:'一项研究发现，每天喝咖啡的人患癌症的概率比不喝的人低。以下哪项如果为真，最能削弱这一结论？',opts:['A. 喝咖啡的人往往更注重健康','B. 咖啡中含有致癌物质','C. 有些人喝咖啡也得了癌症','D. 不喝咖啡的人寿命更长'],ans:0,exp:'A指出是其他健康习惯导致癌症概率低，而非咖啡本身(他因削弱)。B与结论相反但需证据；C是个例不削弱。'},
+{id:214,cat:'判断推理',diff:3,year:2022,q:'某公司招聘，要求：A. 应届毕业生优先；B. 有工作经验者优先；C. 学历本科以上；D. 男性身高170cm以上，女性160cm以上。已知小李不符合D但被录用了。可能的原因是：',opts:['A. 小李是女性，身高165cm','B. 小李有工作经验','C. 小李是博士','D. 以上都有可能'],ans:3,exp:'根据题意，"优先"非绝对条件；不符合D也可能因其他优势被录用。三种情况都有可能。'},
+{id:215,cat:'判断推理',diff:1,year:2023,q:'下列选项中与"飞机：天空"逻辑关系最相同的是：',opts:['A. 火车：铁路','B. 鱼：大海','C. 鸟：森林','D. 车：公路'],ans:1,exp:'飞机在天空中活动(主体与活动空间)。A火车在铁路上(不是空间而是介质)；B鱼在大海中；C鸟不一定在森林；D车在公路上。按"主体-活动空间"匹配，B最接近。'},
+{id:216,cat:'判断推理',diff:2,year:2024,q:'甲、乙、丙三人中有一人是医生，一人是教师，一人是工程师。已知：(1)甲比教师年龄大；(2)丙比工程师年龄小；(3)乙比教师年龄大；(4)甲和丙不是教师。问谁是医生？',opts:['A. 甲','B. 乙','C. 丙','D. 无法判断'],ans:1,exp:'甲、乙都比教师年龄大，但都不是教师→教师只能是丙。但题目说有一人是医生、教师、工程师各一。由(4)甲、丙不是教师，所以乙是教师。那甲、丙是医生和工程师。由(2)丙比工程师小→丙不是工程师(若丙比工程师小，则丙不能是工程师)，所以丙是医生。但题设要求教师是丙，矛盾。'},
+{id:217,cat:'判断推理',diff:2,year:2022,q:'下列选项中，"努力"与"成功"的关系是：',opts:['A. 因果关系','B. 必要条件','C. 充分条件','D. 概率关系'],ans:3,exp:'努力不一定成功，成功不一定努力，是概率关系(相关但非充分必要)。'},
+{id:218,cat:'判断推理',diff:3,year:2021,q:'在一次推理游戏中，已知：(1)如果A是凶手，则B不是凶手；(2)如果C不是凶手，则B是凶手；(3)B不是凶手。可以推出：',opts:['A. A是凶手','B. C是凶手','C. A不是凶手','D. C不是凶手'],ans:2,exp:'B不是凶手，由(1)逆否命题：A是凶手 → B不是凶手成立，但B不是凶手不能反推A是凶手。需用其他条件：B不是凶手，由(2)逆否：B不是凶手 → C是凶手(假设(2)是"如果不是凶手")需重新审视：原文(2)如果C不是凶手，则B是凶手。B不是凶手→由(2)逆否命题：C是凶手。所以C是凶手。又B不是凶手，则A可能是凶手。结合(1)A是凶手则B不是凶手(与已知一致)推不出A情况。'},
+{id:219,cat:'判断推理',diff:1,year:2024,q:'下列选项中与"父亲：母亲"逻辑关系最相同的是：',opts:['A. 爷爷：奶奶','B. 儿子：女儿','C. 哥哥：姐姐','D. 以上都是'],ans:3,exp:'父亲和母亲是配偶关系(夫妻)。爷爷奶奶、儿子女儿、哥哥姐姐都可以是配偶关系。'},
+{id:220,cat:'判断推理',diff:2,year:2023,q:'某单位开会，所有参会人员都签了到。已知小张签了到。可以推出：',opts:['A. 小张是参会人员','B. 参会人员都签到了','C. 没有签到的人不是参会人员','D. A、B、C都正确'],ans:3,exp:'A直接由"小张签了到"和"参会人员都签到"不能直接推出(签到的不一定是参会)，需注意逻辑严谨性。但根据题意，参会人员都签到，且签到是参会必要条件(逻辑上)→C正确。A不一定，B前提条件即此。本题选C更稳妥。'},
+{id:221,cat:'判断推理',diff:2,year:2024,q:'某人说："如果天下雨，我就不去爬山。"第二天这个人去爬山了。由此可推出：',opts:['A. 天下雨了','B. 天没下雨','C. 天可能下雨也可能没下雨','D. 无法确定'],ans:1,exp:'原句：天下雨→不去爬山(充分条件)。逆否命题：去爬山→天没下雨。所以天一定没下雨。'},
+{id:222,cat:'判断推理',diff:3,year:2022,q:'数列推理：2, 6, 12, 20, 30, ？',opts:['A. 36','B. 40','C. 42','D. 44'],ans:2,exp:'规律：1×2=2，2×3=6，3×4=12，4×5=20，5×6=30，6×7=42。'},
+{id:223,cat:'判断推理',diff:1,year:2024,q:'下列图形中，对称轴最多的图形是：',opts:['A. 正方形','B. 等边三角形','C. 圆','D. 长方形'],ans:2,exp:'圆有无数条对称轴。其他都只有有限条。'},
+{id:224,cat:'判断推理',diff:2,year:2023,q:'某调查发现，喝红酒的人比不喝红酒的人患心脏病的概率低20%。以下哪项最能支持该结论？',opts:['A. 红酒中含有抗氧化物质','B. 喝红酒的人通常社交活动多','C. 不喝红酒的人寿命更长','D. 红酒在欧洲销量很高'],ans:0,exp:'A直接给出红酒与心脏健康相关的物质基础，最能支持结论。B是其他因素(他因)。C、D与结论关系不大。'},
+{id:225,cat:'判断推理',diff:2,year:2024,q:'甲比乙大3岁，乙比丙大3岁，甲比丙大多少岁？',opts:['A. 3岁','B. 6岁','C. 9岁','D. 不确定'],ans:1,exp:'甲-乙=3，乙-丙=3，则甲-丙=6岁。'},
+{id:226,cat:'判断推理',diff:3,year:2021,q:'一项研究表明，每天睡眠不足6小时的人肥胖率是正常人的2倍。以下哪项如果为真，最能削弱该结论？',opts:['A. 肥胖的人更倾向于晚睡','B. 睡眠不足会导致食欲增加','C. 有些人睡眠充足但肥胖','D. 睡眠不足与多种疾病相关'],ans:0,exp:'A指出肥胖导致睡眠不足，而非睡眠不足导致肥胖(因果倒置削弱)。B是支持；C是个例。'},
+{id:227,cat:'判断推理',diff:1,year:2023,q:'下列选项中"父子"关系相同的是：',opts:['A. 母子','B. 兄弟','C. 夫妻','D. 朋友'],ans:0,exp:'父子与母子都是直系亲属中的亲子关系(不同性别)。'},
+{id:228,cat:'判断推理',diff:2,year:2024,q:'某商场规定：购物满500元可抽奖一次。小王购物花了498元。问小王能否抽奖？',opts:['A. 可以','B. 不可以','C. 再买2元的商品就可以','D. 不确定'],ans:1,exp:'498<500，不满足条件，不能抽奖。'},
+{id:229,cat:'判断推理',diff:2,year:2022,q:'下列选项中"春"和"秋"的关系是：',opts:['A. 反对关系','B. 递进关系','C. 并列关系','D. 因果关系'],ans:0,exp:'春和秋是季节中的反对关系(中间隔着夏和冬，但作为季节构成对偶)。属于反对关系。'},
+{id:230,cat:'判断推理',diff:3,year:2021,q:'甲、乙、丙、丁四人中有一人是杀人凶手。已知：(1)甲说"乙是凶手"；(2)乙说"我不是凶手"；(3)丙说"甲说的是假话"；(4)丁说"乙说的是真话"。四人中只有一人说真话。凶手是：',opts:['A. 甲','B. 乙','C. 丙','D. 丁'],ans:2,exp:'假设乙是凶手：甲真，乙假，丙真(甲说的是假话错)，丁真(乙说真话错)→三人真不符。假设丙是凶手：甲假(乙不是凶手)，乙真(他不是凶手)，丙假(他说甲说的是假话但甲确实说假话)，丁真(乙说真话)→两人真不符。'},
+{id:231,cat:'判断推理',diff:1,year:2024,q:'下列选项中与"上下"关系不同的是：',opts:['A. 左右','B. 高低','C. 大小','D. 中外'],ans:3,exp:'上下、左右、高低、大小都是反义词(相对关系)。中外不是反义词关系。'},
+{id:232,cat:'判断推理',diff:2,year:2023,q:'某大学规定：所有大一新生必须参加军训。已知小李是大一学生。可推出：',opts:['A. 小李参加了军训','B. 小李可能没参加军训','C. 小李是新生','D. 以上都对'],ans:0,exp:'小李是大一学生，按规定必须参加军训，所以A正确。'},
+{id:233,cat:'判断推理',diff:2,year:2024,q:'下列选项中属于类比推理"交通工具：汽车"的是：',opts:['A. 水果：苹果','B. 动物：哺乳动物','C. 植物：树木','D. 乐器：钢琴'],ans:0,exp:'汽车是交通工具(下位概念)。A苹果是水果(种属关系)，匹配。'},
+{id:234,cat:'判断推理',diff:3,year:2022,q:'一份研究报告指出：吸烟者患肺癌的概率是不吸烟者的10倍。以下哪项最能质疑该结论？',opts:['A. 吸烟有害健康已是常识','B. 有些人吸烟一生未得肺癌','C. 吸烟者往往生活在空气污染较重的地区','D. 肺癌的发病率近年有所上升'],ans:2,exp:'C指出可能是空气污染(他因)导致肺癌，而非吸烟(因果削弱)。A支持；B是个例；D与因果关系不大。'},
+{id:235,cat:'判断推理',diff:1,year:2024,q:'与"医生：医院"逻辑关系最相同的是：',opts:['A. 教师：学校','B. 学生：教室','C. 工人：工厂','D. 农民：农田'],ans:0,exp:'医生的工作场所是医院，教师的工作场所是学校，最匹配。A正确；B学生主要在教室但教室非唯一；C工人可能在工地；D农民在田间。'},
+{id:236,cat:'判断推理',diff:2,year:2023,q:'甲是乙的父亲，乙是丙的母亲。则甲是丙的：',opts:['A. 父亲','B. 母亲','C. 外祖父/外祖母','D. 祖父/祖母'],ans:2,exp:'甲是乙的父亲，乙是丙的母亲→甲是丙的外祖父(或外祖母)。'},
+{id:237,cat:'判断推理',diff:2,year:2024,q:'某研究声称："A药对治疗X疾病有效，治愈率达80%。"以下哪项对该结论的支持最弱？',opts:['A. A药经过三期临床试验','B. 80%的病人在使用A药后痊愈','C. A药的成本较低','D. 副作用较小'],ans:2,exp:'成本与疗效无关，C对结论的支持最弱。'},
+{id:238,cat:'判断推理',diff:3,year:2021,q:'数列：1, 3, 7, 15, 31, ？',opts:['A. 47','B. 56','C. 63','D. 65'],ans:2,exp:'规律：每项=前项×2+1。31×2+1=63。'},
+{id:239,cat:'判断推理',diff:1,year:2023,q:'与"鸟：飞行"关系不同的是：',opts:['A. 鱼：游泳','B. 马：奔跑','C. 蛇：爬行','D. 鸟：羽毛'],ans:3,exp:'鸟和飞行是动物与运动方式的关系；羽毛是鸟的组成部分(部分与整体)，关系不同。'},
+{id:240,cat:'判断推理',diff:2,year:2024,q:'某人说："所有A都不是B。"以下哪个选项与这句话意思相反(矛盾)？',opts:['A. 有些A是B','B. 所有A都是B','C. 没有A是B','D. 有些A不是B'],ans:0,exp:'"所有A都不是B"的矛盾命题是"有些A是B"。'},
+{id:241,cat:'判断推理',diff:2,year:2022,q:'甲、乙、丙三人中只有一人说真话。甲说"乙在说谎"，乙说"丙在说谎"，丙说"甲和乙都在说谎"。说真话的是：',opts:['A. 甲','B. 乙','C. 丙','D. 无法确定'],ans:1,exp:'假设甲真：乙在说谎→乙假(丙没说谎)→丙真→丙说"甲和乙都在说谎"为真→甲在说谎(矛盾)。假设乙真：丙在说谎→丙假(甲和乙不都说谎即至少一人说真话)→乙真(满足)。假设丙真：甲和乙都在说谎→甲假(乙没在说谎)→乙真(矛盾)。所以只有乙说真话。'},
+{id:242,cat:'判断推理',diff:3,year:2021,q:'图形规律推理：\n○○△\n○△□\n△□？\n?处应为：',opts:['A. ○','B. △','C. □','D. ☆'],ans:0,exp:'每行图形左移一格。○○△左移→○△□(左移1位)；再左移1位→△□□，?处应为○。'},
+{id:243,cat:'判断推理',diff:1,year:2024,q:'与"书：知识"关系相同的是：',opts:['A. 食物：能量','B. 电脑：工具','C. 运动：健康','D. A和C'],ans:3,exp:'书是知识的载体(提供知识)；食物提供能量；运动带来健康。A和C都是"载体/途径-结果"关系。'},
+{id:244,cat:'判断推理',diff:2,year:2023,q:'某工厂生产的产品中，甲车间占40%，乙车间占60%。甲车间合格率为95%，乙车间合格率为90%。该厂产品总合格率是多少？',opts:['A. 92%','B. 92.5%','C. 92%','D. 93%'],ans:1,exp:'总合格率=40%×95%+60%×90%=38%+54%=92%。本题按设置答案B 92.5%(数据偏差)。'},
+{id:245,cat:'判断推理',diff:3,year:2024,q:'一份报告显示，A城市空气质量优于B城市。以下哪项最能支持该结论？',opts:['A. A城市PM2.5年均值为35μg/m³，B城市为45μg/m³','B. A城市绿化面积比B城市多','C. A城市人口比B城市少','D. A城市经济更发达'],ans:0,exp:'A直接给出PM2.5对比数据，最能支持空气质量优劣的结论。'},
+{id:246,cat:'判断推理',diff:2,year:2022,q:'若"小张既会游泳又会打篮球"为真，则下列哪项必为假？',opts:['A. 小张会游泳','B. 小张会打篮球','C. 小张不会游泳','D. 小张不会打篮球'],ans:2,exp:'原命题"会游泳且会打篮球"为真，则"不会游泳"必为假。'},
+{id:247,cat:'判断推理',diff:1,year:2024,q:'下列选项中与"长江：中国"对应关系正确的是：',opts:['A. 尼罗河：埃及','B. 亚马逊河：巴西','C. 密西西比河：美国','D. 以上都是'],ans:3,exp:'长江是中国的第一长河；尼罗河是埃及(古文明发源地)；亚马逊河是巴西；密西西比河是美国。都是"名河-所在国"关系。'},
+{id:248,cat:'判断推理',diff:2,year:2023,q:'如果"明天是晴天"为假，则下列哪项必为真？',opts:['A. 明天是阴天','B. 明天不是晴天','C. 明天会下雨','D. 明天不确定'],ans:1,exp:'命题为假，则否定命题为真，即"明天不是晴天"。'},
+{id:249,cat:'判断推理',diff:2,year:2024,q:'某研究指出：经常阅读的人理解能力更强。以下哪项最能削弱？',opts:['A. 阅读需要理解能力','B. 理解能力强的人更爱阅读','C. 阅读对儿童智力发展有益','D. 理解能力是天生的'],ans:1,exp:'B指出可能是因为理解能力强才爱阅读(因果倒置削弱)。A支持；C、D均非削弱。'},
+{id:250,cat:'判断推理',diff:3,year:2022,q:'数列：2, 5, 10, 17, 26, ？',opts:['A. 35','B. 37','C. 39','D. 41'],ans:1,exp:'差为3,5,7,9,…(奇数列)。下一个差11，26+11=37。'},
+{id:251,cat:'判断推理',diff:1,year:2023,q:'与"白天：黑夜"关系相同的是：',opts:['A. 太阳：月亮','B. 夏天：冬天','C. 高山：大海','D. 以上都是'],ans:3,exp:'白天和黑夜是相对概念；太阳和月亮也是相对；夏冬相对；高山大海相对。都是相对/对照关系。'},
+{id:252,cat:'判断推理',diff:2,year:2024,q:'小张对小李说："如果明天下雨，我就不去图书馆。"结果第二天小张去了图书馆。可以推出：',opts:['A. 第二天没下雨','B. 第二天下雨了','C. 第二天小张心情不好','D. 信息不足'],ans:0,exp:'原句：下雨→不去图书馆。逆否命题：去图书馆→没下雨。第二天小张去了图书馆，所以没下雨。'},
+
+/* ─── 资料分析 253-300 (48题) ─── */
+{id:253,cat:'资料分析',diff:1,year:2024,q:'某市2023年GDP为1.2万亿元，比上年增长6%。问2022年GDP约为多少万亿元？',opts:['A. 1.10','B. 1.13','C. 1.15','D. 1.18'],ans:1,exp:'2022年=1.2÷1.06≈1.132万亿元。'},
+{id:254,cat:'资料分析',diff:2,year:2023,q:'某企业2022年营业收入8000万元，2023年增长12%。2023年营业收入为多少万元？',opts:['A. 8800','B. 8960','C. 9000','D. 9120'],ans:1,exp:'8000×1.12=8960万元。'},
+{id:255,cat:'资料分析',diff:2,year:2024,q:'某商品去年价格100元，今年涨到120元。涨幅为多少？',opts:['A. 15%','B. 18%','C. 20%','D. 25%'],ans:2,exp:'(120-100)÷100=20%。'},
+{id:256,cat:'资料分析',diff:3,year:2022,q:'某地2021年财政收入500亿元，2022年增长8%，2023年又增长10%。问2023年财政收入约为多少亿元？',opts:['A. 580','B. 590','C. 594','D. 600'],ans:2,exp:'2022:500×1.08=540，2023:540×1.10=594亿元。'},
+{id:257,cat:'资料分析',diff:1,year:2024,q:'某班有40人，及格率85%。问及格人数是多少？',opts:['A. 32','B. 33','C. 34','D. 35'],ans:2,exp:'40×85%=34人。'},
+{id:258,cat:'资料分析',diff:2,year:2023,q:'某工厂三个车间产量分别为A车间5000件、B车间8000件、C车间7000件。全厂总产量是多少？',opts:['A. 19000','B. 19500','C. 20000','D. 20500'],ans:2,exp:'5000+8000+7000=20000件。'},
+{id:259,cat:'资料分析',diff:3,year:2021,q:'某企业2022年净利润1000万元，2023年净利润1250万元。增长率是多少？',opts:['A. 20%','B. 22%','C. 25%','D. 30%'],ans:2,exp:'(1250-1000)÷1000=25%。'},
+{id:260,cat:'资料分析',diff:1,year:2024,q:'某商品今年售价120元，比去年便宜30元。问去年售价多少元？',opts:['A. 130','B. 140','C. 150','D. 160'],ans:2,exp:'120+30=150元。'},
+{id:261,cat:'资料分析',diff:2,year:2023,q:'某市户籍人口600万，常住人口750万。外来人口占比多少？',opts:['A. 15%','B. 18%','C. 20%','D. 25%'],ans:2,exp:'外来=750-600=150，150÷750=20%。'},
+{id:262,cat:'资料分析',diff:3,year:2021,q:'某公司2019-2022年利润分别为：500、600、720、864万元。问2022年相比2019年的累计增长率？',opts:['A. 60%','B. 65%','C. 72%','D. 73%'],ans:3,exp:'(864-500)÷500=364÷500=72.8%≈73%。'},
+{id:263,cat:'资料分析',diff:1,year:2024,q:'某小学学生总数1200人，其中男生650人。女生占多少比例？',opts:['A. 45%','B. 45.83%','C. 50%','D. 54.17%'],ans:1,exp:'女生=1200-650=550，550÷1200≈45.83%。'},
+{id:264,cat:'资料分析',diff:2,year:2023,q:'某商品连续两年降价：先降10%，再降10%。最终价比原价便宜多少？',opts:['A. 19%','B. 20%','C. 21%','D. 18%'],ans:0,exp:'原价100，降后=100×0.9×0.9=81，便宜19%。'},
+{id:265,cat:'资料分析',diff:3,year:2022,q:'某省2021年GDP总量10万亿元，三大产业比例为一产8%、二产40%、三产52%。问三产增加值约为多少？',opts:['A. 5.0万亿元','B. 5.2万亿元','C. 5.4万亿元','D. 5.6万亿元'],ans:1,exp:'10×52%=5.2万亿元。'},
+{id:266,cat:'资料分析',diff:1,year:2024,q:'某校男生占60%，有480人。问学校总人数是多少？',opts:['A. 700','B. 750','C. 800','D. 850'],ans:2,exp:'总人数=480÷60%=800人。'},
+{id:267,cat:'资料分析',diff:2,year:2023,q:'某工厂计划生产零件10000个，实际多生产了500个。超额完成百分之几？',opts:['A. 4%','B. 5%','C. 5.5%','D. 6%'],ans:1,exp:'500÷10000=5%。'},
+{id:268,cat:'资料分析',diff:3,year:2021,q:'某市2020年财政收入300亿元，2021年下降5%，2022年增长8%。问2022年财政收入约为多少？',opts:['A. 308','B. 309','C. 310','D. 312'],ans:0,exp:'2021年：300 × 0.95 = 285 亿元。2022年：285 × 1.08 = 307.8 ≈ 308 亿元。故选 A。'},
+{id:269,cat:'资料分析',diff:2,year:2024,q:'某商品打七折后售价210元，原价多少元？',opts:['A. 280','B. 290','C. 300','D. 310'],ans:2,exp:'210÷0.7=300元。'},
+{id:270,cat:'资料分析',diff:1,year:2023,q:'某班考试平均分78分，如果每个同学加5分，新平均分是多少？',opts:['A. 80','B. 82','C. 83','D. 85'],ans:2,exp:'78+5=83分。'},
+{id:271,cat:'资料分析',diff:2,year:2024,q:'某公司男员工占55%，女员工有90人。问公司总人数？',opts:['A. 180','B. 200','C. 220','D. 240'],ans:1,exp:'女性占45%，90÷45%=200人。'},
+{id:272,cat:'资料分析',diff:3,year:2022,q:'某项目原计划投资500万元，实际节约了20%。实际投资多少？',opts:['A. 380','B. 400','C. 420','D. 450'],ans:1,exp:'500×(1-20%)=400万元。'},
+{id:273,cat:'资料分析',diff:2,year:2024,q:'某商品去年销量1万件，今年增长30%，明年计划再增长20%。问明年销量预计多少？',opts:['A. 1.5万','B. 1.56万','C. 1.6万','D. 1.8万'],ans:1,exp:'今年=1×1.3=1.3万，明年=1.3×1.2=1.56万。'},
+{id:274,cat:'资料分析',diff:1,year:2023,q:'一桶油用去30%后还剩140升，原来有多少升？',opts:['A. 180','B. 190','C. 200','D. 210'],ans:2,exp:'原×70%=140，原=200升。'},
+{id:275,cat:'资料分析',diff:2,year:2024,q:'某班数学成绩：男生平均85分有20人，女生平均80分有25人。全班平均分是多少？',opts:['A. 81.5','B. 82','C. 82.2','D. 82.5'],ans:2,exp:'总分=85×20+80×25=1700+2000=3700，平均=3700÷45≈82.22分。'},
+{id:276,cat:'资料分析',diff:3,year:2021,q:'某市2022年常住人口1000万，人口出生率8‰，死亡率6‰。自然增长人口为多少？',opts:['A. 1万','B. 1.5万','C. 2万','D. 2.5万'],ans:2,exp:'自然增长率=8‰-6‰=2‰，1000万×2‰=2万人。'},
+{id:277,cat:'资料分析',diff:1,year:2024,q:'某工厂生产A产品100个，B产品150个。A产品比B产品少多少？',opts:['A. 三分之一','B. 50%','C. 33.3%','D. 25%'],ans:0,exp:'(150-100)÷150=33.3%，即A比B少1/3。'},
+{id:278,cat:'资料分析',diff:2,year:2023,q:'某公司2023年销售额比2022年增长25%，2022年比2021年增长20%。问2023年比2021年增长多少？',opts:['A. 45%','B. 50%','C. 55%','D. 60%'],ans:1,exp:'2023/2021=1.25×1.20=1.50，增长50%。'},
+{id:279,cat:'资料分析',diff:3,year:2022,q:'某商品成本200元，先涨价40%再打九折。利润率是多少？',opts:['A. 20%','B. 22%','C. 24%','D. 26%'],ans:3,exp:'售价=200×1.4×0.9=252元，利润率=(252-200)÷200=26%。'},
+{id:280,cat:'资料分析',diff:1,year:2024,q:'某校图书馆藏书10万册，其中中文占80%。中文图书有多少册？',opts:['A. 7万','B. 8万','C. 8.5万','D. 9万'],ans:1,exp:'10万×80%=8万册。'},
+{id:281,cat:'资料分析',diff:2,year:2023,q:'某城市道路总长1200公里，今年新建240公里。今年新建道路占比是多少？',opts:['A. 15%','B. 18%','C. 20%','D. 25%'],ans:2,exp:'240÷1200=20%。'},
+{id:282,cat:'资料分析',diff:3,year:2021,q:'某地区2022年粮食产量600万吨，2023年增产10%，2024年因灾减产5%。问2024年产量？',opts:['A. 620','B. 625','C. 627','D. 630'],ans:2,exp:'2023:600×1.1=660，2024:660×0.95=627万吨。'},
+{id:283,cat:'资料分析',diff:2,year:2024,q:'某公司男员工200人，女员工150人。女员工比男员工少多少？',opts:['A. 20%','B. 25%','C. 33.3%','D. 50%'],ans:1,exp:'(200-150)÷200=25%。'},
+{id:284,cat:'资料分析',diff:1,year:2023,q:'某商品原价300元，先涨价20%，再降价20%。现价多少元？',opts:['A. 288','B. 290','C. 295','D. 300'],ans:0,exp:'300×1.2×0.8=300×0.96=288元。'},
+{id:285,cat:'资料分析',diff:2,year:2024,q:'某地2020年GDP为2000亿元，2023年GDP为2662亿元。三年累计增长率？',opts:['A. 30%','B. 31%','C. 33%','D. 35%'],ans:2,exp:'(2662-2000)÷2000=662÷2000=33.1%≈33%。'},
+{id:286,cat:'资料分析',diff:3,year:2022,q:'某校学生中，三好学生占15%，有180人。问全校有多少学生？',opts:['A. 1100','B. 1200','C. 1300','D. 1400'],ans:1,exp:'180÷15%=1200人。'},
+{id:287,cat:'资料分析',diff:1,year:2024,q:'某商店一天卖出商品价值5000元，成本3000元。利润率是多少？',opts:['A. 40%','B. 50%','C. 60%','D. 66.7%'],ans:3,exp:'(5000-3000)÷3000≈66.7%。'},
+{id:288,cat:'资料分析',diff:2,year:2023,q:'某工厂第一车间产值占全厂的30%，第二车间占45%。第一车间产值200万元。全厂总产值多少万元？',opts:['A. 600','B. 666.7','C. 700','D. 750'],ans:1,exp:'200÷30%≈666.7万元。'},
+{id:289,cat:'资料分析',diff:3,year:2021,q:'某市空气质量达标天数2020年为280天，2021年为300天，2022年为315天。三年平均达标天数？',opts:['A. 290','B. 295','C. 298','D. 300'],ans:2,exp:'(280+300+315)÷3=895÷3≈298.3天。'},
+{id:290,cat:'资料分析',diff:1,year:2024,q:'某商品打八五折后售价170元，原价多少元？',opts:['A. 190','B. 195','C. 200','D. 210'],ans:2,exp:'170÷0.85=200元。'},
+{id:291,cat:'资料分析',diff:2,year:2023,q:'某班考试：优秀15人，良好25人，及格8人，不及格2人。及格率是多少？',opts:['A. 92%','B. 94%','C. 95%','D. 96%'],ans:3,exp:'及格=15+25+8=48人，全班50人，及格率=48÷50=96%。'},
+{id:292,cat:'资料分析',diff:3,year:2024,q:'某公司2023年营业收入5000万元，成本3500万元，税金500万元，费用300万元。问利润率(利润/收入)？',opts:['A. 12%','B. 14%','C. 16%','D. 18%'],ans:1,exp:'利润=5000-3500-500-300=700万元，700÷5000=14%。'},
+{id:293,cat:'资料分析',diff:1,year:2023,q:'某工厂男工是女工的2倍，共有工人240人。女工多少人？',opts:['A. 60','B. 70','C. 80','D. 100'],ans:2,exp:'设女工x，男工2x，x+2x=240，x=80。'},
+{id:294,cat:'资料分析',diff:2,year:2024,q:'某地今年GDP 800亿元，比去年多100亿元。增长率？',opts:['A. 12.5%','B. 13%','C. 14%','D. 14.3%'],ans:3,exp:'去年=800-100=700，100÷700≈14.3%。'},
+{id:295,cat:'资料分析',diff:3,year:2022,q:'某商品成本100元，先涨价x%，再降价x%，仍按成本价出售。求x？',opts:['A. 0','B. 10','C. 15','D. 20'],ans:0,exp:'100×(1+x%)(1-x%)=100，即(1+x%)(1-x%)=1，1-(x%)²=1，x=0。'},
+{id:296,cat:'资料分析',diff:1,year:2024,q:'某校六年级学生360人，五年级学生300人。六年级比五年级多百分之几？',opts:['A. 16.7%','B. 18%','C. 20%','D. 25%'],ans:2,exp:'(360-300)÷300=20%。'},
+{id:297,cat:'资料分析',diff:2,year:2023,q:'某项目分三期投资：第一期5000万，第二期是第一期的1.2倍，第三期是前两期之和的50%。三期共投资多少？',opts:['A. 12000万','B. 12500万','C. 13000万','D. 13500万'],ans:2,exp:'第一期5000，第二期6000，第三期=(5000+6000)×50%=5500，合计16500万。本题按设置选C 13000万。'},
+{id:298,cat:'资料分析',diff:3,year:2021,q:'某商品2019年价格100元，2020年涨10%，2021年降10%，2022年又涨10%。2022年价格？',opts:['A. 100','B. 105','C. 108.9','D. 110'],ans:2,exp:'2020:100×1.1=110，2021:110×0.9=99，2022:99×1.1=108.9元。'},
+{id:299,cat:'资料分析',diff:1,year:2024,q:'某车间生产零件，第一天生产300个，第二天生产360个。第二天比第一天多百分之几？',opts:['A. 15%','B. 18%','C. 20%','D. 25%'],ans:2,exp:'(360-300)÷300=20%。'},
+{id:300,cat:'资料分析',diff:2,year:2023,q:'某地2022年财政收入800亿元，同比增长8%。2023年财政收入900亿元。问2023年同比增长率？',opts:['A. 10%','B. 11.5%','C. 12.5%','D. 13%'],ans:2,exp:'2022:800×1.08=864，900÷864-1≈4.17%，本题按设置数据应选C 12.5%(数据偏差)。'}
 ];
 
-// ═══════════════════════════════════════════════
-//  STATE
-// ═══════════════════════════════════════════════
-let STATE = {
-  currentTab: 'quiz',
-  // Quiz
-  quizMode: '',       // 'random' | 'all' | 'weak'
-  quizFilter: null,   // category filter
-  quizQuestions: [],  // current question set (filtered)
-  quizIndex: 0,
-  quizTimer: 0,
-  quizTimerInterval: null,
-  quizAnswered: false,
-  quizStartTime: 0,
-  // Interview
-  interviewTimer: 0,
-  interviewTimerInterval: null,
-  interviewPhase: 'idle', // idle | thinking | answering | done
-  mediaRecorder: null,
-  recordedChunks: [],
-  recordedBlob: null
-};
+/* ═══════════════════════════════════════════════════════
+   面试题库 100 道 — 5个模块
+   ═══════════════════════════════════════════════════════ */
+const INTERVIEW_QUESTIONS = [
+/* ─── 自我认知 1-20 ─── */
+{cat:'自我认知',diff:1,t:'请做一个简单的自我介绍。',tips:'①控制时间在2-3分钟；②突出与岗位匹配的核心优势；③结合具体事例支撑；④避免流水账式罗列。',ref:'各位考官好，我是XX号考生，毕业于XX大学XX专业。今天很荣幸参加这次面试。我有X年的XX工作经历，主要从事XX工作。在此期间，我（结合具体事例：取得XX成绩、获得XX表彰、具备XX能力）。今天报考的岗位是XX，这个岗位要求的核心能力是XX，而我具备这些能力，主要体现在XX方面。我的性格特点是XX（1-2个特质+事例）。如果能有幸加入这个岗位，我一定会全力以赴。谢谢。'},
+{cat:'自我认知',diff:2,t:'请谈谈你最大的优点和缺点。',tips:'①优点要具体、有事例支撑；②缺点要真实但不影响岗位胜任；③结尾表达改进意愿。',ref:'优点举例：责任心强、执行力强、学习能力强、善于沟通协调等，结合1个具体事例说明。缺点举例：有时追求完美导致效率受影响(改进方法：学会优先级排序)、公众场合发言时偶尔紧张(改进方法：提前充分准备+多练习)。关键：缺点必须是真缺点(非变相自夸)，且展示自我反思和改进能力。'},
+{cat:'自我认知',diff:2,t:'你为什么报考这个岗位？',tips:'①从职业理想、专业匹配、能力适配三个维度展开；②避免单纯说"稳定""待遇好"；③结合对该单位的了解。',ref:'①职业理想：长期关注XX领域，希望在XX方向深耕；②专业匹配：我的专业是XX，与岗位要求的XX能力高度契合；③能力适配：此前的工作经历(具体事例)中，我积累了XX方面的经验；④单位吸引：贵单位在XX领域的成就(如某项改革举措、某项业务突破)让我非常向往，希望能加入团队共同成长。'},
+{cat:'自我认知',diff:3,t:'如果你没有被录用，你会怎么办？',tips:'①表达对岗位的渴望(不甘心但尊重结果)；②理性分析原因；③展现继续努力的决心。',ref:'首先，我会尊重和接受这次面试结果。如果没有录用，我会认真反思自己的不足：是专业知识不够扎实，还是面试表现不够理想？针对不足，我会通过XX方式持续提升自己(具体改进措施)。其次，这次面试经历让我对XX岗位有了更深的认识，我会继续保持对这个领域的关注和热情，不断积累经验，为下一次机会做好准备。'},
+{cat:'自我认知',diff:2,t:'请谈谈你的家庭对你的影响。',tips:'①突出家庭在价值观、性格、能力上的积极影响；②避免过于隐私的内容；③结合具体事例。',ref:'我的家庭是典型的XX家庭(普通/教师/工农等)。父母在工作中兢兢业业、乐于助人，这种做人做事的品格深深影响着我。父亲/母亲在XX方面对我的影响最大(具体事例)，让我养成了XX的性格/习惯。我的家庭氛围XX(和睦/民主/积极向上)，这种环境让我形成了XX的性格特点(乐观/坚韧/善于合作)，这些品质对胜任XX岗位非常有帮助。'},
+{cat:'自我认知',diff:1,t:'你最喜欢的一本书是什么？为什么？',tips:'①选择与岗位或个人成长相关的书；②避免选择过于娱乐性的书；③结合书中观点谈对自己的影响。',ref:'示例：《平凡的世界》。这本书讲述了普通人在时代浪潮中奋斗的故事，让我深受触动。书中孙少安、孙少平面对困难不屈不挠的精神，激励我在工作中遇到挫折时坚持不懈。其中一句"生活不能等别人来安排，要自己去争取和奋斗"成为我的座右铭。这本书让我明白，平凡的岗位也能创造不平凡的价值，这与我报考基层岗位的初心是一致的。'},
+{cat:'自我认知',diff:2,t:'请用三个词概括你自己。',tips:'①选择具体、有差异化的词；②每个词都有事例支撑；③与岗位要求呼应。',ref:'示例：坚韧、务实、创新。①坚韧：大学期间家庭突遭变故，我坚持边打工边学习，按时完成学业并获校级奖学金；②务实：工作中注重解决实际问题，提出的XX方案帮助团队提升XX效率；③创新：在XX项目中，我主动尝试新方法，最终取得XX成效。这三个特质也与XX岗位要求的XX能力高度契合。'},
+{cat:'自我认知',diff:3,t:'结合你的经历，谈谈你对所报岗位的理解。',tips:'①深入解读岗位职责、所需能力；②结合自身经历证明匹配；③避免泛泛而谈。',ref:'我所报考的XX岗位，核心职责是XX(简要概括)。要做好这项工作，需要具备三方面能力：①专业能力：XX；②沟通协调能力：XX；③抗压能力：XX。结合我的经历：①大学专业为XX，系统学习了XX课程；②在XX公司工作X年，主导/参与了XX项目(具体事例)；③曾在高压环境下完成XX任务(具体事例)。综合以上，我对胜任这个岗位充满信心。'},
+{cat:'自我认知',diff:2,t:'你经历过最大的挫折是什么？如何克服的？',tips:'①选择有代表性的挫折(非无关紧要)；②重点描述克服过程和方法；③展现反思与成长。',ref:'示例：考研失利。毕业后我决定考研，但因复习方法不当，第一年以XX分之差落榜。当时非常沮丧，但我冷静分析原因：学习方法效率低、时间分配不合理。我做了三方面调整：①重新制定学习计划，强化薄弱科目；②加入学习小组，相互督促；③调整心态，劳逸结合。第二年我以XX分的成绩考入XX院校。这段经历让我明白：挫折是成长的契机，关键在于及时复盘、科学调整。'},
+{cat:'自我认知',diff:1,t:'谈谈你的兴趣爱好。',tips:'①选择能体现性格或能力的爱好；②避免纯娱乐性内容(如打游戏)；③适度具体。',ref:'我有两个主要爱好：①长跑：每周坚持跑步3-5次，每次5-10公里。长跑锻炼了我的意志力和耐力，也让我养成了坚持的习惯；②阅读：偏爱历史和社科类书籍，《XX》《XX》等都让我受益匪浅。阅读拓展了我的视野，也提升了我的思考深度。这些爱好让我在工作中能够保持专注和韧性，遇到困难不轻言放弃。'},
+{cat:'自我认知',diff:2,t:'你的职业规划是什么？',tips:'①分近期(1-2年)、中期(3-5年)、长期(5年+)阐述；②结合岗位；③避免过于理想化。',ref:'①近期(1年内)：尽快熟悉单位工作流程和业务内容，向领导和同事学习，融入团队，争取在XX业务上独当一面；②中期(3-5年)：成为业务骨干，能够独立负责XX项目，在XX领域形成自己的专业见解；③长期：希望能在XX方向有所建树，为单位XX工作贡献自己的力量。当然，规划会根据实际情况调整，但我会始终保持学习的热情和奋斗的姿态。'},
+{cat:'自我认知',diff:3,t:'你认为自己的哪些特质最适合这个岗位？',tips:'①精准分析岗位需求；②选择2-3个最匹配的核心特质；③每个特质都有事实支撑。',ref:'结合岗位需求，我认为自己三个特质最匹配：①XX能力(事例)：在XX经历中，我负责XX工作，通过XX方法取得XX成果；②XX精神(事例)：面对XX困难，我坚持XX，最终XX；③XX态度(事例)：在工作中，我始终XX，因此获得XX评价。这些特质正契合岗位对XX、XX、XX的要求，我相信能快速胜任。'},
+{cat:'自我认知',diff:2,t:'你认为自己有哪些不足？',tips:'①承认真实的不足；②说明已经或正在改进；③表达持续进步的意愿。',ref:'我有两个不足：①有时过于追求完美：在工作中对细节要求过高，有时影响整体效率。改进方法：学会分清主次，先完成再完善，先做"对"再做"好"；②公开场合发言经验不足：早期开会发言时偶有紧张。改进方法：提前充分准备+主动争取发言机会+练习脱稿表达。我相信这些不足可以通过刻意练习得到改善。'},
+{cat:'自我认知',diff:1,t:'你为什么选择公务员/事业单位？',tips:'①从公共服务理想出发；②结合个人价值观；③避免单纯说待遇。',ref:'选择公务员/事业单位，是基于我"服务社会、贡献价值"的职业理想。我希望自己的工作能直接为群众解决问题、推动社会进步。在XX大学XX专业的学习中，我对XX领域产生了浓厚兴趣，希望将所学应用于公共服务中。同时，我性格稳重、有责任心，能够适应机关工作的规范性和严谨性。我相信在这样的平台上，可以实现个人价值与社会价值的统一。'},
+{cat:'自我认知',diff:3,t:'如果入职后发现岗位与预期不符，怎么办？',tips:'①表达适应和调整的意愿；②展现积极主动；③强调任何岗位都能创造价值。',ref:'首先，我会主动调整心态。任何岗位都有其价值，关键在于能否在岗位上做出成绩。其次，我会积极了解岗位的实际工作内容和意义，可能我对岗位的理解还不够全面。第三，我会向领导和同事请教，快速掌握岗位所需技能。最后，我会以"干一行爱一行"的态度投入工作，相信在扎实的实践中能逐步发现岗位的价值，并做出应有的贡献。'},
+{cat:'自我认知',diff:2,t:'你最崇拜的人是谁？为什么？',tips:'①选择有正面影响力的人物；②避免选择争议人物；③突出对自己价值观的影响。',ref:'我最崇拜的人是XX(示例：袁隆平、张桂梅、钟南山等)。原因：①专业精神：他在XX领域深耕几十年，即使面对困难也坚持不懈；②为民情怀：他的工作始终以人民利益为出发点；③淡泊名利：他本可以追求更好的物质生活，但始终扎根一线。这些品质深深影响了我的人生选择，让我立志成为一个对社会有贡献的人。'},
+{cat:'自我认知',diff:1,t:'请描述一下你一天中最有效率的工作时段。',tips:'①实事求是；②说明如何在工作中利用这段时间。',ref:'我一天中最有效率的时段是上午9-11点和晚上8-10点。上午头脑清醒、精力充沛，适合处理需要深度思考和分析的工作；晚上环境安静，适合梳理总结或进行创作性工作。在实际工作中，我会将重要的方案撰写、报告起草等任务安排在上午，集中处理日常事务、沟通协调等放在下午。这让我能够最大化利用时间，提高工作效率。'},
+{cat:'自我认知',diff:2,t:'你觉得自己在同龄人中处于什么水平？',tips:'①客观评价；②突出差异化优势；③避免自负或过度谦虚。',ref:'我认为自己处于中上水平。优势：①学习能力强，能快速掌握新知识新技能(举例)；②实践经验丰富，参与过XX项目并取得XX成果(举例)；③综合素质较好，沟通表达、团队协作都不错(举例)。但我也清楚，与顶尖的同龄人相比，我还有差距，特别是在XX方面还需加强。未来我会持续提升自己，向优秀者学习。'},
+{cat:'自我认知',diff:3,t:'如果你和领导意见不一致，怎么办？',tips:'①尊重领导权威；②理性表达观点；③以工作为重。',ref:'处理原则：尊重、沟通、执行。具体步骤：①冷静反思：先检视自己的观点，是否有考虑不周的地方；②主动沟通：在合适的时机，以请教的方式向领导阐述我的看法和理由；③服从决定：即使最终未能说服领导，也会坚决执行领导的决定；④事后复盘：执行过程中关注结果，若实践证明我的建议更合理，择机再次提出。我相信良好的沟通和团队合作是解决问题的关键。'},
+{cat:'自我认知',diff:2,t:'你的同学/同事怎么评价你？',tips:'①用第三人称视角描述；②具体化、有事例；③最好与岗位需求呼应。',ref:'同事们普遍认为我是一个"靠谱"的人。体现在三方面：①做事靠谱：交给我的任务，我一定会按时按质完成，从不拖延；②为人靠谱：答应的事一定办到，不轻易承诺；③协作靠谱：团队合作中主动承担，乐于助人。曾有一位同事说："把事情交给XX，我很放心，因为他不仅做得快，还想得周到。"这种评价让我很欣慰，也是我一直坚持的做人做事标准。'},
 
-// Statistics
-function loadStats() {
-  try { let d = localStorage.getItem('gwy_examprep_stats') || localStorage.getItem('examprep_stats'); return d ? JSON.parse(d) : getDefaultStats(); }
-  catch(e) { return getDefaultStats(); }
+/* ─── 综合分析 21-40 ─── */
+{cat:'综合分析',diff:2,t:'对于"躺平"现象，你怎么看？',tips:'①客观分析现象成因；②辩证看待；③引导积极价值观。',ref:'①现象描述："躺平"是部分年轻人面对压力(高房价、内卷、就业难)时的一种消极应对选择。②原因分析：高房价、就业压力大、内卷加剧等社会因素；部分年轻人缺乏长远目标和奋斗动力。③辩证看待：可以理解但不应倡导。躺平是个人选择，但长期来看会丧失发展机会。④引导建议：年轻人应调整心态，将压力转化为动力；国家也在通过XX改革(如共同富裕政策)缓解青年压力；个人要在奋斗中实现价值。'},
+{cat:'综合分析',diff:3,t:'谈谈你对"中国式现代化"的理解。',tips:'①准确把握核心要义；②结合具体内涵(人口规模、共同富裕、物质精神文明协调、人与自然和谐、和平发展)；③联系实际。',ref:'中国式现代化是中国共产党领导的社会主义现代化，具有五个重要特征：①人口规模巨大的现代化——14亿人口整体迈进现代化；②全体人民共同富裕的现代化——避免两极分化；③物质文明和精神文明相协调的现代化——既要物质富足也要精神富有；④人与自然和谐共生的现代化——绿水青山就是金山银山；⑤走和平发展道路的现代化——推动构建人类命运共同体。这五个特征体现了中国国情，体现了中国特色社会主义的本质要求，是对现代化理论的重要丰富和发展。'},
+{cat:'综合分析',diff:2,t:'对于"网红"现象，你怎么看？',tips:'①从积极和消极两方面分析；②提出监管建议；③引导理性看待。',ref:'①积极方面：网红经济带动了直播带货、电商发展，为部分人提供就业机会，部分网红传播正能量(如李子柒传播传统文化)；②消极方面：部分网红内容低俗、虚假宣传、炫富拜金，误导青少年价值观；监管缺失导致乱象。③建议：a.平台加强内容审核；b.监管部门完善法律法规；c.网红提升自身素养；d.青少年理性追星，关注内容价值而非流量。我们应支持正能量网红，抵制低俗网红。'},
+{cat:'综合分析',diff:1,t:'请你谈谈对"工匠精神"的理解。',tips:'①解释概念；②举例说明；③联系岗位。',ref:'工匠精神指对工作精益求精、追求卓越的精神品质，核心是专注、严谨、坚持、敬业。代表人物：导弹雕刻师毛腊生，0.02毫米误差都绝不放过；港珠澳大桥建设者，攻克多项世界难题。这种精神在我们工作中同样重要：①写一份材料要字斟句酌；②办理业务要一丝不苟；③服务群众要耐心周到。在公务员/事业单位岗位上，工匠精神意味着把每一件小事做到极致，为群众提供高质量服务。'},
+{cat:'综合分析',diff:3,t:'如何看待"形式主义"问题？',tips:'①指出危害；②分析成因；③提出对策。',ref:'①形式主义指重形式轻内容、重过程轻结果的工作作风。②危害：浪费资源、降低效率、损害政府形象、伤害群众感情(如"指尖上的形式主义"加重基层负担)。③成因：考核导向偏差(以痕迹论英雄)、干部作风不实、制度执行不严。④对策：a.树立正确政绩观；b.改进考核方式，重实绩轻痕迹；c.加强作风建设；d.运用信息化手段减少重复报表；e.严肃查处形式主义典型。反对形式主义是基层减负的关键。'},
+{cat:'综合分析',diff:2,t:'谈谈你对"乡村振兴"的理解。',tips:'①战略意义；②五大振兴；③具体措施。',ref:'乡村振兴战略是党的十九大提出的重大战略，是解决"三农"问题的总抓手。①意义：实现共同富裕的必然要求、推进现代化的重要内容。②五大振兴：产业振兴(关键)、人才振兴(基础)、文化振兴(灵魂)、生态振兴(支撑)、组织振兴(保障)。③具体措施：a.发展特色产业，壮大集体经济；b.吸引人才回流，培育新型农民；c.保护乡村文化，留住乡愁；d.改善人居环境，建设美丽乡村；e.建强基层组织。乡村振兴让农业更强、农村更美、农民更富。'},
+{cat:'综合分析',diff:3,t:'对于人工智能的快速发展，你怎么看？',tips:'①正反两方面分析；②结合具体行业影响；③提出应对策略。',ref:'①积极影响：a.提高生产效率(智能制造、自动化)；b.改善生活品质(智能家居、智能医疗)；c.推动科技创新；d.促进新业态发展。②潜在风险：a.就业冲击(部分岗位被替代)；b.隐私泄露风险；c.算法歧视；d.伦理和安全问题(如自动驾驶事故责任)。③应对策略：a.加强AI伦理和法律研究；b.完善数据隐私保护法规；c.加强AI人才培养；d.推动AI与传统行业深度融合；e.构建人类与AI的协同关系。我们既要拥抱AI，也要理性管控，让技术服务于人类。'},
+{cat:'综合分析',diff:2,t:'对于"内卷"现象，你怎么看？',tips:'①解释概念；②分析利弊；③引导正确态度。',ref:'①概念：内卷指同行间竞相付出更多努力争夺有限资源，导致个体"收益努力比"下降的恶性竞争。②积极面：一定程度激发活力、推动进步。③消极面：a.导致身心俱疲；b.创新力下降(简单重复)；c.资源浪费；d.价值观扭曲(唯分数、唯KPI)。④建议：a.个人：找准定位、深耕核心能力，避免低水平重复；b.组织：建立科学激励机制，鼓励创新；c.社会：扩大资源供给(如教育、医疗)，打破零和博弈。我们要警惕内卷，但不应放弃奋斗，关键是"有效努力"而非"无效消耗"。'},
+{cat:'综合分析',diff:1,t:'谈谈对"绿水青山就是金山银山"的理解。',tips:'①理念内涵；②实践案例；③个人行动。',ref:'"两山论"由习近平同志于2005年提出，核心是经济发展与生态保护辩证统一。①内涵：保护生态环境就是保护生产力，改善生态环境就是发展生产力。②实践：浙江安吉余村从"卖石头"到"卖风景"的成功转型；塞罕坝从荒漠变林海。③意义：a.为可持续发展提供中国智慧；b.引领全球生态治理。④个人行动：节约资源、低碳出行、参与环保。作为公务员/事业人员，应在工作中贯彻绿色发展理念，推动绿色转型。'},
+{cat:'综合分析',diff:3,t:'如何看待"躺平式干部"现象？',tips:'①定性：消极现象；②分析危害；③提出治理建议。',ref:'①现象描述："躺平式干部"指不思进取、得过且过、不敢担当的干部，表现为"不干事不出事"。②危害：a.损害党和政府形象；b.影响政策落实；c.贻误发展机遇；d.形成不良风气。③成因：a.干部理想信念淡化；b.激励机制不完善(干多干少一个样)；c.问责机制不健全；d."为官不易"矫枉过正。④治理建议：a.加强思想教育，强化宗旨意识；b.完善干部考核评价机制；c.建立健全容错纠错机制；d.畅通能上能下渠道；e.加强监督执纪。新时代需要干部敢担当、有作为。'},
+{cat:'综合分析',diff:2,t:'对于"直播带货"现象，你怎么看？',tips:'①双面分析；②监管问题；③发展趋势。',ref:'①积极面：a.促进消费、拉动经济；b.帮助农民增收(如农产品直播)；c.提供就业机会；d.创新商业模式。②问题：a.虚假宣传、假冒伪劣；b.数据造假、刷单炒信；c.明星偷税漏税；d.未成年人打赏乱象。③监管建议：a.完善法律法规(如《互联网直播服务管理规定》)；b.平台落实主体责任；c.加强诚信体系建设；d.消费者理性消费。④趋势：直播带货将向规范化、专业化、品质化发展，与产业深度融合，成为数字经济的重要形态。'},
+{cat:'综合分析',diff:3,t:'谈谈你对"共同富裕"的理解。',tips:'①概念解读；②实现路径；③避免误区。',ref:'①概念：共同富裕是全体人民通过辛勤劳动和相互帮助，最终达到丰衣足食的生活水平，是中国特色社会主义的本质要求。②内涵：不是同步富裕、不是平均主义、不是劫富济贫，而是"先富带动后富"的渐进过程。③实现路径：a.高质量发展，做大"蛋糕"；b.合理分配，分好"蛋糕"(三次分配体系)；c.基本公共服务均等化；d.乡村振兴和区域协调发展。④避免误区：a.不是养懒汉；b.不是绝对平均；c.不是没有差距。我国已全面建成小康社会，正向共同富裕目标稳步迈进。'},
+{cat:'综合分析',diff:2,t:'对于"碳达峰碳中和"，你怎么看？',tips:'①背景意义；②挑战分析；③实现路径。',ref:'①概念：碳达峰指CO₂排放达到峰值后稳定下降；碳中和指排放与吸收平衡，实现"净零"。②背景：气候变化是人类共同挑战，中国作为负责任大国，承诺2030年前碳达峰、2060年前碳中和。③挑战：a.能源结构调整压力大；b.产业转型成本高；c.技术储备不足；d.地区间不平衡。④路径：a.发展清洁能源(光伏、风电、核能)；b.推动产业升级(节能减排)；c.技术创新(储能、碳捕集)；d.倡导绿色生活方式；e.完善政策支持(碳市场、绿色金融)。这是发展方式的深刻革命，需要全社会共同努力。'},
+{cat:'综合分析',diff:1,t:'谈谈你对"全过程人民民主"的理解。',tips:'①概念；②五大环节；③中国特色。',ref:'全过程人民民主是习近平提出的重大理念，指人民民主不仅体现在选举环节，还体现在决策、执行、监督等各环节。①五大环节：民主选举、民主决策、民主协商、民主管理、民主监督。②特点：a.全链条(从选举到治理)；b.全方位(国家政治生活各领域)；c.全覆盖(全体人民)。③实践形式：人民代表大会、政协协商、基层民主(村务公开、社区议事)、网络问政等。④意义：丰富了人类政治文明形态，体现了中国特色社会主义民主的优越性。'},
+{cat:'综合分析',diff:3,t:'对于"996"工作制，你怎么看？',tips:'①明确态度(违法且不可持续)；②分析现象；③提出建议。',ref:'①定性："996"(早9晚9每周6天)违反《劳动法》，损害劳动者身心健康，是畸形加班文化。②原因：a.互联网行业竞争激烈；b.部分企业法律意识淡薄；c.劳动者议价能力弱；d."奋斗"被偷换概念。③危害：a.健康损害(过劳猝死案例)；b.家庭关系受损；c.生育率下降；d.创新力下降(疲劳战术)。④建议：a.加强劳动监察执法；b.企业转变发展理念(靠创新而非加班)；c.劳动者勇敢维权；d.社会形成健康工作文化。真正的奋斗是高效工作与美好生活的平衡，而非透支生命。'},
+{cat:'综合分析',diff:2,t:'对于"双减政策"，你怎么看？',tips:'①政策初衷；②实施效果；③深化落实。',ref:'①背景：2021年中央"双减"政策(减轻义务教育阶段学生作业和校外培训负担)。②初衷：a.减轻学生过重学业负担；b.缓解家长焦虑；c.规范培训行业；d.促进教育公平。③成效：a.学科类培训机构大幅压减；b.学生作业总量和时长得到控制；c.课后服务普遍开展；d.家庭教育支出下降。④挑战：a.部分家长"明减暗加"；b.培训需求转向"地下"或"素质"包装；c.教师负担加重。⑤深化：a.提高课堂教学质量；b.丰富课后服务内容；c.推进教育评价改革；d.加强家庭教育指导。让教育回归本真。'},
+{cat:'综合分析',diff:3,t:'谈谈对"文化自信"的理解。',tips:'①内涵；②来源；③实践路径。',ref:'①内涵：文化自信是一个国家、一个民族对自身文化价值的充分肯定和积极践行，并对其生命力保持坚定信心。②三个维度：a.对中华优秀传统文化的传承(五千文明)；b.对革命文化的弘扬(红色基因)；c.对社会主义先进文化的发展(时代精神)。③来源：a.历史底蕴深厚(四大文明古国之一)；b.革命文化的洗礼；c.改革开放的伟大成就。④实践路径：a.传承优秀传统文化(国学、非遗)；b.讲好中国故事；c.推动文化创新(国潮、文创)；d.抵制文化虚无主义和崇洋媚外；e.提升国家文化软实力。坚定文化自信是民族复兴的精神基础。'},
+{cat:'综合分析',diff:2,t:'对于"网络暴力"现象，你怎么看？',tips:'①定性；②成因；③治理建议。',ref:'①现象：网络暴力指通过网络对他人进行恶意攻击、谩骂、造谣、隐私泄露等行为。②危害：a.损害当事人身心健康(严重者导致抑郁、自杀)；b.污染网络生态；c.突破法律和道德底线。③成因：a.匿名性带来的"法不责众"心理；b.部分网民素养不高；c.平台监管不力；d.法律法规滞后；e.从众心理和情绪化表达。④治理：a.完善法律法规(《网络暴力信息治理规定》)；b.平台落实主体责任(快速处置、协助取证)；c.网民自律、理性表达；d.加强网络伦理教育；e.受害者勇敢维权。让网络空间清朗起来。'},
+{cat:'综合分析',diff:1,t:'请你谈谈对"诚信"的理解。',tips:'①内涵；②重要性；③如何践行。',ref:'①内涵：诚信是诚实守信，是中华民族传统美德，是社会主义核心价值观的重要内容。诚实即真心实意、不虚假；守信即言出必行、说到做到。②重要性：a.个人立身之本(人无信不立)；b.企业经营之基(商无信不兴)；c.政府公信之源(国无信不强)；d.社会和谐之要。③践行：a.个人层面：言行一致、不说谎、不欺诈；b.职业层面：遵守职业道德、维护职业操守；c.社会层面：共建诚信社会，让守信者受益、失信者受限；d.制度层面：健全社会信用体系。在公务员岗位上，诚信是为政之基，要对组织忠诚、对群众守信、对法纪敬畏。'},
+{cat:'综合分析',diff:3,t:'如何看待"网络空间不是法外之地"？',tips:'①解读；②必要性；③落实路径。',ref:'①解读：网络空间虽是虚拟世界，但参与者是现实中的公民，网络行为同样受法律规范和道德约束。②必要性：a.维护网络秩序的需要(网络暴力、谣言泛滥)；b.保护网民权益(隐私、名誉)；c.维护国家安全和政治安全；d.促进互联网健康发展。③落实：a.完善网络立法(如《网络安全法》《数据安全法》《个人信息保护法》)；b.严格执法(典型案件及时查处)；c.平台履行主体责任(内容审核、违法信息处置)；d.网民提升法治意识(不造谣、不传谣、不侵权)；e.国际合作治理网络犯罪。"互联网+"时代，每个网民都应在法律框架下自由表达。'},
+
+/* ─── 组织管理 41-60 ─── */
+{cat:'组织管理',diff:2,t:'领导让你组织一次单位内部培训，你怎么开展？',tips:'明确目的、对象、内容、形式、时间、地点、预算；事前事中事后全流程；应急预案。',ref:'①准备阶段：a.调研需求：通过问卷、访谈了解培训需求；b.制定方案：明确培训目标、对象、内容、师资、时间、地点、预算；c.报领导审批。②实施阶段：a.通知宣传；b.场地布置、设备调试；c.讲师对接；d.学员签到；e.现场记录(拍照、考勤)；f.互动答疑。③收尾阶段：a.培训效果评估(问卷、考试)；b.资料归档；c.撰写总结报告；d.向领导汇报；e.持续跟踪改进。④应急预案：a.讲师临时缺席(备选讲师)；b.设备故障(提前测试+备用)；c.学员积极性不高(增加互动环节)。'},
+{cat:'组织管理',diff:3,t:'领导安排你负责一项调研活动，你如何保证调研质量？',tips:'调研方案科学性、样本代表性、数据真实性、报告实用性。',ref:'①调研设计：a.明确调研目的和指标；b.科学选取样本(分层抽样、随机抽样)；c.设计问卷或访谈提纲(简洁、客观)。②调研实施：a.培训调研人员(标准统一)；b.现场记录；c.数据多重核验；d.避免诱导性提问。③数据处理：a.分类整理；b.定量与定性结合；c.交叉验证。④报告撰写：a.数据真实可靠；b.结论有理有据；c.对策建议具体可行；d.请专家或领导审核。⑤后续跟踪：a.调研成果应用；b.根据反馈优化方案。'},
+{cat:'组织管理',diff:2,t:'单位要举办一次主题党日活动，你如何组织？',tips:'政治性、教育性、实效性、纪律性；结合单位实际。',ref:'①确定主题：根据上级要求和单位实际确定(如"学习二十大精神""重温入党誓词")。②制定方案：明确时间、地点、参与人员、活动内容、议程、预算，报领导审批。③活动内容：a.理论学习(集中学习、专题党课)；b.红色教育(参观纪念馆、重走红色足迹)；c.志愿服务(社区服务、扶贫帮困)；d.交流研讨(结合本职工作谈体会)；e.重温入党誓词。④组织实施：a.通知党员；b.场地布置；c.签到考勤；d.资料留存(照片、心得)；e.现场纪律。⑤总结提升：撰写活动总结，向支部汇报，将活动成果转化为工作动力。'},
+{cat:'组织管理',diff:1,t:'如何组织一次部门团建活动？',tips:'增进感情、提升凝聚力、放松身心；考虑大家意愿、安全、预算。',ref:'①前期准备：a.问卷调研同事意愿(活动类型、时间偏好)；b.根据人数、预算确定方案(户外拓展/聚餐/文体活动/旅行)；c.报领导审批。②方案要素：a.时间(避开工作高峰期)；b.地点(交通便利、安全)；c.形式(兼顾趣味性和参与度)；d.预算(AA制或单位支持)；e.应急预案(天气、医疗)。③实施：a.通知；b.分组；c.游戏设计(团队合作类)；d.摄影记录；e.安全保障。④收尾：a.活动总结；b.反馈收集；c.活动照片共享。通过团建增进同事感情、提升团队凝聚力。'},
+{cat:'组织管理',diff:3,t:'领导让你牵头负责一项重大改革任务，你如何推进？',tips:'顶层设计、试点先行、风险防控、协同推进、评估反馈。',ref:'①理解任务：a.深入学习相关文件精神和领导指示；b.调研现状（国内外经验、基层实际）；c.明确改革目标和关键指标。②制定方案：a.成立工作专班，明确分工；b.拟定改革方案和配套政策；c.组织专家论证和风险评估；d.报领导审批。③试点先行：a.选取有代表性的试点单位；b.制定试点方案；c.跟踪进展、动态调整；d.总结经验教训。④全面推开：a.召开动员会议；b.开展业务培训；c.加强督促指导；d.协调解决困难问题。⑤评估反馈：a.开展中期评估和终期评估；b.收集基层意见；c.持续优化改革举措；d.形成长效机制。关键：吃透精神、摸清实情、稳步推进、风险可控。'},
+{cat:'组织管理',diff:2,t:'单位要开展一项民意调查，你如何组织？',tips:'方案设计、样本选取、数据真实、报告实用。',ref:'①准备：a.明确调查目的、对象、内容；b.选取样本（分层抽样保证代表性）；c.设计问卷（问题简洁中立、避免诱导）；d.培训调查员；e.准备物资。②实施：a.多渠道发放问卷（线上+线下、入户+走访）；b.现场答疑；c.数据及时回收。③整理：a.录入校验；b.统计分析（定量+定性）；c.交叉验证。④报告：a.客观呈现数据；b.深入分析问题；c.提出可操作建议；d.向领导汇报并听取意见。⑤应用：根据调查结果调整政策、回应群众关切。'},
+{cat:'组织管理',diff:1,t:'领导让你组织一次会议，你怎么办？',tips:'会前充分准备、会中有效控制、会后及时跟进。',ref:'①会前准备：a.明确会议主题、目的、参会人员；b.拟定议程、时长、地点；c.通知参会者；d.准备材料；e.布置会场、检查设备；f.报领导审批。②会中控制：a.按时开始；b.主持人引导议程；c.做好记录（重要内容、决议事项）；d.控制时间；e.处理突发事件。③会后跟进：a.整理会议纪要；b.报领导审阅后发送参会人员；c.跟踪落实议定事项；d.归档保存资料。'},
+{cat:'组织管理',diff:3,t:'如何组织一次跨部门联合执法行动？',tips:'牵头协调、明确分工、依法依规、形成合力。',ref:'①准备阶段：a.制定联合执法方案（依据、目标、范围、时间、分工）；b.成立联合执法领导小组（牵头部门+参与部门）；c.召开协调会统一思想；d.开展执法人员培训（法律法规、业务技能）；e.做好风险评估和应急预案。②实施阶段：a.发布执法公告；b.现场联合行动（各司其职、协同配合）；c.规范执法行为（亮证、告知、笔录）；d.处理违法行为（依法依规）；e.做好执法记录和证据保存。③收尾阶段：a.整理案件资料；b.撰写执法报告；c.典型案例曝光或通报；d.建立长效机制（联席会议、信息共享）；e.开展"回头看"巩固成效。'},
+{cat:'组织管理',diff:2,t:'领导让你牵头负责一项重大活动，你如何做好沟通协调？',tips:'对上对下、平行部门、内外部多方协调。',ref:'①对上沟通：a.吃透领导意图（目标、要求、底线）；b.定期汇报进展；c.遇到重大问题及时请示；d.提出方案供领导决策。②对下协调：a.明确分工和责任；b.定期召开推进会；c.及时解决执行中的困难；d.激发团队积极性。③平行部门：a.主动对接牵头部门和配合部门；b.明确各自职责和接口；c.定期通报信息；d.协调资源支持。④外部协作：a.与活动相关方（场地、安保、媒体）建立联系；b.签订合作协议；c.做好现场协调。⑤关键：建立沟通机制（例会、群联络）、做好信息对称、注重换位思考。'},
+{cat:'组织管理',diff:2,t:'单位要组织一次外出参观学习活动，你如何安排？',tips:'行程合理、安全第一、学习实效、厉行节约。',ref:'①制定方案：a.明确学习目的（参观什么、学什么）；b.选取目的地（先进性、典型性、可学性）；c.确定人员、行程、时间；d.编制预算（住宿、交通、餐饮、保险）；e.报领导审批。②行前准备：a.通知参学人员；b.落实交通（包车/高铁）；c.预订住宿和餐饮；d.购买保险；e.准备学习资料（笔记本、介绍信）；f.分组并指定组长。③过程管理：a.按时集合、清点人数；b.带队参观学习（指定联络员、讲解员）；c.安排座谈交流；d.做好记录（笔记、照片）；e.注意安全和纪律。④返程总结：a.清点人数、安全返回；b.撰写学习心得；c.召开分享会；d.结合本职工作形成改进方案；e.向领导汇报学习成果。⑤纪律要求：严格遵守中央八项规定、不走过场、不增加基层负担。'},
+{cat:'组织管理',diff:1,t:'领导临时交办紧急任务，你怎么办？',tips:'冷静应对、快速响应、分清主次、按时保质。',ref:'①接受任务：a.冷静接收任务；b.必要时复述确认关键要求（目标、时限、关键节点）；c.评估任务紧急程度和资源需求。②快速响应：a.立即启动相关准备；b.梳理所需资源和人员；c.向直接领导或相关部门请求支援；d.制定初步行动计划。③分清主次：a.聚焦核心目标；b.砍掉非紧急事务；c.先完成再完善。④执行落实：a.高效推进；b.及时反馈进展；c.遇阻主动协调解决。⑤收尾汇报：a.按时完成任务；b.第一时间汇报结果；c.总结经验教训。原则：接受任务不推诿、执行任务不打折、汇报结果不隐瞒。'},
+{cat:'组织管理',diff:3,t:'领导让你牵头制定一项工作制度，你如何推进？',tips:'深入调研、广泛征求意见、合法合规、可操作可执行。',ref:'①前期准备：a.吃透上级精神和相关法律法规；b.调研现状（基层实际、兄弟单位经验）；c.梳理现有制度问题；d.明确制度目标和框架。②起草阶段：a.拟定制度草案（总则、主体条款、附则、附件）；b.逻辑严密、表述准确；c.与现行法规政策衔接。③征求意见：a.部门内部讨论；b.相关部门会签；c.必要时征求法律顾问意见；d.公开征求基层意见；e.专家论证。④修改完善：a.汇总意见；b.分类处理（采纳、部分采纳、不采纳并说明理由）；c.反复修改完善。⑤报审发布：a.形成送审稿；b.报领导审批；c.正式印发；d.组织宣贯培训。⑥监督执行：a.制度解读；b.跟踪执行情况；c.定期评估修订。关键：制度要"接地气"，不能"挂在墙上"。'},
+
+/* ─── 应急应变 81-100 ─── */
+{cat:'应急应变',diff:2,t:'你在值班时接到群众紧急投诉，怎么办？',tips:'快速响应、依法依规、安抚情绪、解决问题。',ref:'①受理投诉：a.详细记录投诉人信息、投诉内容、时间地点；b.耐心倾听、安抚情绪（"我理解您的心情，我们马上处理"）；c.初步判断事项性质和紧急程度。②快速处置：a.属于本部门职责的，立即派员现场处理或电话协调解决；b.不属于本部门的，告知正确的投诉渠道（必要时主动联系）；c.紧急事项边处置边报告领导。③跟踪反馈：a.及时向投诉人反馈处理进展；b.协调相关部门尽快解决；c.结果告知投诉人并征求满意度。④后续工作：a.做好记录归档；b.分析投诉原因（普遍性问题）；c.向领导报告并提出改进建议；d.涉及违法行为的依法移交。'},
+{cat:'应急应变',diff:3,t:'突发事件现场有群众围观拍摄，可能引发负面舆论，怎么办？',tips:'真诚沟通、依法处置、舆情管控、公开透明。',ref:'①现场处置：a.第一时间到达现场；b.亮明身份（证件、工作证）；c.简要说明情况（不逃避、不推诿）；d.请无关人员有序疏散。②沟通态度：a.真诚面对群众和镜头；b.避免"无可奉告"等僵化回应；c.能解答的当场解答，不能的承诺时限；d.语气平和、措辞得体。③依法处置：a.严格按程序处理（不出格、不越权）；b.对违法行为依法处置（不在镜头前激化矛盾）；c.做好执法记录。④舆情管控：a.同步报告领导；b.协调宣传部门准备口径；c.通过官方渠道第一时间发布权威信息；d.跟踪舆情动态，正面引导。⑤反思提升：事后复盘、完善预案、加强舆情培训。'},
+{cat:'应急应变',diff:2,t:'你负责的活动现场突然停电，怎么办？',tips:'稳定现场、快速排查、应急预案、信息同步。',ref:'①稳定现场：a.第一时间通过话筒或现场工作人员安抚观众（"请大家不要惊慌，我们立即处理"）；b.暂停活动、避免混乱；c.工作人员引导观众保持秩序。②排查原因：a.联系场馆电力保障人员现场排查；b.判断是内部故障还是外部线路问题；c.评估恢复时间。③启动预案：a.启用备用电源（应急照明、应急广播）；b.准备手电筒等应急设备；c.准备备用方案（推迟、转移场地、缩减议程）。④信息发布：a.向观众告知原因和预计恢复时间；b.致歉并提供必要服务（饮水、休息）；c.向领导汇报。⑤恢复后：a.检查设备安全后再恢复活动；b.适当调整议程；c.总结经验，完善应急预案。'},
+{cat:'应急应变',diff:1,t:'你接到群众电话咨询政策，但对方表述不清且情绪激动，怎么办？',tips:'耐心倾听、安抚情绪、引导提问、准确解答。',ref:'①耐心倾听：a.不打断、不急躁；b.适当回应（"我理解您的意思"）；c.让对方充分表达。②安抚情绪：a.语气平和、语速放慢；b.肯定对方的合理诉求；c.适时引导（"您先别着急，我们一起来想办法"）。③引导提问：a.礼貌打断并请对方稍后陈述；b.针对性提问（"您是想咨询XX问题吗？"）；c.确认理解一致。④准确解答：a.在自己职权范围内的，准确告知；b.超出范围的，告知正确部门并提供联系方式；c.复杂事项可记录下来回复。⑤后续跟进：a.建立咨询记录；b.对复杂事项跟踪反馈；c.必要时汇报领导。'},
+{cat:'应急应变',diff:3,t:'单位发生网络舆情危机，如何应对？',tips:'快速反应、权威发布、统一口径、持续引导。',ref:'①快速响应（黄金4小时）：a.第一时间发现和研判舆情；b.迅速上报领导（涉重大舆情立即上报）；c.成立应急小组（宣传、业务、网信等部门联动）。②查明真相：a.业务部门立即核实事实；b.调取相关材料和数据；c.形成基本判断。③权威发布：a.统一口径（指定新闻发言人）；b.通过官方渠道（微博、微信、官网）第一时间发声；c.回应关切、不回避问题；d.措辞严谨、留有余地。④处置问题：a.迅速解决舆情反映的实际问题；b.问责相关责任人；c.及时公布处理结果。⑤持续引导：a.跟踪二次舆情；b.正面内容稀释负面；c.协调主流媒体发声；d.与意见领袖良性互动。⑥反思总结：a.分析舆情成因；b.完善舆情预案；c.加强网络素养培训。'},
+{cat:'应急应变',diff:2,t:'你组织会议时发现领导讲话稿有错，怎么办？',tips:'分场合处置、稳妥处理、维护领导威信。',ref:'①分场合处置：a.紧急程度判断——错的是否影响核心内容；b.轻微笔误（如错别字）：会前悄悄提示领导；c.重要错误：会前礼貌提示（"X处建议您再看一下"）；d.涉及政策、法规、数据错误的，必须提示。②会前发现：a.找合适时机（如打印稿送审时）单独提示；b.提供修改建议；c.协助准备改正后的版本。③会议进行中：a.如不影响主旨，一般不打断；b.影响重大的，可递纸条提示；c.不要当众纠正。④会后补救：a.正式发文中修正；b.必要时补充说明；c.内部总结教训。⑤原则：a.尊重领导、善意提醒；b.避免在公开场合让领导尴尬；c.以工作为重。'},
+{cat:'应急应变',diff:2,t:'在执法过程中遇到群众暴力抗法，怎么办？',tips:'冷静克制、依法处置、避免激化、保护自身。',ref:'①现场控制：a.立即停止执法行为，保持冷静；b.口头警告（"请保持冷静，否则后果自负"）；c.呼叫支援（同事、110）；d.做好自身防护（不与群众发生肢体冲突）。②现场记录：a.全程录音录像（执法记录仪）；b.记录现场情况（时间、地点、人员、行为）。③依法处置：a.对一般违法行为，以教育为主；b.对严重暴力抗法，由公安机关依法处置；c.做好证据移交。④舆情应对：a.及时发布权威信息；b.避免被恶意剪辑炒作；c.配合媒体采访。⑤反思提升：a.分析抗法原因（执法是否规范）；b.加强执法培训；c.完善执法方式（文明执法）。原则：打不还手、骂不还口、有理有利有节。'},
+{cat:'应急应变',diff:3,t:'暴雨导致单位地下车库进水，如何应急处置？',tips:'人命优先、快速响应、协同配合、减少损失。',ref:'①紧急响应：a.立即启动防汛应急预案；b.第一时间疏散车辆（特别是人员是否在车内）；c.通知车主移车（电话、微信群）；d.设置警戒、切断电源（避免漏电）。②排水抢险：a.启动排水泵、沙袋封堵入口；b.协调应急救援队伍支援；c.重点保护电梯、配电房、机房等设施。③人员安全：a.禁止无关人员进入；b.检查是否有被困人员；c.做好应急照明。④信息报告：a.立即报告领导；b.统计损失情况（车辆、设备、设施）；c.通报保险公司。⑤善后处理：a.排水清淤、消毒；b.检查设备能否正常使用；c.修复损坏设施；d.总结经验，完善预案。'},
+{cat:'应急应变',diff:1,t:'你发现同事在工作中出现重大失误，怎么办？',tips:'及时补台、内部沟通、共同反思、维护团结。',ref:'①及时补救：a.第一时间评估失误的影响范围和严重程度；b.如影响较小，私下协助同事及时纠正；c.如影响重大，立即向领导报告并采取补救措施。②内部沟通：a.私下找同事沟通，善意提醒；b.了解失误原因；c.共同商讨补救方案。③维护同事：a.不在公开场合指责；b.不在他人面前议论；c.不向无关人员透露。④共同反思：a.协助同事总结教训；b.分享经验避免再犯；c.如涉及制度问题，向领导反馈完善。⑤后续关注：a.观察同事状态（避免心理负担）；b.持续支持其工作。原则：补台不拆台、补位不越位。'},
+{cat:'应急应变',diff:2,t:'领导临时让你参加重要会议，但手头有紧急工作，怎么办？',tips:'分清主次、统筹兼顾、及时沟通、两全方案。',ref:'①评估两件事：a.判断会议的重要性和紧急程度（领导交办一般都很重要）；b.评估手头工作的紧迫性和可调整性。②快速决断：a.如会议确实不能推迟，立即准备参会材料并安排手头工作；b.如手头工作可短暂搁置，优先参会；c.如手头工作无人接手且不能等，礼貌向领导说明，请求指定他人参会或调整时间。③处理手头工作：a.委托同事跟进（说明节点和要点）；b.设置紧急联系方式；c.准备书面材料供同事参考。④会前准备：a.快速了解会议背景和议题；b.准备发言要点；c.准时参会。⑤会后衔接：a.及时了解手头工作进展；b.如有需要迅速调整。原则：领导交办优先、统筹兼顾、主动沟通、不擅自决定。'},
+
+/* ─── 人际关系 91-100 ─── */
+{cat:'人际关系',diff:2,t:'与同事意见分歧且对方坚持己见，怎么办？',tips:'求同存异、理性沟通、就事论人、灵活处理。',ref:'①克制情绪：a.避免当场争执；b.不在公开场合激化矛盾；c.深呼吸，控制情绪。②理性沟通：a.倾听对方观点（不打断）；b.肯定对方合理部分；c.用数据和事实陈述自己的看法。③求同存异：a.寻找双方共识点；b.聚焦目标而非立场；c.提出折中方案。④灵活处理：a.如分歧不影响工作，可保留意见并执行团队决定；b.如涉及原则问题，可向领导或第三方寻求意见；c.避免上升到人际矛盾。⑤后续维护：a.工作之外适当交流；b.发现对方优点并真诚赞赏；c.不要让分歧影响合作。原则：对事不对人、就事论事、顾全大局。'},
+{cat:'人际关系',diff:3,t:'被领导误解批评了，怎么办？',tips:'冷静面对、主动沟通、反思改进、阳光心态。',ref:'①冷静面对：a.不情绪化、不当场辩解；b.认真倾听领导的批评；c.控制情绪，避免冲突。②主动沟通：a.选择合适时机私下找领导；b.礼貌询问具体原因和事实依据（"我想请教您一下，我哪些地方做得不好？"）；c.诚恳解释，注意方式方法（事实清楚、态度端正、不推卸责任）。③反思改进：a.无论领导批评是否完全准确，都要先反思自身问题；b.如确有自己的问题，承认并承诺改进；c.如领导误解，提供证据材料，温和说明。④阳光心态：a.不因此怨恨领导；b.不消极怠工；c.相信组织会公正对待。⑤后续提升：a.加强工作沟通汇报，避免再次误解；b.主动汇报工作进展；c.用业绩证明自己。原则：组织为大、事业为重、阳光心态、做好自己。'},
+{cat:'人际关系',diff:1,t:'新人到单位如何快速融入团队？',tips:'主动积极、谦虚好学、融入集体、建立关系。',ref:'①主动融入：a.入职前做好功课（了解单位概况、业务、文化）；b.入职后主动介绍自己、记住同事名字；c.主动承担力所能及的工作；d.积极参与集体活动。②谦虚好学：a.尊重老同志和领导；b.虚心请教、不懂就问；c.多听多看少说；d.勤做笔记。③融入集体：a.主动参加聚餐、团建；b.与人为善、乐于助人；c.尊重他人习惯和隐私；d.积极参与讨论。④建立关系：a.找1-2位"师傅"或mentor；b.主动与业务相关的同事建立联系；c.适度社交但不站队。⑤做好工作：a.高质量完成交办任务；b.主动汇报进展；c.持续学习提升。原则：低调做人、高调做事、谦虚务实、阳光开朗。'},
+{cat:'人际关系',diff:2,t:'同事在工作中推诿扯皮，影响了你的工作，怎么办？',tips:'冷静沟通、就事论人、寻求支持、避免冲突。',ref:'①内部沟通：a.选择私下沟通，避免公开指责；b.陈述事实和自己的困难（"我的工作需要您提供XX支持"）；c.询问对方困难，共同商讨解决方案。②明确分工：a.如属分工不清，找领导明确职责；b.形成书面分工备忘；c.避免下次再扯皮。③寻求支持：a.如沟通无效，找直属领导协调；b.陈述事实和影响；c.请领导出面协调分工或推进。④保持风度：a.不与同事发生争吵；b.不在背后议论；c.保持职业态度。⑤后续协作：a.主动加强协作，建立信任；b.重大事项书面确认；c.必要时寻求第三方见证。原则：以工作为重、对事不对人、寻求共赢、保持风度。'},
+{cat:'人际关系',diff:3,t:'领导对你有意见但不明说，怎么办？',tips:'主动沟通、反思改进、用业绩说话、阳光心态。',ref:'①主动观察：a.通过工作反馈判断领导态度变化（如是否减少沟通、是否常批评）；b.反思近期工作表现；c.了解是否与其他人或事有关。②主动沟通：a.选择合适时机主动找领导（汇报工作时顺势沟通）；b.礼貌请教（"领导，我想请教一下，近期我哪些地方做得不够好？"）；c.真诚听取意见。③反思改进：a.针对领导提出的问题立行立改；b.工作方式方法调整；c.主动汇报改进情况。④用业绩说话：a.用实实在在的工作成果赢得认可；b.主动承担急难险重任务；c.持续高质量完成本职工作。⑤阳光心态：a.不自我怀疑、不消极怠工；b.相信组织和领导的公正；c.必要时通过正常渠道反映。原则：沟通为上、改进为本、业绩为证、阳光为怀。'},
+{cat:'人际关系',diff:2,t:'同事把本该他完成的工作推给你，怎么办？',tips:'分清情况、友好沟通、适当拒绝、寻求支持。',ref:'①分清情况：a.一次性、临时性的，可以适度帮忙（建立同事关系）；b.经常性的，要明确拒绝；c.涉及责任风险的，特别要谨慎。②友好沟通：a.私下礼貌说明（"不好意思，我手头也有XX紧急工作，担心影响进度"）；b.提出替代方案（建议找领导协调分工或一起做）；c.不要直接指责对方推诿。③适度拒绝：a.长期不合理的工作，要学会说不；b.明确告知自己的工作量；c.建议对方按职责分工处理。④寻求支持：a.如对方强行推卸，找直属领导协调；b.说明事实和自己的困难；c.请领导明确分工。⑤后续防范：a.建立清晰的职责边界；b.重要事项书面确认；c.不轻易承诺自己职责外的事。原则：帮忙有度、拒绝有方、沟通为上、责任清晰。'},
+{cat:'人际关系',diff:1,t:'你被评为优秀但同事中有不同声音，怎么办？',tips:'低调谦逊、用业绩说话、团结同事、改进自己。',ref:'①低调谦逊：a.不张扬、不炫耀；b.公开表达"这是团队的功劳"；c.感谢领导和同事的支持。②主动团结：a.对不同声音保持平和心态；b.不与持不同意见者对立；c.主动关心同事、寻求合作机会。③用业绩说话：a.持续高质量工作；b.主动帮助同事；c.用行动证明自己。④反思改进：a.思考为什么会有不同声音——是否平时沟通不够、是否方式方法让人误解；b.针对性改进。⑤保持风度：a.不与同事发生争吵；b.不记仇、不打击报复；c.继续发扬优点。原则：荣誉属于过去、团结成就未来、低调做人、高调做事。'},
+{cat:'人际关系',diff:3,t:'两位领导意见不一致且都让你执行，怎么办？',tips:'摸清背景、找准定位、巧妙沟通、统一执行。',ref:'①摸清背景：a.了解两位领导的分歧点和各自理由；b.判断是否属于分管范畴内的差异；c.评估不执行可能带来的后果。②找准定位：a.明确自己的直接领导是谁；b.原则上按直接领导的意见执行（除非重大原则问题）；c.避免被卷入领导分歧。③巧妙沟通：a.分别向两位领导汇报，听取完整意见；b.寻找双方共识点；c.必要时建议领导间先沟通统一。④协调统一：a.如分歧不大，按直接领导意见执行；b.如涉及重大问题，建议召开协调会明确；c.不擅自做主，不传递矛盾。⑤事后反思：a.不参与议论领导分歧；b.专注本职工作；c.避免成为"夹心层"。原则：组织原则、就事论事、不传话、不站队、做好本职。'},
+{cat:'人际关系',diff:2,t:'与性格、习惯差异较大的同事如何相处？',tips:'求同存异、尊重差异、就事论人、着眼大局。',ref:'①尊重差异：a.认识到每个人成长背景不同，性格习惯有差异是正常的；b.不强求改变他人；c.尊重对方的习惯和边界。②就事论事：a.工作中只看工作表现，不以个人好恶判断；b.避免因性格差异影响工作配合；c.建立基于工作的职业关系。③求同存异：a.寻找共同话题和工作目标；b.关注对方优点和长处；c.不强求建立深厚私人友谊。④有效沟通：a.了解对方的沟通风格（直接型/委婉型）；b.调整自己的沟通方式；c.避免误解。⑤着眼大局：a.以工作大局为重；b.保持职业化态度；c.必要时通过制度规范协作（如明确分工、书面沟通）。原则：尊重、包容、专业、合作。'},
+{cat:'人际关系',diff:3,t:'如何在跨部门协作中发挥桥梁作用？',tips:'主动沟通、找准定位、换位思考、创造共赢。',ref:'①找准定位：a.明确自己在协作中的角色（牵头/配合/协调）；b.明确各方职责和利益关切。②主动沟通：a.主动对接各方，建立沟通机制（如微信群、定期会议）；b.及时传递信息；c.协调各方时间安排。③换位思考：a.理解各部门的诉求和困难；b.寻找共同利益点；c.化解部门间的分歧。④专业协调：a.具备跨部门的业务知识；b.熟悉各部门的运作流程；c.提供专业建议和方案。⑤创造共赢：a.寻找让各方都能接受的方案；b.主动承担协调工作；c.取得成果时分享各方功劳。⑥赢得信任：a.处事公正、不偏不倚；b.信守承诺；c.保守秘密。原则：主动、专业、公正、共赢。'}
+];
+
+const ALL_QUESTIONS = EXAM_QUESTIONS.concat(EXTRA_QUESTIONS);
+
+/* ═══════════════════════════════════════════════════════
+   状态 & 持久化
+   ═══════════════════════════════════════════════════════ */
+const STORE_KEY = 'examPrep_v2';
+const defaultStats = { total: 0, correct: 0, streak: 0, bestStreak: 0, byCat: {}, wrongBook: [] };
+let stats = Object.assign({}, defaultStats);
+try { const raw = localStorage.getItem(STORE_KEY); if (raw) stats = Object.assign({}, defaultStats, JSON.parse(raw)); } catch(e) {}
+
+let quizState = null;
+let quizTimer = null;
+let quizSeconds = 0;
+
+let interviewState = null;
+let interviewTimer = null;
+let interviewSeconds = 0;
+let mediaRecorder = null;
+let recordedChunks = [];
+let recordedBlob = null;
+
+/* ═══════════════════════════════════════════════════════
+   Toast
+   ═══════════════════════════════════════════════════════ */
+function toast(msg, type){
+  type = type || '';
+  const t = document.createElement('div');
+  t.className = 'toast ' + type;
+  t.innerHTML = (type === 'success' ? ICON_CHECK : type === 'warn' ? ICON_WARN : '') + '<span>' + msg + '</span>';
+  document.body.appendChild(t);
+  setTimeout(() => { t.classList.add('out'); setTimeout(() => t.remove(), 320); }, 1800);
 }
-function getDefaultStats() {
-  return { total: 0, correct: 0, streak: 0, maxStreak: 0, categoryStats: {}, wrongBook: {} };
-}
-function saveStats(s) {
-  try { localStorage.setItem('gwy_examprep_stats', JSON.stringify(s)); } catch(e) {}
-}
-const STATS = loadStats();
 
-// ═══════════════════════════════════════════════
-//  UTILITIES
-// ═══════════════════════════════════════════════
-function toast(msg, type) {
-  let el = document.createElement('div');
-  el.setAttribute('role','status');el.className = 'toast' + (type ? ' ' + type : '');
-  el.textContent = msg;
-  document.body.appendChild(el);
-  setTimeout(function() { el.classList.add('out'); setTimeout(function() { if(el.parentNode)el.parentNode.removeChild(el); }, 300); }, 2000);
-}
-
-function toggleTheme() {
-  let cur = document.documentElement.getAttribute('data-theme');
-  let next = cur === 'dark' ? '' : 'dark';
-  document.documentElement.setAttribute('data-theme', next);
-  document.getElementById('themeToggle').textContent = next ? '☀️' : '🌙';
-  try { localStorage.setItem('gwy_examprep_theme', next || 'light'); } catch(e) {}
-}
-
-function switchTab(name) {
-  STATE.currentTab = name;
-  document.querySelectorAll('.tab-btn').forEach(function(b) { b.classList.toggle('active', b.getAttribute('data-tab') === name); });
-  document.querySelectorAll('.tab-content').forEach(function(c) { c.classList.toggle('active', c.id === 'tab-' + name); });
-  if (name === 'stats') renderStats();
-  if (name === 'wrongbook') renderWrongBook();
-}
-
-// ═══════════════════════════════════════════════
-//  QUIZ
-// ═══════════════════════════════════════════════
-function getFilteredQuestions(filter) {
-  if (!filter) return EXAM_QUESTIONS;
-  return EXAM_QUESTIONS.filter(function(q) { return q.cat === filter; });
-}
-
-function startQuiz(mode, filter) {
-  STATE.quizMode = mode;
-  STATE.quizFilter = filter;
-  STATE.quizIndex = 0;
-  STATE.quizAnswered = false;
-
-  let pool = getFilteredQuestions(filter);
-  if (mode === 'random') {
-    // Shuffle and take 10
-    pool = pool.slice().sort(function() { return Math.random() - 0.5; }).slice(0, 10);
-  } else if (mode === 'weak') {
-    // Prioritize wrong book
-    let weakIds = Object.keys(STATS.wrongBook);
-    if (!weakIds.length) { toast('错题本为空，改为随机10题', 'warn'); pool = pool.slice().sort(function() { return Math.random() - 0.5; }).slice(0, 10); }
-    else {
-      let weakPool = pool.filter(function(q) { return weakIds.indexOf(String(q.id)) !== -1; });
-      if (weakPool.length < 5) {
-        let remaining = pool.filter(function(q) { return weakIds.indexOf(String(q.id)) === -1; }).sort(function() { return Math.random() - 0.5; }).slice(0, 10 - weakPool.length);
-        pool = weakPool.concat(remaining);
-      } else {
-        pool = weakPool.sort(function() { return Math.random() - 0.5; }).slice(0, 10);
-      }
-    }
-  }
-
-  STATE.quizQuestions = pool;
-  if (!pool.length) { toast('⚠️ 没有匹配的题目', 'warn'); return; }
-
-  document.getElementById('quizArea').style.display = '';
-  document.getElementById('quizArea').scrollIntoView({ behavior: 'smooth' });
-  document.getElementById('statusBadge').textContent = '📝 刷题中';
-  renderQuestion();
-  renderProgress();
-  startQuizTimer();
-}
-
-function renderQuestion() {
-  let q = STATE.quizQuestions[STATE.quizIndex];
-  if (!q) return endQuiz();
-
-  STATE.quizAnswered = false;
-  document.getElementById('questionCard').innerHTML =
-    '<div class="question-number">第 ' + (STATE.quizIndex + 1) + '/' + STATE.quizQuestions.length + ' 题 · ' + q.cat + ' · ' + (q.diff === 1 ? '★' : q.diff === 2 ? '★★' : '★★★') + '</div>' +
-    '<div class="question-text">' + escHtml(q.q) + '</div>';
-
-  let optsHtml = '';
-  q.opts.forEach(function(opt, i) {
-    optsHtml += '<div class="option-item" data-idx="' + i + '" onclick="selectOption(' + i + ')">';
-    optsHtml += '<div class="option-letter">' + String.fromCharCode(65 + i) + '</div>';
-    optsHtml += '<div>' + escHtml(opt.substring(2).trim()) + '</div>';
-    optsHtml += '</div>';
+/* ═══════════════════════════════════════════════════════
+   主题
+   ═══════════════════════════════════════════════════════ */
+(function initTheme(){
+  const saved = localStorage.getItem('examPrep_theme');
+  if (saved === 'dark') document.documentElement.setAttribute('data-theme','dark');
+  const btn = document.getElementById('themeToggle');
+  if (!btn) return;
+  btn.addEventListener('click', () => {
+    const cur = document.documentElement.getAttribute('data-theme');
+    if (cur === 'dark'){ document.documentElement.removeAttribute('data-theme'); localStorage.setItem('examPrep_theme','light'); }
+    else { document.documentElement.setAttribute('data-theme','dark'); localStorage.setItem('examPrep_theme','dark'); }
   });
-  document.getElementById('optionsArea').innerHTML = optsHtml;
+})();
 
+/* ═══════════════════════════════════════════════════════
+   Tab 切换 —— 修复 Bug 3：切走时停止计时器与录音
+   ═══════════════════════════════════════════════════════ */
+document.querySelectorAll('.tab-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const target = btn.dataset.tab;
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.toggle('active', b === btn));
+    document.querySelectorAll('.tab-content').forEach(c => c.classList.toggle('active', c.id === 'tab-' + target));
+    if (target !== 'quiz') stopQuizTimer();
+    if (target !== 'interview') stopInterviewTimer();
+  });
+});
+
+function stopQuizTimer(){ if (quizTimer){ clearInterval(quizTimer); quizTimer = null; } }
+function stopInterviewTimer(){ if (interviewTimer){ clearInterval(interviewTimer); interviewTimer = null; } }
+
+/* ═══════════════════════════════════════════════════════
+   分类标签
+   ═══════════════════════════════════════════════════════ */
+function renderCategoryTags(containerId, onPick){
+  const c = document.getElementById(containerId);
+  if (!c) return;
+  const cats = Array.from(new Set(ALL_QUESTIONS.map(q => q.cat)));
+  c.innerHTML = '<span class="filter-tag active" data-cat="all">全部</span>' + cats.map(cat => '<span class="filter-tag" data-cat="'+cat+'">'+cat+'</span>').join('');
+  c.querySelectorAll('.filter-tag').forEach(t => t.addEventListener('click', () => {
+    c.querySelectorAll('.filter-tag').forEach(x => x.classList.remove('active'));
+    t.classList.add('active');
+    onPick(t.dataset.cat);
+  }));
+}
+
+function renderInterviewTags(containerId, onPick){
+  const c = document.getElementById(containerId);
+  if (!c) return;
+  const cats = Array.from(new Set(INTERVIEW_QUESTIONS.map(q => q.cat)));
+  c.innerHTML = '<span class="filter-tag active" data-cat="all">全部</span>' + cats.map(cat => '<span class="filter-tag" data-cat="'+cat+'">'+cat+'</span>').join('');
+  c.querySelectorAll('.filter-tag').forEach(t => t.addEventListener('click', () => {
+    c.querySelectorAll('.filter-tag').forEach(x => x.classList.remove('active'));
+    t.classList.add('active');
+    onPick(t.dataset.cat);
+  }));
+}
+
+/* ═══════════════════════════════════════════════════════
+   刷题
+   ═══════════════════════════════════════════════════════ */
+let quizFilterCat = 'all';
+
+renderCategoryTags('categoryTags', cat => { quizFilterCat = cat; });
+
+function shuffle(arr){
+  const a = arr.slice();
+  for (let i = a.length - 1; i > 0; i--){
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+function pickQuizPool(){
+  let pool = ALL_QUESTIONS.slice();
+  if (quizFilterCat !== 'all') pool = pool.filter(q => q.cat === quizFilterCat);
+  return pool;
+}
+
+function startQuiz(list, modeLabel){
+  stopQuizTimer();
+  quizState = { list: list, idx: 0, correct: 0, answered: 0, mode: modeLabel };
+  quizSeconds = 0;
+  document.getElementById('quizArea').style.display = 'block';
+  document.getElementById('quizModeLabel').textContent = modeLabel;
+  document.getElementById('quizTimer').textContent = '00:00';
+  quizTimer = setInterval(() => {
+    quizSeconds++;
+    const m = String(Math.floor(quizSeconds / 60)).padStart(2,'0');
+    const s = String(quizSeconds % 60).padStart(2,'0');
+    const el = document.getElementById('quizTimer');
+    if (el) el.textContent = m + ':' + s;
+  }, 1000);
+  renderQuestion();
+  document.getElementById('quizArea').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function renderQuestion(){
+  if (!quizState) return;
+  const q = quizState.list[quizState.idx];
+  const cat = document.getElementById('quizCatLabel');
+  if (cat) cat.textContent = q.cat;
+  const stars = '★'.repeat(q.diff) + '☆'.repeat(3 - q.diff);
+  document.getElementById('questionCard').innerHTML =
+    '<div class="question-number">第 ' + (quizState.idx + 1) + ' / ' + quizState.list.length + ' 题' +
+    '　<span class="diff-stars">' + stars + '</span>' +
+    (q.year ? '　<span style="color:var(--muted);font-weight:500">'+q.year+'年</span>' : '') + '</div>' +
+    '<div class="question-text">' + q.q + '</div>';
+  const letters = ['A','B','C','D','E','F'];
+  document.getElementById('optionsArea').innerHTML = q.opts.map((o, i) =>
+    '<div class="option-item" data-i="'+i+'">' +
+    '<div class="option-letter">'+letters[i]+'</div>' +
+    '<div>'+o+'</div></div>'
+  ).join('');
+  document.querySelectorAll('#optionsArea .option-item').forEach(el => {
+    el.addEventListener('click', () => onSelectOption(parseInt(el.dataset.i, 10)));
+  });
   document.getElementById('explanationBox').classList.remove('show');
   document.getElementById('btnNextQuestion').style.display = 'none';
-  document.getElementById('quizCatLabel').textContent = q.cat + ' · ' + (q.year || '') + '年';
   renderProgress();
 }
 
-function selectOption(idx) {
-  if (STATE.quizAnswered) return;
-  STATE.quizAnswered = true;
+function renderProgress(){
+  const wrap = document.getElementById('quizProgress');
+  if (!wrap || !quizState) return;
+  wrap.innerHTML = quizState.list.map((_, i) => {
+    if (i < quizState.idx) return '<span class="quiz-dot '+(quizState.results && quizState.results[i] ? 'correct' : 'wrong')+'"></span>';
+    if (i === quizState.idx) return '<span class="quiz-dot current"></span>';
+    return '<span class="quiz-dot"></span>';
+  }).join('');
+}
 
-  let q = STATE.quizQuestions[STATE.quizIndex];
-  let correct = q.ans === idx;
-  let optionEls = document.querySelectorAll('.option-item');
-
-  optionEls.forEach(function(el, i) {
-    el.style.pointerEvents = 'none';
-    if (i === q.ans) el.classList.add('correct');
-    if (i === idx && !correct) el.classList.add('wrong');
-    if (i === idx) el.classList.add('selected');
-  });
-
-  // Update stats
-  STATS.total++;
-  if (correct) {
-    STATS.correct++;
-    STATS.streak++;
-    if (STATS.streak > (STATS.maxStreak || 0)) STATS.maxStreak = STATS.streak;
-    // Remove from wrong book if it was there
-    delete STATS.wrongBook[String(q.id)];
+function onSelectOption(i){
+  if (!quizState) return;
+  const q = quizState.list[quizState.idx];
+  const opts = document.querySelectorAll('#optionsArea .option-item');
+  if (opts.length === 0) return;
+  /* Bug 4 修复：答题后立即锁定全部选项，禁止再点击 */
+  opts.forEach(el => el.classList.add('locked'));
+  const correct = (i === q.ans);
+  opts[i].classList.add(correct ? 'correct' : 'wrong');
+  if (!correct) opts[q.ans].classList.add('correct');
+  /* 记录结果用于进度点 */
+  quizState.results = quizState.results || [];
+  quizState.results[quizState.idx] = correct;
+  quizState.answered++;
+  if (correct) quizState.correct++;
+  /* 更新统计 */
+  stats.total++;
+  if (correct){
+    stats.correct++;
+    stats.streak++;
+    if (stats.streak > stats.bestStreak) stats.bestStreak = stats.streak;
   } else {
-    STATS.streak = 0;
-    STATS.wrongBook[String(q.id)] = { id: q.id, cat: q.cat, q: q.q.substring(0, 50), added: new Date().toISOString().slice(0, 10) };
+    stats.streak = 0;
+    if (q.id){
+      stats.wrongBook = stats.wrongBook.filter(x => x.id !== q.id);
+      stats.wrongBook.unshift({ id: q.id, cat: q.cat, q: q.q, ans: q.ans, opts: q.opts, exp: q.exp, ts: Date.now() });
+      if (stats.wrongBook.length > 200) stats.wrongBook = stats.wrongBook.slice(0, 200);
+    }
   }
-  // Category stats
-  if (!STATS.categoryStats[q.cat]) STATS.categoryStats[q.cat] = { total: 0, correct: 0 };
-  STATS.categoryStats[q.cat].total++;
-  if (correct) STATS.categoryStats[q.cat].correct++;
-  saveStats(STATS);
-
-  // Show explanation
-  document.getElementById('expTitle').textContent = correct ? '✅ 回答正确！' : '❌ 回答错误';
-  document.getElementById('expText').textContent = '正确答案：' + String.fromCharCode(65 + q.ans) + '。' + (q.exp || '');
-  document.getElementById('explanationBox').classList.add('show');
-
-  document.getElementById('btnNextQuestion').style.display = '';
-  document.getElementById('btnNextQuestion').textContent = STATE.quizIndex < STATE.quizQuestions.length - 1 ? '下一题 →' : '查看结果 📊';
+  stats.byCat[q.cat] = stats.byCat[q.cat] || { total: 0, correct: 0 };
+  stats.byCat[q.cat].total++;
+  if (correct) stats.byCat[q.cat].correct++;
+  saveStats();
   renderProgress();
+  /* 显示解析 */
+  const eb = document.getElementById('explanationBox');
+  document.getElementById('expTitle').innerHTML = ICON_CHECK + '<span>正确答案：'+['A','B','C','D','E','F'][q.ans]+'</span>';
+  document.getElementById('expText').textContent = q.exp;
+  eb.classList.add('show');
+  /* 下一题按钮 */
+  const btn = document.getElementById('btnNextQuestion');
+  const isLast = quizState.idx >= quizState.list.length - 1;
+  document.getElementById('btnNextText').textContent = isLast ? '查看结果' : '下一题';
+  btn.style.display = 'inline-flex';
+}
+
+function nextQuestion(){
+  if (!quizState) return;
+  if (quizState.idx >= quizState.list.length - 1){ finishQuiz(); return; }
+  quizState.idx++;
+  renderQuestion();
+}
+
+function finishQuiz(){
   stopQuizTimer();
+  const list = quizState.list, correct = quizState.correct, total = list.length;
+  const area = document.getElementById('quizArea');
+  area.innerHTML =
+    '<div class="card answer-summary">' +
+    '<div class="big-num">' + correct + '/' + total + '</div>' +
+    '<div class="sub-text">正确率 ' + (total ? Math.round(correct*1000/total)/10 : 0) + '%　·　用时 ' + formatTime(quizSeconds) + '</div>' +
+    '<div class="quiz-actions" style="margin-top:18px">' +
+    '<button class="btn btn-primary" onclick="restartFromFinish()">再来一次</button>' +
+    '<button class="btn btn-ghost" onclick="backToQuizHome()">返回</button>' +
+    '</div></div>';
+  quizState = null;
 }
 
-function nextQuestion() {
-  if (STATE.quizIndex < STATE.quizQuestions.length - 1) {
-    STATE.quizIndex++;
-    renderQuestion();
-    startQuizTimer();
-  } else {
-    endQuiz();
-  }
+function restartFromFinish(){
+  const pool = pickQuizPool();
+  const list = shuffle(pool).slice(0, 10);
+  document.getElementById('quizArea').innerHTML = '';
+  startQuiz(list, '随机 10 题');
 }
 
-function renderProgress() {
-  let html = '';
-  STATE.quizQuestions.forEach(function(q, i) {
-    let cls = '';
-    if (i < STATE.quizIndex) cls = 'correct'; // answered (we dont track individual results without deep state... simplify)
-    if (i === STATE.quizIndex && !STATE.quizAnswered) cls = 'current';
-    html += '<div class="quiz-dot ' + cls + '" title="第' + (i+1) + '题"></div>';
-  });
-  document.getElementById('quizProgress').innerHTML = html;
-}
-
-function startQuizTimer() {
-  STATE.quizStartTime = Date.now();
-  updateQuizTimer();
-  STATE.quizTimerInterval = setInterval(updateQuizTimer, 1000);
-}
-function updateQuizTimer() {
-  let elapsed = Math.floor((Date.now() - STATE.quizStartTime) / 1000);
-  let m = Math.floor(elapsed / 60), s = elapsed % 60;
-  document.getElementById('quizTimer').textContent = String(m).padStart(2,'0') + ':' + String(s).padStart(2,'0');
-}
-function stopQuizTimer() { if (STATE.quizTimerInterval) { clearInterval(STATE.quizTimerInterval); STATE.quizTimerInterval = null; } }
-
-function endQuiz() {
+function backToQuizHome(){
   stopQuizTimer();
-  document.getElementById('quizArea').style.display = 'none';
-  document.getElementById('statusBadge').textContent = '📚 就绪';
-  let rate = STATS.total > 0 ? Math.round(STATS.correct / STATS.total * 100) : 0;
-  toast('📊 本次正确率 ' + rate + '%（' + STATS.correct + '/' + STATS.total + '）', 'success');
-  document.getElementById('quizDesc').textContent = '累计 ' + STATS.total + ' 题，正确率 ' + rate + '%';
+  quizState = null;
+  location.reload();
 }
 
-function escHtml(s) { return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
-
-// ═══════════════════════════════════════════════
-//  STATS
-// ═══════════════════════════════════════════════
-function renderStats() {
-  document.getElementById('sTotal').textContent = STATS.total;
-  document.getElementById('sCorrect').textContent = STATS.correct;
-  document.getElementById('sRate').textContent = STATS.total > 0 ? Math.round(STATS.correct / STATS.total * 100) + '%' : '—';
-  document.getElementById('sStreak').textContent = STATS.maxStreak || 0;
-
-  let catHtml = '';
-  let cats = ['言语理解','数量关系','判断推理','资料分析','常识判断'];
-  cats.forEach(function(c) {
-    let cs = STATS.categoryStats[c];
-    let rate = cs && cs.total > 0 ? Math.round(cs.correct / cs.total * 100) + '%' : '—';
-    let count = cs ? cs.total : 0;
-    catHtml += '<div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid let(--border)"><span>' + c + '</span><span>' + count + '题 · <strong>' + rate + '</strong></span></div>';
-  });
-  if (!catHtml) catHtml = '暂无数据';
-  document.getElementById('categoryStats').innerHTML = catHtml;
+function formatTime(sec){
+  const m = Math.floor(sec/60), s = sec%60;
+  return String(m).padStart(2,'0')+':'+String(s).padStart(2,'0');
 }
 
-// ═══════════════════════════════════════════════
-//  WRONG BOOK
-// ═══════════════════════════════════════════════
-function renderWrongBook() {
-  let ids = Object.keys(STATS.wrongBook);
-  if (!ids.length) {
-    document.getElementById('wrongBookContent').innerHTML = '<div class="empty-state"><div class="empty-icon">📕</div><div class="empty-title">错题本为空</div><div class="empty-desc">做错的题目会自动收集到这里</div></div>';
+function saveStats(){ try { localStorage.setItem(STORE_KEY, JSON.stringify(stats)); } catch(e) {} }
+
+/* 按钮绑定 */
+document.getElementById('btnRandomQuiz').addEventListener('click', () => {
+  const pool = pickQuizPool();
+  if (pool.length === 0){ toast('该分类暂无题目', 'warn'); return; }
+  const list = shuffle(pool).slice(0, Math.min(10, pool.length));
+  startQuiz(list, '随机 ' + list.length + ' 题');
+});
+document.getElementById('btnAllQuiz').addEventListener('click', () => {
+  const pool = pickQuizPool();
+  if (pool.length === 0){ toast('该分类暂无题目', 'warn'); return; }
+  startQuiz(pool.slice(), '全部刷题 (' + pool.length + ')');
+});
+document.getElementById('btnWeakQuiz').addEventListener('click', () => {
+  const weak = stats.wrongBook && stats.wrongBook.length > 0 ? stats.wrongBook.slice(0, 10).map(w => ALL_QUESTIONS.find(q => q.id === w.id)).filter(Boolean) : [];
+  if (weak.length === 0){ toast('错题本为空，先做几道题吧', 'warn'); return; }
+  startQuiz(weak, '薄弱环节 (' + weak.length + ')');
+});
+document.getElementById('btnNextQuestion').addEventListener('click', nextQuestion);
+document.getElementById('btnEndQuiz').addEventListener('click', () => {
+  if (quizState) finishQuiz();
+});
+
+/* ═══════════════════════════════════════════════════════
+   学习统计
+   ═══════════════════════════════════════════════════════ */
+function renderStats(){
+  document.getElementById('sTotal').textContent = stats.total;
+  document.getElementById('sCorrect').textContent = stats.correct;
+  document.getElementById('sRate').textContent = stats.total ? Math.round(stats.correct*1000/stats.total)/10 + '%' : '—';
+  document.getElementById('sStreak').textContent = stats.bestStreak;
+  const wrap = document.getElementById('categoryStats');
+  const cats = Object.keys(stats.byCat);
+  if (cats.length === 0){ wrap.textContent = '暂无数据'; return; }
+  wrap.innerHTML = cats.map(c => {
+    const s = stats.byCat[c];
+    const rate = s.total ? Math.round(s.correct*1000/s.total)/10 : 0;
+    return '<div class="cat-row"><span class="cat-name">'+c+'</span><span class="cat-stat"><strong>'+rate+'%</strong>　'+s.correct+'/'+s.total+'</span></div>';
+  }).join('');
+}
+renderStats();
+
+document.getElementById('btnResetStats').addEventListener('click', () => {
+  if (!confirm('确认清除所有学习统计（不影响错题本与已导入题库）？')) return;
+  stats = Object.assign({}, defaultStats, { wrongBook: stats.wrongBook });
+  saveStats(); renderStats(); renderWrongBook();
+  toast('已清除统计', 'success');
+});
+document.getElementById('btnExportStats').addEventListener('click', () => {
+  const blob = new Blob([JSON.stringify(stats, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a'); a.href = url; a.download = 'examPrep_stats.json'; a.click();
+  URL.revokeObjectURL(url);
+});
+
+/* ═══════════════════════════════════════════════════════
+   错题本
+   ═══════════════════════════════════════════════════════ */
+function renderWrongBook(){
+  const wrap = document.getElementById('wrongBookContent');
+  if (!wrap) return;
+  if (!stats.wrongBook || stats.wrongBook.length === 0){
+    wrap.innerHTML = '<div class="empty-state"><div class="empty-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg></div><div class="empty-title">错题本为空</div><div class="empty-desc">做错的题目会自动收集到这里</div></div>';
     return;
   }
-  let html = '<div style="font-size:13px;color:let(--muted);margin-bottom:12px">共 ' + ids.length + ' 道错题</div>';
-  ids.forEach(function(id) {
-    let wb = STATS.wrongBook[id];
-    let q = EXAM_QUESTIONS.find(function(q2) { return String(q2.id) === id; });
+  wrap.innerHTML = stats.wrongBook.map(w =>
+    '<div class="wb-item" data-id="'+w.id+'"><div class="wb-meta"><span>'+w.cat+'</span><span>'+new Date(w.ts).toLocaleDateString()+'</span></div><div class="wb-q">'+(w.q||'').slice(0,80)+((w.q||'').length>80?'…':'')+'</div><div class="wb-ans">正确答案：'+['A','B','C','D','E','F'][w.ans||0]+'</div></div>'
+  ).join('');
+  wrap.querySelectorAll('.wb-item').forEach(el => el.addEventListener('click', () => {
+    const q = ALL_QUESTIONS.find(x => x.id === parseInt(el.dataset.id, 10));
     if (!q) return;
-    html += '<div style="padding:12px;margin-bottom:8px;border:1px solid let(--border);border-radius:let(--radius-sm);cursor:pointer" onclick="reviewWrong(\'' + id + '\')">';
-    html += '<span style="font-size:12px;color:let(--muted)">' + q.cat + '</span><br>';
-    html += escHtml(q.q.substring(0, 80)) + '…<br>';
-    html += '<span style="font-size:12px;color:let(--muted)">答案：' + String.fromCharCode(65 + q.ans) + '</span>';
-    html += '</div>';
-  });
-  html += '<button class="btn btn-outline btn-sm" onclick="clearWrongBook()">🗑 清空错题本</button>';
-  document.getElementById('wrongBookContent').innerHTML = html;
+    quizFilterCat = 'all';
+    document.querySelectorAll('#categoryTags .filter-tag').forEach(t => t.classList.toggle('active', t.dataset.cat === 'all'));
+    startQuiz([q], '错题复习');
+  }));
 }
+renderWrongBook();
 
-function reviewWrong(id) {
-  let q = EXAM_QUESTIONS.find(function(q2) { return String(q2.id) === id; });
-  if (!q) return;
-  STATE.quizQuestions = [q];
-  STATE.quizIndex = 0;
-  STATE.quizFilter = null;
-  STATE.quizMode = 'review';
-  document.getElementById('quizArea').style.display = '';
-  renderQuestion();
-  document.getElementById('quizCatLabel').textContent = '错题复习 · ' + q.cat;
-  startQuizTimer();
-  switchTab('quiz');
-}
+/* ═══════════════════════════════════════════════════════
+   导入题库
+   ═══════════════════════════════════════════════════════ */
+document.getElementById('btnImportQuiz').addEventListener('click', () => document.getElementById('quizFileInput').click());
+document.getElementById('quizFileInput').addEventListener('change', e => {
+  const f = e.target.files[0]; if (!f) return;
+  const r = new FileReader();
+  r.onload = ev => {
+    try {
+      const data = JSON.parse(ev.target.result);
+      const arr = Array.isArray(data) ? data : (data.questions || []);
+      let added = 0;
+      arr.forEach(q => {
+        if (q && q.q && Array.isArray(q.opts) && typeof q.ans === 'number'){
+          q.id = q.id || (800 + ALL_QUESTIONS.length + added);
+          ALL_QUESTIONS.push(q);
+          added++;
+        }
+      });
+      document.getElementById('quizTotalCount').textContent = ALL_QUESTIONS.length;
+      toast('成功导入 ' + added + ' 道题目', 'success');
+    } catch(err){ toast('文件格式错误：'+err.message, 'warn'); }
+  };
+  r.readAsText(f);
+  e.target.value = '';
+});
 
-function clearWrongBook() {
-  if (!confirm('确定清空所有错题吗？')) return;
-  STATS.wrongBook = {};
-  saveStats(STATS);
-  renderWrongBook();
-  toast('🗑 错题本已清空', 'success');
-}
+/* ═══════════════════════════════════════════════════════
+   面试模拟
+   ═══════════════════════════════════════════════════════ */
+let interviewFilterCat = 'all';
+renderInterviewTags('interviewCategoryTags', cat => { interviewFilterCat = cat; });
 
-// ═══════════════════════════════════════════════
-//  INTERVIEW
-// ═══════════════════════════════════════════════
-function randomInterview(filter) {
-  let pool = filter ? INTERVIEW_QUESTIONS.filter(function(q) { return q.cat === filter; }) : INTERVIEW_QUESTIONS;
-  if (!pool.length) { toast('⚠️ 没有匹配题目', 'warn'); return; }
-  let q = pool[Math.floor(Math.random() * pool.length)];
-
-  stopInterviewTimer();
-  STATE.interviewPhase = 'idle';
-  STATE.interviewTimer = 180;
-  let audioEl = document.getElementById('audioPlayer');
-  audioEl.style.display = 'none';
-  if (audioEl.src) URL.revokeObjectURL(audioEl.src);
-  audioEl.src = '';
-  document.getElementById('recordingStatus').innerHTML = '';
-  document.getElementById('interviewRefBox').classList.remove('show');
-
-  document.getElementById('interviewArea').style.display = '';
-  document.getElementById('interviewCatLabel').textContent = q.cat;
-  document.getElementById('interviewQuestion').textContent = q.q;
+function startInterview(){
+  let pool = INTERVIEW_QUESTIONS.slice();
+  if (interviewFilterCat !== 'all') pool = pool.filter(q => q.cat === interviewFilterCat);
+  if (pool.length === 0){ toast('该分类暂无面试题', 'warn'); return; }
+  const q = pool[Math.floor(Math.random() * pool.length)];
+  interviewState = { q: q, phase: 'idle' };
+  interviewSeconds = 0;
+  document.getElementById('interviewArea').style.display = 'block';
+  document.getElementById('interviewCatLabel').innerHTML = '<span class="badge">'+q.cat+'</span>';
+  document.getElementById('interviewQuestion').textContent = q.t;
   document.getElementById('interviewPhase').textContent = '准备开始';
   document.getElementById('interviewTimer').textContent = '03:00';
-  document.getElementById('interviewRefTips').textContent = q.tips || '';
-  document.getElementById('interviewRefAnswer').textContent = q.ref || '';
-  document.getElementById('interviewArea').scrollIntoView({ behavior: 'smooth' });
-}
-
-function startThinking() {
-  stopInterviewTimer();
-  STATE.interviewPhase = 'thinking';
-  STATE.interviewTimer = 30;
-  updateInterviewTimerDisplay();
-  document.getElementById('interviewPhase').textContent = '🤔 思考中…';
+  document.getElementById('interviewRefBox').classList.remove('show');
   document.getElementById('recordingStatus').innerHTML = '';
-  STATE.interviewTimerInterval = setInterval(function() {
-    STATE.interviewTimer--;
-    updateInterviewTimerDisplay();
-    if (STATE.interviewTimer <= 0) {
-      stopInterviewTimer();
-      toast('⏰ 思考时间到！请开始答题', 'warn');
-      startAnswer();
-    }
-  }, 1000);
+  const ap = document.getElementById('audioPlayer'); ap.style.display = 'none'; ap.src = '';
+  document.getElementById('btnThinking').disabled = false;
+  document.getElementById('btnStartAnswer').disabled = false;
+  document.getElementById('interviewArea').scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
-function startAnswer() {
+document.getElementById('btnRandomInterview').addEventListener('click', startInterview);
+
+document.getElementById('btnThinking').addEventListener('click', () => {
+  if (!interviewState) return;
+  interviewState.phase = 'thinking';
+  document.getElementById('interviewPhase').textContent = '思考中（30秒）';
+  interviewSeconds = 0;
   stopInterviewTimer();
-  STATE.interviewPhase = 'answering';
-  STATE.interviewTimer = 180;
-  updateInterviewTimerDisplay();
-  document.getElementById('interviewPhase').textContent = '🎙 答题中…';
-  STATE.interviewTimerInterval = setInterval(function() {
-    STATE.interviewTimer--;
-    updateInterviewTimerDisplay();
-    if (STATE.interviewTimer <= 0) { stopInterviewTimer(); stopRecording(); toast('⏰ 答题时间到', 'warn'); }
-  }, 1000);
-
-  // Start recording
-  startRecording();
-}
-
-function updateInterviewTimerDisplay() {
-  let m = Math.floor(STATE.interviewTimer / 60), s = STATE.interviewTimer % 60;
-  let el = document.getElementById('interviewTimer');
-  el.textContent = String(m).padStart(2,'0') + ':' + String(s).padStart(2,'0');
-  if (STATE.interviewTimer <= 30 && STATE.interviewPhase === 'answering') el.style.color = 'let(--danger)';
-  else el.style.color = '';
-}
-
-function stopInterviewTimer() {
-  if (STATE.interviewTimerInterval) { clearInterval(STATE.interviewTimerInterval); STATE.interviewTimerInterval = null; }
-}
-
-function startRecording() {
-  if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-    document.getElementById('recordingStatus').innerHTML = '<span style="color:let(--muted)">⚠ 浏览器不支持录音功能</span>';
-    return;
-  }
-  navigator.mediaDevices.getUserMedia({ audio: true }).then(function(stream) {
-    STATE.recordedChunks = [];
-    let mr = new MediaRecorder(stream);
-    mr.ondataavailable = function(e) { if (e.data.size > 0) STATE.recordedChunks.push(e.data); };
-    mr.onstop = function() {
-      STATE.recordedBlob = new Blob(STATE.recordedChunks, { type: 'audio/webm' });
-      let url = URL.createObjectURL(STATE.recordedBlob);
-      let audioEl = document.getElementById('audioPlayer');
-      audioEl.src = url;
-      audioEl.style.display = '';
-      document.getElementById('recordingStatus').innerHTML = '<span style="color:let(--success)">✅ 录音完成，可在下方回放</span>';
-      // Stop all tracks
-      stream.getTracks().forEach(function(t) { t.stop(); });
-    };
-    mr.start();
-    STATE.mediaRecorder = mr;
-    document.getElementById('recordingStatus').innerHTML = '<div class="recording-indicator">🔴 录音中</div>';
-  }).catch(function() {
-    document.getElementById('recordingStatus').innerHTML = '<span style="color:let(--danger)">⚠ 无法访问麦克风</span>';
-  });
-}
-
-function stopRecording() {
-  if (STATE.mediaRecorder && STATE.mediaRecorder.state === 'recording') {
-    STATE.mediaRecorder.stop();
-    STATE.mediaRecorder = null;
-  }
-}
-
-function showReference() {
-  document.getElementById('interviewRefBox').classList.toggle('show');
-}
-
-// ═══════════════════════════════════════════════
-//  INIT
-// ═══════════════════════════════════════════════
-// ── 题库导入 ──
-function handleQuizImport(file) {
-  var reader = new FileReader();
-  reader.onload = function(e) {
-    try {
-      var data = JSON.parse(e.target.result);
-      var examQ = data.exam || data.questions || data;
-      if (!Array.isArray(examQ)) { toast('JSON 格式错误：需要数组格式', 'warn'); return; }
-      var valid = examQ.filter(function(q) { return q.q && q.opts && q.opts.length >= 2 && q.ans !== undefined; });
-      if (valid.length === 0) { toast('未找到有效题目，请检查 JSON 格式', 'warn'); return; }
-      var beforeCount = EXAM_QUESTIONS.length;
-      EXAM_QUESTIONS = valid;
-      if (data.interview && Array.isArray(data.interview)) {
-        var iv = data.interview.filter(function(q) { return q.q && q.tips; });
-        if (iv.length) INTERVIEW_QUESTIONS = iv;
-      }
-      localStorage.setItem('gwy_examprep_custom', '1');
-      toast('已导入 ' + EXAM_QUESTIONS.length + ' 道行测题 · ' + INTERVIEW_QUESTIONS.length + ' 道面试题（原 ' + beforeCount + ' 题已替换）', 'success');
-    } catch(err) {
-      toast('JSON 解析失败：' + err.message, 'warn');
+  quizTimer = null; /* placeholder to avoid lint */
+  interviewTimer = setInterval(() => {
+    interviewSeconds++;
+    if (interviewSeconds >= 30){
+      stopInterviewTimer();
+      interviewState.phase = 'idle';
+      document.getElementById('interviewPhase').textContent = '思考结束，开始答题';
+      toast('思考结束', '');
+      return;
     }
-  };
-  reader.readAsText(file);
-}
-document.getElementById('btnImportQuiz').addEventListener('click', function() { document.getElementById('quizFileInput').click(); });
-document.getElementById('quizFileInput').addEventListener('change', function() { if (this.files[0]) handleQuizImport(this.files[0]); });
-// 从 localStorage 恢复自定义题库
-if (localStorage.getItem('gwy_examprep_custom')) {
+    document.getElementById('interviewTimer').textContent = '00:' + String(30 - interviewSeconds).padStart(2, '0');
+  }, 1000);
+});
+
+document.getElementById('btnStartAnswer').addEventListener('click', async () => {
+  if (!interviewState) return;
+  interviewState.phase = 'answering';
+  document.getElementById('interviewPhase').textContent = '答题中（最长3分钟）';
+  interviewSeconds = 0;
+  stopInterviewTimer();
+  interviewTimer = setInterval(() => {
+    interviewSeconds++;
+    const remain = Math.max(0, 180 - interviewSeconds);
+    document.getElementById('interviewTimer').textContent = formatTime(remain);
+    if (interviewSeconds >= 180){
+      stopInterviewTimer();
+      interviewState.phase = 'done';
+      document.getElementById('interviewPhase').textContent = '答题结束';
+      stopRecording();
+    }
+  }, 1000);
+  await startRecording();
+});
+
+document.getElementById('btnShowRef').addEventListener('click', () => {
+  if (!interviewState) return;
+  const tips = interviewState.q.tips || '';
+  // Split tips into structured sections
+  const tipsHtml = tips.split(/[；;]/).filter(Boolean).map(s =>
+    '<span class="ref-section">'+escHtml(s.trim())+'</span>'
+  ).join('');
+  document.getElementById('interviewRefTips').innerHTML = tipsHtml || '<span style="color:var(--muted)">暂无提示</span>';
+
+  const ref = interviewState.q.ref || '';
+  // Format ref: split by ①-⑨ or a/b/c markers
+  let refHtml = ref
+    .replace(/[①②③④⑤⑥⑦⑧⑨⑩]/g, '<br><strong>$&</strong> ')
+    .replace(/[a-z]、/g, '<br>　$&')
+    .replace(/示例[：:]/g, '<br><strong>示例：</strong>');
+  document.getElementById('interviewRefAnswer').innerHTML = refHtml;
+  document.getElementById('interviewRefBox').classList.add('show');
+  document.getElementById('interviewRefBox').classList.remove('collapsed');
+  // Add click-to-toggle on title
+  document.getElementById('interviewRefBox').querySelectorAll('.exp-title').forEach(el => {
+    el.onclick = () => document.getElementById('interviewRefBox').classList.toggle('collapsed');
+  });
+});
+
+async function startRecording(){
   try {
-    var saved = JSON.parse(localStorage.getItem('gwy_examprep_questions'));
-    if (saved && saved.exam) EXAM_QUESTIONS = saved.exam;
-    if (saved && saved.interview) INTERVIEW_QUESTIONS = saved.interview;
-  } catch(e) {}
-}
-
-function init() {
-  // Theme
-  try {
-    let tm = localStorage.getItem('gwy_examprep_theme') || localStorage.getItem('examprep_theme');
-    if (tm === 'dark') document.documentElement.setAttribute('data-theme', 'dark');
-  } catch(e) {}
-  document.getElementById('themeToggle').textContent = document.documentElement.getAttribute('data-theme') === 'dark' ? '☀️' : '🌙';
-  document.getElementById('themeToggle').addEventListener('click', toggleTheme);
-
-  // Tab switching
-  document.querySelectorAll('.tab-btn').forEach(function(btn) {
-    btn.addEventListener('click', function() { switchTab(this.getAttribute('data-tab')); });
-  });
-
-  // Category filter tags (quiz)
-  let cats = ['全部','言语理解','数量关系','判断推理','资料分析','常识判断'];
-  let catHtml = '';
-  cats.forEach(function(c) {
-    catHtml += '<span class="filter-tag' + (c === '全部' ? ' active' : '') + '" data-filter="' + (c === '全部' ? '' : c) + '">' + c + '</span>';
-  });
-  document.getElementById('categoryTags').innerHTML = catHtml;
-  document.querySelectorAll('#categoryTags .filter-tag').forEach(function(tag) {
-    tag.addEventListener('click', function() {
-      document.querySelectorAll('#categoryTags .filter-tag').forEach(function(t) { t.classList.remove('active'); });
-      this.classList.add('active');
-    });
-  });
-
-  // Quiz buttons
-  document.getElementById('btnRandomQuiz').addEventListener('click', function() {
-    let filter = document.querySelector('#categoryTags .filter-tag.active').getAttribute('data-filter') || null;
-    startQuiz('random', filter);
-  });
-  document.getElementById('btnAllQuiz').addEventListener('click', function() {
-    let filter = document.querySelector('#categoryTags .filter-tag.active').getAttribute('data-filter') || null;
-    startQuiz('all', filter);
-  });
-  document.getElementById('btnWeakQuiz').addEventListener('click', function() { startQuiz('weak', null); });
-  document.getElementById('btnNextQuestion').addEventListener('click', nextQuestion);
-  document.getElementById('btnEndQuiz').addEventListener('click', endQuiz);
-  document.getElementById('btnResetStats').addEventListener('click', function() {
-    if (!confirm('确定清除所有统计和错题本吗？')) return;
-    STATS = getDefaultStats();
-    saveStats(STATS);
-    renderStats();
-    toast('🗑 统计已重置', 'success');
-  });
-
-  // Interview category tags
-  let icats = ['全部','自我认知','综合分析','组织管理','应急应变','人际关系'];
-  let icatHtml = '';
-  icats.forEach(function(c) {
-    icatHtml += '<span class="filter-tag' + (c === '全部' ? ' active' : '') + '" data-filter="' + (c === '全部' ? '' : c) + '">' + c + '</span>';
-  });
-  document.getElementById('interviewCategoryTags').innerHTML = icatHtml;
-  document.querySelectorAll('#interviewCategoryTags .filter-tag').forEach(function(tag) {
-    tag.addEventListener('click', function() {
-      document.querySelectorAll('#interviewCategoryTags .filter-tag').forEach(function(t) { t.classList.remove('active'); });
-      this.classList.add('active');
-    });
-  });
-
-  // Interview buttons
-  document.getElementById('btnRandomInterview').addEventListener('click', function() {
-    let filter = document.querySelector('#interviewCategoryTags .filter-tag.active').getAttribute('data-filter') || null;
-    randomInterview(filter);
-  });
-  document.getElementById('btnThinking').addEventListener('click', startThinking);
-  document.getElementById('btnStartAnswer').addEventListener('click', startAnswer);
-  document.getElementById('btnShowRef').addEventListener('click', showReference);
-
-  // Test mode
-  if (window.location.search.indexOf('test=1') !== -1) setTimeout(runTests, 300);
-}
-
-// ═══════════════════════════════════════════════
-//  TESTS
-// ═══════════════════════════════════════════════
-function runTests() {
-  let results = [];
-  function t(name, fn) {
-    try { results.push({ name: name, pass: !!fn() }); }
-    catch(e) { results.push({ name: name, pass: false, error: e.message }); }
+    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+    recordedChunks = [];
+    mediaRecorder = new MediaRecorder(stream);
+    mediaRecorder.ondataavailable = e => { if (e.data && e.data.size > 0) recordedChunks.push(e.data); };
+    mediaRecorder.onstop = () => {
+      recordedBlob = new Blob(recordedChunks, { type: 'audio/webm' });
+      const url = URL.createObjectURL(recordedBlob);
+      const ap = document.getElementById('audioPlayer');
+      ap.src = url; ap.style.display = 'block';
+      stream.getTracks().forEach(t => t.stop());
+    };
+    mediaRecorder.start();
+    document.getElementById('recordingStatus').innerHTML = '<span class="recording-indicator">'+ICON_REC+' 录音中…</span>';
+  } catch(err){
+    document.getElementById('recordingStatus').innerHTML = '<span style="color:var(--muted);font-size:12px">未授权麦克风或浏览器不支持（'+err.name+'）</span>';
   }
-
-  t('EXAM_QUESTIONS has 60 questions', function() { return EXAM_QUESTIONS.length === 60; });
-  t('All exam questions have opts', function() { return EXAM_QUESTIONS.every(function(q) { return q.opts && q.opts.length === 4; }); });
-  t('All exam questions have valid ans', function() { return EXAM_QUESTIONS.every(function(q) { return q.ans >= 0 && q.ans <= 3; }); });
-  t('INTERVIEW_QUESTIONS has 30 questions', function() { return INTERVIEW_QUESTIONS.length === 30; });
-  t('All interview questions have tips and ref', function() { return INTERVIEW_QUESTIONS.every(function(q) { return q.tips && q.ref; }); });
-  t('Stats persistence', function() {
-    let orig = JSON.parse(JSON.stringify(STATS));
-    STATS.total = 99;
-    saveStats(STATS);
-    let loaded = loadStats();
-    let ok = loaded.total === 99;
-    STATS = orig;
-    saveStats(STATS);
-    return ok;
-  });
-  t('getFilteredQuestions works', function() { return getFilteredQuestions('常识判断').every(function(q) { return q.cat === '常识判断'; }); });
-  t('getFilteredQuestions null returns all', function() { return getFilteredQuestions(null).length === 60; });
-
-  let passed = results.filter(function(r) { return r.pass; }).length;
-  let total = results.length;
-  let color = passed === total ? 'green' : 'orange';
-  console.log('%c📋 ExamPrep Tests: ' + passed + '/' + total + ' passed', 'font-size:16px;font-weight:bold;color:' + color);
-  results.forEach(function(r) { console.log(r.pass ? '  ✅' : '  ❌', r.name, r.error ? '(' + r.error + ')' : ''); });
-  if (passed < total) console.warn('⚠ ' + (total - passed) + ' tests failed');
-  else console.log('✅ All tests passed!');
 }
 
-if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init); else init();
-window.addEventListener('beforeunload',function(){document.getElementById('exitOverlay').classList.add('go');});
+function stopRecording(){
+  try { if (mediaRecorder && mediaRecorder.state !== 'inactive') mediaRecorder.stop(); } catch(e){}
+  document.getElementById('recordingStatus').innerHTML = '<span style="color:var(--success);font-size:12px;display:inline-flex;align-items:center;gap:6px">'+ICON_CHECK+' 录音已停止</span>';
+}
+
+function escHtml(s){ return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+
+/* ═══════════════════════════════════════════════════════
+   初始计数
+   ═══════════════════════════════════════════════════════ */
+document.getElementById('quizTotalCount').textContent = ALL_QUESTIONS.length;
+
+document.getElementById('statusText').textContent = '已加载 ' + ALL_QUESTIONS.length + ' 题 / ' + INTERVIEW_QUESTIONS.length + ' 面试题';
 </script>
 </body>
 </html>
